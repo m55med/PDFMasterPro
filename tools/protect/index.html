@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protect PDF - PDF Master Pro</title>
+    <link rel="stylesheet" href="../../shared.css">
+    <style>
+        .password-form {
+            width: 100%;
+            max-width: 400px;
+            margin-top: 24px;
+            padding: 24px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #E2E8F0;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .permissions {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #E2E8F0;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="tool-header">
+        <a href="../../dashboard/index.html" class="back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            Back
+        </a>
+        <div class="tool-title">Protect PDF</div>
+        <div class="tool-actions">
+            <button class="btn btn-primary" id="protectBtn" disabled>Encrypt PDF</button>
+        </div>
+    </header>
+
+    <main class="tool-container">
+        <div class="upload-box" id="uploadArea">
+            <div class="icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+            </div>
+            <h3>Select PDF to Protect</h3>
+            <p>Encrypt with password</p>
+        </div>
+
+        <div class="file-list hidden" id="fileInfo"></div>
+
+        <div class="password-form hidden" id="passwordForm">
+            <div class="form-group">
+                <label>Set Password</label>
+                <input type="password" id="password" placeholder="Enter password">
+            </div>
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Repeat password">
+            </div>
+
+            <div class="permissions">
+                <label style="font-size:13px; color:#64748B; padding-bottom:10px;">Restrictions (Optional)</label>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="preventPrint">
+                    <label for="preventPrint" style="margin:0">Prevent Printing</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="preventCopy">
+                    <label for="preventCopy" style="margin:0">Prevent Copying Text</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="preventModify">
+                    <label for="preventModify" style="margin:0">Prevent Modification</label>
+                </div>
+            </div>
+        </div>
+
+        <input type="file" id="fileInput" accept=".pdf" hidden>
+    </main>
+
+    <script src="../../lib/pdf-lib.min.js"></script>
+    <script src="../../lib/pdf-processor.js" type="module"></script>
+    <script src="../../utils/notifications.js" type="module"></script>
+    <script src="protect.js" type="module"></script>
+</body>
+
+</html>

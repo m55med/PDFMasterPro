@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - PDF Master Pro</title>
+    <link rel="stylesheet" href="../../dashboard/styles.css">
+    <style>
+        .help-container {
+            padding: 32px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .faq-item h3 {
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: var(--text-main);
+        }
+
+        .faq-item p {
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="help-container">
+            <div style="margin-bottom: 24px;">
+                <a href="../../dashboard/index.html"
+                    style="text-decoration:none; color:var(--text-muted); display:flex; align-items:center; gap:8px; font-size:14px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    Back to Dashboard
+                </a>
+            </div>
+
+            <h1>Help & User Guide</h1>
+
+            <div class="faq-item">
+                <h3>How likely is my data to leak?</h3>
+                <p>Zero chance. PDF Master Pro runs 100% offline within your browser. Your files never leave your
+                    computer and are not uploaded to any server.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How do I merge PDF files?</h3>
+                <p>Go to the Dashboard or Quick Tools, select "Merge PDF", drag and drop your files, arrange them in the
+                    desired order, and click "Merge".</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Why are some OCR conversions taking long?</h3>
+                <p>OCR is a computationally intensive task running in your browser. Large documents or high-resolution
+                    images can take more time to process.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Can I run the extension without internet?</h3>
+                <p>Yes! All core features work offline. The only exception is the first-time download of OCR language
+                    packs.</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

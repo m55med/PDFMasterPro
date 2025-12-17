@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merge PDF - PDF Master Pro</title>
+    <link rel="stylesheet" href="../shared.css">
+    <link rel="stylesheet" href="merge.css">
+</head>
+
+<body>
+    <header class="tool-header">
+        <a href="../../dashboard/index.html" class="back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            Back to Dashboard
+        </a>
+        <div class="tool-title">Merge PDF</div>
+        <div class="tool-actions">
+            <button class="btn btn-secondary" id="addMoreBtn" disabled>Add More Files</button>
+            <button class="btn btn-primary" id="mergeBtn" disabled>Merge PDFs</button>
+        </div>
+    </header>
+
+    <main class="tool-container">
+        <div class="upload-box" id="uploadArea">
+            <div class="icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+            </div>
+            <h3>Select PDF files to merge</h3>
+            <p>Drag and drop files here or click to browse</p>
+        </div>
+
+        <div class="file-list" id="fileList"></div>
+
+        <input type="file" id="fileInput" multiple accept=".pdf" hidden>
+    </main>
+
+    <script src="../../lib/pdf-lib.min.js"></script>
+    <script src="../../lib/pdf-processor.js" type="module"></script>
+    <script src="../../utils/storage.js" type="module"></script>
+    <script src="../../utils/notifications.js" type="module"></script>
+    <script src="../../lib/sortable.min.js"></script>
+    <script src="merge.js" type="module"></script>
+</body>
+
+</html>

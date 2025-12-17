@@ -1,0 +1,35 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="128" height="128" rx="24" fill="url(#gradient)"/>
+  
+  <!-- PDF Document Icon -->
+  <g transform="translate(32, 24)">
+    <!-- Page -->
+    <path d="M 8 0 L 48 0 L 56 8 L 56 72 C 56 74.2 54.2 76 52 76 L 8 76 C 5.8 76 4 74.2 4 72 L 4 4 C 4 1.8 5.8 0 8 0 Z" fill="white"/>
+    
+    <!-- Page fold -->
+    <path d="M 48 0 L 48 8 L 56 8 Z" fill="#E5E7EB"/>
+    
+    <!-- PDF Text -->
+    <text x="30" y="48" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#2563EB">PDF</text>
+    
+    <!-- Lines indicating document content -->
+    <line x1="12" y1="20" x2="44" y2="20" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"/>
+    <line x1="12" y1="28" x2="44" y2="28" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"/>
+    <line x1="12" y1="56" x2="44" y2="56" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"/>
+    <line x1="12" y1="64" x2="36" y2="64" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Sparkle/Star accent -->
+  <circle cx="88" cy="40" r="8" fill="#FBBF24" opacity="0.9"/>
+  <circle cx="88" cy="40" r="4" fill="white"/>
+  
+  <!-- Gradient Definition -->
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563EB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1D4ED8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>
+

@@ -1,0 +1,33 @@
+/* Merge Tool Specific Styles */
+
+.tool-title {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.file-item {
+    cursor: grab;
+}
+
+.file-item:active {
+    cursor: grabbing;
+}
+
+.drag-handle {
+    color: #94A3B8;
+    margin-right: 12px;
+    cursor: grab;
+}
+
+.ghost-class {
+    opacity: 0.5;
+    background: #F1F5F9;
+    border: 1px dashed #94A3B8;
+}
+
+.file-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 800px;
+}

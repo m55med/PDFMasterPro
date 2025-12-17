@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watermark - PDF Master Pro</title>
+    <link rel="stylesheet" href="../../shared.css">
+    <style>
+        .settings-panel {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .setting-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748B;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #E2E8F0;
+            border-radius: 6px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+        }
+
+        /* Simple color picker circles */
+        .color-options {
+            display: flex;
+            gap: 8px;
+        }
+
+        .color-opt {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .color-opt.active {
+            border-color: #0F172A;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="tool-header">
+        <a href="../../dashboard/index.html" class="back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            Back
+        </a>
+        <div class="tool-title">Add Watermark</div>
+        <div class="tool-actions">
+            <button class="btn btn-primary" id="applyBtn" disabled>Apply Watermark</button>
+        </div>
+    </header>
+
+    <main class="tool-container">
+        <div class="upload-box" id="uploadArea">
+            <div class="icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                    <path d="M2 17l10 5 10-5" />
+                    <path d="M2 12l10 5 10-5" />
+                </svg>
+            </div>
+            <h3>Select PDF</h3>
+            <p>Add text watermark</p>
+        </div>
+
+        <div class="file-list hidden" id="fileInfo"></div>
+
+        <div class="settings-panel hidden" id="settingsPanel">
+            <div class="setting-card">
+                <h3>Text Settings</h3>
+                <div class="group">
+                    <label>Watermark Text</label>
+                    <input type="text" id="wmText" value="CONFIDENTIAL">
+                </div>
+                <div class="group">
+                    <label>Font Size</label>
+                    <input type="range" id="wmSize" min="10" max="150" value="48"
+                        oninput="document.getElementById('sizeVal').textContent = this.value">
+                    <span id="sizeVal" style="font-size:12px; float:right;">48</span>
+                </div>
+                <div class="group">
+                    <label>Color</label>
+                    <div class="color-options" id="colorOpts">
+                        <div class="color-opt active" style="background: #94A3B8" data-r="0.5" data-g="0.5"
+                            data-b="0.5"></div> <!-- Gray -->
+                        <div class="color-opt" style="background: #EF4444" data-r="0.9" data-g="0.2" data-b="0.2"></div>
+                        <!-- Red -->
+                        <div class="color-opt" style="background: #3B82F6" data-r="0.2" data-g="0.5" data-b="0.9"></div>
+                        <!-- Blue -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="setting-card">
+                <h3>Position & Style</h3>
+                <div class="group">
+                    <label>Rotation</label>
+                    <select id="wmRotation">
+                        <option value="-45">Diagonal (-45°)</option>
+                        <option value="0">Horizontal (0°)</option>
+                        <option value="-90">Vertical (-90°)</option>
+                    </select>
+                </div>
+                <div class="group">
+                    <label>Opacity</label>
+                    <input type="range" id="wmOpacity" min="01" max="100" value="30">
+                    <span id="opVal" style="font-size:12px; float:right;">30%</span>
+                </div>
+            </div>
+        </div>
+
+        <input type="file" id="fileInput" accept=".pdf" hidden>
+    </main>
+
+    <script src="../../lib/pdf-lib.min.js"></script>
+    <script src="../../lib/pdf-processor.js" type="module"></script>
+    <script src="../../utils/notifications.js" type="module"></script>
+    <script src="watermark.js" type="module"></script>
+</body>
+
+</html>

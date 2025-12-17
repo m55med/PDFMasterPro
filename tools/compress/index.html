@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compress PDF - PDF Master Pro</title>
+    <link rel="stylesheet" href="../shared.css">
+    <style>
+        .compression-levels {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .level-card {
+            border: 2px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .level-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .level-card.active {
+            border-color: var(--primary);
+            background: #EFF6FF;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1);
+        }
+
+        .level-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .quality-bar {
+            height: 4px;
+            background: #E2E8F0;
+            border-radius: 2px;
+            margin: 12px 0;
+            overflow: hidden;
+        }
+
+        .quality-fill {
+            height: 100%;
+            border-radius: 2px;
+        }
+
+        .level-card[data-level="low"] .quality-fill {
+            width: 90%;
+            background: #10B981;
+        }
+
+        .level-card[data-level="medium"] .quality-fill {
+            width: 60%;
+            background: #F59E0B;
+        }
+
+        .level-card[data-level="high"] .quality-fill {
+            width: 30%;
+            background: #EF4444;
+        }
+
+        .result-box {
+            background: #F0FDF4;
+            border: 1px solid #10B981;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 24px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="tool-header">
+        <a href="../../dashboard/index.html" class="back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            Back
+        </a>
+        <div class="tool-title">Compress PDF</div>
+        <div class="tool-actions">
+            <button class="btn btn-primary" id="compressBtn" disabled>Compress PDF</button>
+        </div>
+    </header>
+
+    <main class="tool-container">
+        <div class="upload-box" id="uploadArea">
+            <div class="icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="4 14 10 14 10 20" />
+                    <polyline points="20 10 14 10 14 4" />
+                    <line x1="14" y1="10" x2="21" y2="3" />
+                    <line x1="3" y1="21" x2="10" y2="14" />
+                </svg>
+            </div>
+            <h3>Select PDF to compress</h3>
+            <p>Reduce file size while maintaining quality</p>
+        </div>
+
+        <div class="file-list hidden" id="fileInfo"></div>
+
+        <div class="compression-levels hidden" id="levelSelector">
+            <div class="level-card" data-level="low">
+                <div class="level-icon">⚡</div>
+                <h4>Low Compression</h4>
+                <div class="quality-bar">
+                    <div class="quality-fill"></div>
+                </div>
+                <p style="font-size: 12px; color: #64748B">High quality, less compression</p>
+            </div>
+
+            <div class="level-card active" data-level="medium">
+                <div class="level-icon">🚀</div>
+                <h4>Medium Compression</h4>
+                <div class="quality-bar">
+                    <div class="quality-fill"></div>
+                </div>
+                <p style="font-size: 12px; color: #64748B">Good quality, good compression</p>
+            </div>
+
+            <div class="level-card" data-level="high">
+                <div class="level-icon">📦</div>
+                <h4>High Compression</h4>
+                <div class="quality-bar">
+                    <div class="quality-fill"></div>
+                </div>
+                <p style="font-size: 12px; color: #64748B">Low quality, max compression</p>
+            </div>
+        </div>
+
+        <div class="result-box" id="resultBox">
+            <h4>Compression Complete!</h4>
+            <p>Original: <strong id="origSize"></strong> → Compressed: <strong id="newSize"></strong></p>
+            <p style="color: #166534; margin-top: 4px;">Saved <span id="savedPercent"></span>%</p>
+        </div>
+
+        <input type="file" id="fileInput" accept=".pdf" hidden>
+    </main>
+
+    <script src="../../lib/pdf-lib.min.js"></script>
+    <script src="../../lib/pdf-processor.js" type="module"></script>
+    <script src="../../utils/storage.js" type="module"></script>
+    <script src="../../utils/notifications.js" type="module"></script>
+    <script src="compress.js" type="module"></script>
+</body>
+
+</html>
