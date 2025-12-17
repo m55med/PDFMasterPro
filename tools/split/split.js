@@ -1,12 +1,12 @@
 import { pdfProcessor } from '../../lib/pdf-processor.js';
 import { notifications } from '../../utils/notifications.js';
+import { i18n } from '../../utils/i18n.js';
 
 // Set worker src
 const pdfjsLib = window.pdfjsLib;
 pdfjsLib.GlobalWorkerOptions.workerSrc = '../../lib/pdf.worker.min.js';
 
 let currentFile = null;
-let splitMode = 'ranges';
 let pdfDoc = null;
 let excludedPages = new Set(); // 1-based page numbers
 
@@ -21,77 +21,41 @@ fileInput.addEventListener('change', (e) => {
     if (e.target.files.length > 0) handleFile(e.target.files[0]);
 });
 
-// Option cards
-document.querySelectorAll('.option-card').forEach(card => {
-    card.addEventListener('click', () => {
-        document.querySelectorAll('.option-card').forEach(c => c.classList.remove('active'));
-        card.classList.add('active');
-        splitMode = card.dataset.mode;
-
-        const inputArea = document.getElementById('inputArea');
-        const input = document.getElementById('rangeInput');
-
-        if (splitMode === 'all') {
-            inputArea.classList.add('hidden');
-        } else {
-            inputArea.classList.remove('hidden');
-            input.placeholder = splitMode === 'ranges' ? 'e.g. 1-3, 5-7' : 'e.g. 2, 5, 12';
-        }
-    });
-});
 
 splitBtn.addEventListener('click', async () => {
     if (!currentFile) return;
 
     splitBtn.disabled = true;
-    splitBtn.textContent = 'Processing...';
+    splitBtn.textContent = i18n.t('processing');
 
     try {
-        let result;
-        const input = document.getElementById('rangeInput').value;
+        // Get all page numbers (1-based)
+        const totalPages = pdfDoc.numPages;
+        const allPages = Array.from({length: totalPages}, (_, i) => i + 1);
 
-        // Common logic: we might need to filter out excluded pages
-        // But for specific logic:
+        // Filter out excluded pages
+        const pagesToKeep = allPages.filter(page => !excludedPages.has(page));
 
-        if (splitMode === 'all') {
-            // Split all pages, respecting excluded pages
-            result = await pdfProcessor.splitAllPages(currentFile, { excludedPages });
-
-        } else if (splitMode === 'ranges') {
-            // Parse ranges like "1-3, 5-7" and filter excluded pages
-            const ranges = parseRanges(input);
-            result = await pdfProcessor.splitByRanges(currentFile, ranges, { excludedPages });
-
-        } else {
-            // Extract specific pages
-            let pages = parsePageNumbers(input);
-            // Filter out excluded
-            pages = pages.filter(p => !excludedPages.has(p));
-
-            if (pages.length === 0) throw new Error('No pages selected to extract');
-
-            const bytes = await pdfProcessor.extractPages(currentFile, pages);
-            result = [{ name: `extracted_${currentFile.name}`, data: bytes }];
+        if (pagesToKeep.length === 0) {
+            notifications.warning('No pages left after deletion');
+            return;
         }
 
-        // Determine output
-        if (result.length === 0) {
-            notifications.warning('No pages generated (maybe all were deleted?)');
-        } else if (result.length === 1) {
-            pdfProcessor.downloadFile(result[0].data, result[0].name);
-        } else if (result.length > 1) {
-            // Max 5 for demo
-            result.slice(0, 5).forEach(f => pdfProcessor.downloadFile(f.data, f.name));
-            if (result.length > 5) notifications.info(`Downloaded 5 of ${result.length} files`);
-        }
+        // Create new PDF with remaining pages
+        const bytes = await pdfProcessor.extractPages(currentFile, pagesToKeep);
+        const fileName = excludedPages.size > 0
+            ? `split_${currentFile.name}`
+            : `copy_${currentFile.name}`;
 
-        notifications.success('Split successful');
+        pdfProcessor.downloadFile(bytes, fileName);
+        notifications.success('PDF processed successfully');
+
     } catch (err) {
         console.error(err);
         notifications.error(err.message);
     } finally {
         splitBtn.disabled = false;
-        splitBtn.textContent = 'Split PDF';
+        splitBtn.textContent = i18n.t('split_pdf');
     }
 });
 
@@ -116,8 +80,6 @@ async function handleFile(file) {
 
     document.getElementById('resetBtn').addEventListener('click', () => location.reload());
 
-    document.getElementById('optionsPanel').classList.remove('hidden');
-    document.getElementById('inputArea').classList.remove('hidden');
     document.getElementById('splitBtn').disabled = false;
 
     // Render Preview
@@ -136,17 +98,26 @@ async function renderPreview(file) {
 
         container.innerHTML = ''; // Clear loading
 
-        // Limit preview for performance if too large
-        const limit = Math.min(total, 50);
+        // Limit preview for performance if too large (reduced due to larger thumbnails)
+        const limit = Math.min(total, 20);
 
         for (let i = 1; i <= limit; i++) {
             const page = await pdfDoc.getPage(i);
-            const viewport = page.getViewport({ scale: 0.5 }); // Thumbnail size
+            
+            // Calculate A4 ratio scale (210mm x 297mm = 1:1.414)
+            // Larger size for better visibility
+            const targetWidth = 400; // pixels for thumbnail - increased for better visibility
+            const targetHeight = targetWidth * 1.414; // A4 ratio
+            
+            // Get original viewport to calculate scale
+            const originalViewport = page.getViewport({ scale: 1.0 });
+            const scale = targetWidth / originalViewport.width;
+            const viewport = page.getViewport({ scale });
 
             const canvas = document.createElement('canvas');
             canvas.className = 'page-thumb';
-            canvas.width = viewport.width;
-            canvas.height = viewport.height;
+            canvas.width = targetWidth;
+            canvas.height = targetHeight;
 
             // Render
             await page.render({
@@ -158,19 +129,38 @@ async function renderPreview(file) {
             const div = document.createElement('div');
             div.className = 'page-item';
             div.dataset.page = i;
-            div.innerHTML = `
-                <div class="page-number">${i}</div>
-                <button class="delete-page-btn" title="Delete Page">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
+            
+            // Create canvas wrapper
+            const canvasWrapper = document.createElement('div');
+            canvasWrapper.style.position = 'relative';
+            canvasWrapper.appendChild(canvas);
+
+            // Create info section
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'page-info';
+            infoDiv.innerHTML = `
+                <div class="page-title">${i18n.t('page_title', i)}</div>
+                <div class="page-meta">${i18n.t('page_meta_size', Math.round(viewport.width), Math.round(viewport.height))}</div>
             `;
-            div.prepend(canvas); // Add canvas
+
+            // Create delete button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-page-btn';
+            deleteBtn.title = i18n.t('delete_page');
+            deleteBtn.innerHTML = `
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            `;
+
+            // Assemble the page item
+            div.appendChild(canvasWrapper);
+            div.appendChild(infoDiv);
+            div.appendChild(deleteBtn);
 
             // Delete Event
-            div.querySelector('.delete-page-btn').addEventListener('click', (e) => {
+            deleteBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 togglePageDeletion(i, div);
             });
@@ -203,15 +193,3 @@ function togglePageDeletion(pageNum, element) {
     }
 }
 
-// Helper parsers
-function parseRanges(str) {
-    // 1-3, 5-6
-    return str.split(',').map(part => {
-        const [start, end] = part.trim().split('-').map(Number);
-        return { start, end: end || start };
-    });
-}
-
-function parsePageNumbers(str) {
-    return str.split(',').map(n => parseInt(n.trim())).filter(n => !isNaN(n));
-}

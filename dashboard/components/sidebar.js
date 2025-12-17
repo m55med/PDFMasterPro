@@ -26,6 +26,10 @@ export class Sidebar {
     handleNavigation(page, activeItem) {
         const routes = {
             'dashboard': 'index.html',
+            'documents': '../pages/documents/index.html',
+            'recent': '../pages/recent/index.html',
+            'favorites': '../pages/favorites/index.html',
+            'collections': '../pages/collections/index.html',
             'settings': '../pages/settings/index.html',
             'help': '../pages/help/index.html',
             'statistics': '../pages/stats/index.html',
@@ -40,7 +44,7 @@ export class Sidebar {
         } else if (routes[page]) {
             window.location.href = routes[page];
         } else {
-            // For incomplete sections like Collections/Favorites which are "features" not pages yet
+            // For incomplete sections
             console.log(`Page ${page} not implemented yet`);
             // Optional: Show "Coming Soon" toast
             if (window.notifications) window.notifications.info('Coming soon!');

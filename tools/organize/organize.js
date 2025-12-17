@@ -106,17 +106,26 @@ class OrganizePDF {
 
         div.innerHTML = `
             <input type="checkbox" class="page-checkbox" data-index="${displayIndex}">
-            <div class="page-number">${displayIndex + 1}</div>
-            <div class="page-preview">
-                <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                    <polyline points="14 2 14 8 20 8"/>
-                </svg>
+            <div class="page-preview" id="preview-${displayIndex}">
+                <canvas class="page-canvas" data-page="${pageIndex}"></canvas>
             </div>
-            <div class="page-actions">
-                <button class="page-action-btn" data-action="duplicate" data-index="${displayIndex}">Duplicate</button>
+            <div class="page-details">
+                <div class="page-title">Page ${displayIndex + 1}</div>
+                <div class="page-meta">Click to select • Drag to reorder</div>
+                <div class="page-actions">
+                    <button class="page-action-btn" data-action="duplicate" data-index="${displayIndex}">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                        </svg>
+                        Duplicate
+                    </button>
+                </div>
             </div>
         `;
+
+        // Render actual PDF page preview
+        this.renderPagePreview(pageIndex, displayIndex);
 
         // Checkbox event
         const checkbox = div.querySelector('.page-checkbox');
@@ -139,6 +148,41 @@ class OrganizePDF {
         });
 
         return div;
+    }
+
+    async renderPagePreview(pageIndex, displayIndex) {
+        if (!this.pdfDoc) return;
+
+        try {
+            const page = await this.pdfDoc.getPage(pageIndex + 1);
+            const canvas = document.querySelector(`#preview-${displayIndex} .page-canvas`);
+            if (!canvas) return;
+
+            // A4 ratio calculation
+            const targetWidth = 140; // pixels for preview
+            const targetHeight = targetWidth * 1.414; // A4 ratio (210/297)
+
+            // Calculate scale to fit target width
+            const viewport = page.getViewport({ scale: 1.0 });
+            const scale = targetWidth / viewport.width;
+            const scaledViewport = page.getViewport({ scale });
+
+            canvas.width = targetWidth;
+            canvas.height = targetHeight;
+
+            const context = canvas.getContext('2d');
+            // Fill white background
+            context.fillStyle = 'white';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            await page.render({
+                canvasContext: context,
+                viewport: scaledViewport
+            }).promise;
+
+        } catch (error) {
+            console.error('Error rendering page preview:', error);
+        }
     }
 
     enableDragAndDrop() {

@@ -19,8 +19,56 @@ export class LangSelector {
 
     init() {
         this.bindElements();
+        this.createOptionsIfNeeded();
         this.setupEventListeners();
         this.updateCurrentLanguage();
+    }
+
+    createOptionsIfNeeded() {
+        // Check if options already exist
+        const existingOptions = this.optionsContainer?.querySelectorAll('.lang-option');
+        if (existingOptions && existingOptions.length > 0) {
+            // #region agent log
+            fetch('http://127.0.0.1:7242/ingest/51bd386d-7890-48ce-b218-932d7198e6e9',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'lang-selector.js:25',message:'Options already exist',data:{optionsCount:existingOptions.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'G'})}).catch(()=>{});
+            // #endregion
+            return;
+        }
+
+        // Create options dynamically
+        if (!this.optionsContainer) {
+            // #region agent log
+            fetch('http://127.0.0.1:7242/ingest/51bd386d-7890-48ce-b218-932d7198e6e9',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'lang-selector.js:32',message:'Options container not found',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'G'})}).catch(()=>{});
+            // #endregion
+            return;
+        }
+
+        // Clear container
+        this.optionsContainer.innerHTML = '';
+
+        // Create options for each language
+        Object.entries(this.langs).forEach(([code, lang]) => {
+            const option = document.createElement('div');
+            option.className = 'lang-option';
+            option.setAttribute('data-lang', code);
+            option.setAttribute('role', 'option');
+            option.setAttribute('tabindex', '0');
+
+            const flag = document.createElement('img');
+            flag.src = lang.flag;
+            flag.alt = lang.name;
+            flag.className = 'lang-flag';
+
+            const text = document.createElement('span');
+            text.textContent = lang.native;
+
+            option.appendChild(flag);
+            option.appendChild(text);
+            this.optionsContainer.appendChild(option);
+        });
+
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/51bd386d-7890-48ce-b218-932d7198e6e9',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'lang-selector.js:55',message:'Options created dynamically',data:{optionsCount:this.optionsContainer.children.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'G'})}).catch(()=>{});
+        // #endregion
     }
 
     bindElements() {
@@ -43,8 +91,16 @@ export class LangSelector {
         
         if (this.optionsContainer) {
             const computed = window.getComputedStyle(this.optionsContainer);
+            const options = this.optionsContainer.querySelectorAll('.lang-option');
+            const optionsArray = Array.from(options).map(opt => ({
+                text: opt.textContent?.trim(),
+                visible: opt.offsetParent !== null,
+                display: window.getComputedStyle(opt).display,
+                opacity: window.getComputedStyle(opt).opacity,
+                height: window.getComputedStyle(opt).height
+            }));
             // #region agent log
-            fetch('http://127.0.0.1:7242/ingest/51bd386d-7890-48ce-b218-932d7198e6e9',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'lang-selector.js:35',message:'Options container CSS check',data:{display:computed.display,position:computed.position,width:computed.width,minWidth:computed.minWidth,backgroundColor:computed.backgroundColor,border:computed.border,borderRadius:computed.borderRadius,boxShadow:computed.boxShadow,padding:computed.padding,className:this.optionsContainer.className},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+            fetch('http://127.0.0.1:7242/ingest/51bd386d-7890-48ce-b218-932d7198e6e9',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'lang-selector.js:35',message:'Options container CSS check',data:{display:computed.display,position:computed.position,width:computed.width,minWidth:computed.minWidth,backgroundColor:computed.backgroundColor,border:computed.border,borderRadius:computed.borderRadius,boxShadow:computed.boxShadow,padding:computed.padding,overflow:computed.overflow,overflowY:computed.overflowY,className:this.optionsContainer.className,optionsCount:options.length,options:optionsArray},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
             // #endregion
         }
         
@@ -218,8 +274,17 @@ export class LangSelector {
 
         // Check CSS after transition (300ms)
         setTimeout(() => {
+            const options = this.optionsContainer?.querySelectorAll('.lang-option');
+            const optionsArray = options ? Array.from(options).map(opt => ({
+                text: opt.textContent?.trim(),
+                visible: opt.offsetParent !== null,
+                display: window.getComputedStyle(opt).display,
+                opacity: window.getComputedStyle(opt).opacity,
+                height: window.getComputedStyle(opt).height,
+                computedVisibility: window.getComputedStyle(opt).visibility
+            })) : [];
             // #region agent log
-            fetch('http://127.0.0.1:7242/ingest/51bd386d-7890-48ce-b218-932d7198e6e9',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'lang-selector.js:157',message:'openDropdown - CSS after transition',data:{computedOpacity:this.optionsContainer?window.getComputedStyle(this.optionsContainer).opacity:'null',computedVisibility:this.optionsContainer?window.getComputedStyle(this.optionsContainer).visibility:'null',hasOpenClass:this.optionsContainer?.classList.contains('open')},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+            fetch('http://127.0.0.1:7242/ingest/51bd386d-7890-48ce-b218-932d7198e6e9',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'lang-selector.js:157',message:'openDropdown - CSS after transition',data:{computedOpacity:this.optionsContainer?window.getComputedStyle(this.optionsContainer).opacity:'null',computedVisibility:this.optionsContainer?window.getComputedStyle(this.optionsContainer).visibility:'null',hasOpenClass:this.optionsContainer?.classList.contains('open'),optionsCount:options?.length||0,options:optionsArray,containerOverflow:this.optionsContainer?window.getComputedStyle(this.optionsContainer).overflow:'null'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
             // #endregion
         }, 300);
 

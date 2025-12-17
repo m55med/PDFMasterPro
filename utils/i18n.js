@@ -43,8 +43,13 @@ export class I18n {
         this.observers.forEach(cb => cb(lang));
     }
 
-    t(key) {
-        return this.translations[this.currentLang][key] || key;
+    t(key, ...args) {
+        let text = this.translations[this.currentLang][key] || key;
+        // Replace placeholders like {0}, {1}, etc.
+        args.forEach((arg, index) => {
+            text = text.replace(new RegExp(`\\{${index}\\}`, 'g'), arg);
+        });
+        return text;
     }
 
     bindLanguageSwitcher() {
