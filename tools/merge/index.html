@@ -11,16 +11,17 @@
 
 <body>
     <header class="tool-header">
-        <a href="../../dashboard/index.html" class="back-btn">
+        <a href="../../dashboard/index.html" class="back-btn" data-i18n="back_dashboard">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
             Back to Dashboard
         </a>
-        <div class="tool-title">Merge PDF</div>
+        <div class="tool-title" data-i18n="tool_merge">Merge PDF</div>
         <div class="tool-actions">
-            <button class="btn btn-secondary" id="addMoreBtn" disabled>Add More Files</button>
-            <button class="btn btn-primary" id="mergeBtn" disabled>Merge PDFs</button>
+            <button class="btn btn-secondary" id="addMoreBtn" data-i18n="add_more_files" disabled>Add More
+                Files</button>
+            <button class="btn btn-primary" id="mergeBtn" data-i18n="merge_pdfs" disabled>Merge PDFs</button>
         </div>
     </header>
 
@@ -33,8 +34,8 @@
                     <line x1="12" y1="3" x2="12" y2="15" />
                 </svg>
             </div>
-            <h3>Select PDF files to merge</h3>
-            <p>Drag and drop files here or click to browse</p>
+            <h3 data-i18n="select_pdf_merge">Select PDF files to merge</h3>
+            <p data-i18n="drag_drop_browse">Drag and drop files here or click to browse</p>
         </div>
 
         <div class="file-list" id="fileList"></div>

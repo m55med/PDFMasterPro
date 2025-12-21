@@ -1,12 +1,17 @@
 // PDF to JPG Logic
 
 import { notifications } from '../../../utils/notifications.js';
-import { pdfProcessor } from '../../../lib/pdf-processor.js'; // Just for utility
+import { pdfProcessor } from '../../../lib/pdf-processor.js';
+import { storage } from '../../../utils/storage.js';
+import { i18n } from '../../../utils/i18n.js';
 
 // Set worker src
 pdfjsLib.GlobalWorkerOptions.workerSrc = '../../lib/pdf.worker.min.js';
 
 let currentFile = null;
+
+// Initialize i18n
+i18n.init();
 
 document.getElementById('uploadArea').addEventListener('click', () => document.getElementById('fileInput').click());
 
@@ -43,7 +48,7 @@ async function convert() {
   const btn = document.getElementById('convertBtn');
   btn.disabled = true;
   document.getElementById('statusArea').classList.remove('hidden');
-  document.getElementById('statusText').textContent = 'Loading PDF...';
+  document.getElementById('statusText').textContent = i18n.t('processing');
 
   try {
     const arrayBuffer = await pdfProcessor.fileToArrayBuffer(currentFile);
@@ -86,8 +91,16 @@ async function convert() {
     // OR: Just display them to user.
 
     displayResults(results);
-    document.getElementById('statusText').textContent = 'Done!';
-    notifications.success(`Converted ${results.length} pages`);
+    document.getElementById('statusText').textContent = i18n.t('success');
+    notifications.success(i18n.t('success'));
+
+    // Save one combined summary or just track that tool was used
+    await storage.addToHistory({
+      fileName: `images_from_${currentFile.name}`,
+      tool: 'pdf-to-jpg',
+      size: currentFile.size,
+      status: 'success'
+    });
 
   } catch (err) {
     console.error(err);

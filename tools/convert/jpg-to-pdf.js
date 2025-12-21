@@ -1,11 +1,14 @@
 // JPG to PDF Logic
 
 import { pdfProcessor } from '../../../lib/pdf-processor.js';
+import { storage } from '../../../utils/storage.js';
 import { notifications } from '../../../utils/notifications.js';
+import { i18n } from '../../../utils/i18n.js';
 
 class ImageToPDF {
     constructor() {
         this.files = [];
+        i18n.init();
         this.bindEvents();
     }
 
@@ -81,7 +84,8 @@ class ImageToPDF {
 
     async convert() {
         const btn = document.getElementById('convertBtn');
-        btn.textContent = 'Converting...';
+        const originalText = btn.textContent;
+        btn.textContent = i18n.t('processing');
         btn.disabled = true;
 
         try {
@@ -149,14 +153,30 @@ class ImageToPDF {
             }
 
             const pdfBytes = await doc.save();
-            pdfProcessor.downloadFile(pdfBytes, 'images.pdf');
-            notifications.success('PDF created successfully');
+            const filename = 'images_to_pdf.pdf';
+
+            // Download
+            pdfProcessor.downloadFile(pdfBytes, filename);
+
+            // Save to storage
+            const resultId = await storage.saveFile(new File([pdfBytes], filename, { type: 'application/pdf' }));
+
+            // Add to history
+            await storage.addToHistory({
+                id: resultId,
+                fileName: filename,
+                tool: 'jpg-to-pdf',
+                size: pdfBytes.byteLength,
+                status: 'success'
+            });
+
+            notifications.success(i18n.t('success'));
 
         } catch (error) {
             console.error(error);
-            notifications.error('Conversion failed: ' + error.message);
+            notifications.error(i18n.t('error') + ': ' + error.message);
         } finally {
-            btn.textContent = 'Convert to PDF';
+            btn.textContent = originalText;
             btn.disabled = false;
         }
     }

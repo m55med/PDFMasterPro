@@ -1,4 +1,5 @@
 import { pdfProcessor } from '../../lib/pdf-processor.js';
+import { storage } from '../../utils/storage.js';
 import { notifications } from '../../utils/notifications.js';
 import { i18n } from '../../utils/i18n.js';
 
@@ -31,7 +32,7 @@ splitBtn.addEventListener('click', async () => {
     try {
         // Get all page numbers (1-based)
         const totalPages = pdfDoc.numPages;
-        const allPages = Array.from({length: totalPages}, (_, i) => i + 1);
+        const allPages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
         // Filter out excluded pages
         const pagesToKeep = allPages.filter(page => !excludedPages.has(page));
@@ -46,6 +47,18 @@ splitBtn.addEventListener('click', async () => {
         const fileName = excludedPages.size > 0
             ? `split_${currentFile.name}`
             : `copy_${currentFile.name}`;
+
+        // Save to storage so it shows up in "My Documents"
+        const resultId = await storage.saveFile(new File([bytes], fileName, { type: 'application/pdf' }));
+
+        // Add to history
+        await storage.addToHistory({
+            id: resultId,
+            fileName: fileName,
+            tool: 'split-pdf',
+            size: bytes.byteLength,
+            status: 'success'
+        });
 
         pdfProcessor.downloadFile(bytes, fileName);
         notifications.success('PDF processed successfully');
@@ -98,17 +111,17 @@ async function renderPreview(file) {
 
         container.innerHTML = ''; // Clear loading
 
-        // Limit preview for performance if too large (reduced due to larger thumbnails)
-        const limit = Math.min(total, 20);
+        // Show all pages (limit removed as requested)
+        const limit = total;
 
         for (let i = 1; i <= limit; i++) {
             const page = await pdfDoc.getPage(i);
-            
+
             // Calculate A4 ratio scale (210mm x 297mm = 1:1.414)
             // Larger size for better visibility
             const targetWidth = 400; // pixels for thumbnail - increased for better visibility
             const targetHeight = targetWidth * 1.414; // A4 ratio
-            
+
             // Get original viewport to calculate scale
             const originalViewport = page.getViewport({ scale: 1.0 });
             const scale = targetWidth / originalViewport.width;
@@ -129,7 +142,7 @@ async function renderPreview(file) {
             const div = document.createElement('div');
             div.className = 'page-item';
             div.dataset.page = i;
-            
+
             // Create canvas wrapper
             const canvasWrapper = document.createElement('div');
             canvasWrapper.style.position = 'relative';
@@ -168,14 +181,8 @@ async function renderPreview(file) {
             container.appendChild(div);
         }
 
-        if (total > limit) {
-            const msg = document.createElement('p');
-            msg.style.gridColumn = '1/-1';
-            msg.style.textAlign = 'center';
-            msg.style.color = '#64748B';
-            msg.textContent = `Showing first ${limit} pages only`;
-            container.appendChild(msg);
-        }
+        // No limit message needed if showing all pages
+
 
     } catch (err) {
         console.error('Preview error:', err);

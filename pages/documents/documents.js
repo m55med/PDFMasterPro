@@ -8,7 +8,7 @@ class DocumentsPage {
         this.filteredDocs = [];
         this.viewMode = 'grid'; // grid or list
         this.sortBy = 'date'; // date, name, size
-        
+
         this.langSelector = new LangSelector();
     }
 
@@ -44,17 +44,27 @@ class DocumentsPage {
 
     async loadDocuments() {
         try {
-            const history = await storage.getHistory();
-            
-            // Convert history to document format
-            this.documents = history.map(item => ({
-                id: item.id,
-                name: item.fileName,
-                date: item.timestamp,
-                size: item.fileSize || 0,
-                tool: item.tool,
-                preview: null // Will be generated if needed
-            }));
+            // Load both files and history for a complete view
+            const [files, history] = await Promise.all([
+                storage.getAllFiles(),
+                storage.getHistory()
+            ]);
+
+            // Map history for quick lookup by ID
+            const historyMap = new Map();
+            history.forEach(h => historyMap.set(h.id, h));
+
+            this.documents = files.map(file => {
+                const historyItem = historyMap.get(file.id);
+                return {
+                    id: file.id,
+                    name: file.name,
+                    date: file.date || (historyItem ? historyItem.date : new Date().toISOString()),
+                    size: file.size || (historyItem ? historyItem.size : 0),
+                    tool: historyItem ? historyItem.tool : 'upload',
+                    preview: null
+                };
+            });
 
             this.filteredDocs = [...this.documents];
             this.sortDocuments();
@@ -96,11 +106,11 @@ class DocumentsPage {
 
     searchDocuments(query) {
         const lowerQuery = query.toLowerCase();
-        
+
         if (!query) {
             this.filteredDocs = [...this.documents];
         } else {
-            this.filteredDocs = this.documents.filter(doc => 
+            this.filteredDocs = this.documents.filter(doc =>
                 doc.name.toLowerCase().includes(lowerQuery)
             );
         }
@@ -142,7 +152,7 @@ class DocumentsPage {
         // Add event listeners to cards
         grid.querySelectorAll('.document-card').forEach(card => {
             const docId = card.dataset.id;
-            
+
             card.querySelector('.doc-action-download')?.addEventListener('click', (e) => {
                 e.stopPropagation();
                 this.downloadDocument(docId);
@@ -205,7 +215,7 @@ class DocumentsPage {
     toggleView() {
         this.viewMode = this.viewMode === 'grid' ? 'list' : 'grid';
         const grid = document.getElementById('documentsGrid');
-        
+
         if (this.viewMode === 'list') {
             grid.style.gridTemplateColumns = '1fr';
         } else {

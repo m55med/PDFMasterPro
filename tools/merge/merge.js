@@ -3,6 +3,7 @@
 import { pdfProcessor } from '../../lib/pdf-processor.js';
 import { storage } from '../../utils/storage.js';
 import { notifications } from '../../utils/notifications.js';
+import { i18n } from '../../utils/i18n.js';
 
 class MergeTool {
     constructor() {
@@ -11,6 +12,7 @@ class MergeTool {
     }
 
     init() {
+        i18n.init();
         this.bindEvents();
         this.initSortable();
     }
@@ -42,6 +44,9 @@ class MergeTool {
             uploadArea.classList.remove('hover');
             this.handleFiles(e.dataTransfer.files);
         });
+
+        // Merge action
+        mergeBtn.addEventListener('click', () => this.mergeFiles());
 
         // Remove file action
         document.getElementById('fileList').addEventListener('click', (e) => {
@@ -131,7 +136,7 @@ class MergeTool {
 
         const btn = document.getElementById('mergeBtn');
         const originalText = btn.textContent;
-        btn.textContent = 'Merging...';
+        btn.textContent = i18n.t('processing');
         btn.disabled = true;
 
         try {
@@ -142,19 +147,23 @@ class MergeTool {
             // Download
             pdfProcessor.downloadFile(mergedBytes, filename);
 
+            // Save to storage so it shows up in "My Documents"
+            const resultId = await storage.saveFile(new File([mergedBytes], filename, { type: 'application/pdf' }));
+
             // Save to history
             await storage.addToHistory({
+                id: resultId,
                 fileName: filename,
                 tool: 'merge-pdf',
-                size: this.formatSize(mergedBytes.byteLength),
+                size: mergedBytes.byteLength,
                 status: 'success'
             });
 
-            notifications.success('PDFs merged successfully!');
+            notifications.success(i18n.t('success'));
 
         } catch (error) {
             console.error('Merge failed:', error);
-            notifications.error('Failed to merge PDFs: ' + error.message);
+            notifications.error(i18n.t('error') + ': ' + error.message);
         } finally {
             btn.textContent = originalText;
             btn.disabled = false;

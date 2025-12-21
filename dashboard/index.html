@@ -130,10 +130,12 @@
                     </button>
                     <div class="lang-selector-wrapper">
                         <button class="lang-select" id="languageSelect" aria-haspopup="listbox" aria-expanded="false">
-                            <img src="https://flagcdn.com/w20/gb.png" alt="English" class="lang-flag" id="currentLangFlag">
+                            <img src="https://flagcdn.com/w20/gb.png" alt="English" class="lang-flag"
+                                id="currentLangFlag">
                             <span id="currentLangText">English</span>
-                            <svg class="lang-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M6 9l6 6 6-6"/>
+                            <svg class="lang-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M6 9l6 6 6-6" />
                             </svg>
                         </button>
                         <div class="lang-options" role="listbox" id="languageOptions">
@@ -209,13 +211,17 @@
                     <!-- Tools Section -->
                     <section class="tools-section">
                         <div class="section-header">
-                            <h3>PDF Tools</h3>
+                            <h3 data-i18n="tools_header">PDF Tools</h3>
                             <div class="tool-filters">
-                                <button class="filter-btn active" data-category="all">All</button>
-                                <button class="filter-btn" data-category="create">Create & Convert</button>
-                                <button class="filter-btn" data-category="edit">Edit & Organize</button>
-                                <button class="filter-btn" data-category="security">Security</button>
-                                <button class="filter-btn" data-category="advanced">Advanced</button>
+                                <button class="filter-btn active" data-category="all" data-i18n="tools_all">All</button>
+                                <button class="filter-btn" data-category="create" data-i18n="tools_create">Create &
+                                    Convert</button>
+                                <button class="filter-btn" data-category="edit" data-i18n="tools_edit">Edit &
+                                    Organize</button>
+                                <button class="filter-btn" data-category="security"
+                                    data-i18n="tools_security">Security</button>
+                                <button class="filter-btn" data-category="advanced"
+                                    data-i18n="tools_advanced">Advanced</button>
                             </div>
                         </div>
 
@@ -231,8 +237,8 @@
                                         <line x1="6.5" y1="14" x2="12" y2="14" />
                                         <line x1="17.5" y1="14" x2="12" y2="14" />
                                     </svg></div>
-                                <h4>Merge PDF</h4>
-                                <p>Combine multiple PDFs into one</p>
+                                <h4 data-i18n="tool_merge">Merge PDF</h4>
+                                <p data-i18n="tool_merge_desc">Combine multiple PDFs into one</p>
                             </div>
 
                             <div class="tool-card" data-tool="split" data-category="create">
@@ -240,8 +246,8 @@
                                         <path d="M16 3h5v5M8 3H3v5M3 16v5h5M21 16v5h-5" />
                                         <line x1="12" y1="3" x2="12" y2="21" />
                                     </svg></div>
-                                <h4>Split PDF</h4>
-                                <p>Separate PDF into multiple files</p>
+                                <h4 data-i18n="tool_split">Split PDF</h4>
+                                <p data-i18n="tool_split_desc">Separate PDF into multiple files</p>
                             </div>
 
                             <div class="tool-card" data-tool="jpg-to-pdf" data-category="create">
@@ -250,8 +256,8 @@
                                         <circle cx="8.5" cy="8.5" r="1.5" />
                                         <polyline points="21 15 16 10 5 21" />
                                     </svg></div>
-                                <h4>JPG to PDF</h4>
-                                <p>Convert images to PDF</p>
+                                <h4 data-i18n="tool_jpg_to_pdf">JPG to PDF</h4>
+                                <p data-i18n="tool_jpg_to_pdf_desc">Convert images to PDF</p>
                             </div>
 
                             <div class="tool-card" data-tool="pdf-to-jpg" data-category="create">
@@ -261,8 +267,8 @@
                                         <circle cx="10" cy="13" r="2" />
                                         <path d="M14 17l-2-2-4 4" />
                                     </svg></div>
-                                <h4>PDF to JPG</h4>
-                                <p>Convert PDF pages to images</p>
+                                <h4 data-i18n="tool_pdf_to_jpg">PDF to JPG</h4>
+                                <p data-i18n="tool_pdf_to_jpg_desc">Convert PDF pages to images</p>
                             </div>
 
                             <div class="tool-card" data-tool="word-to-pdf" data-category="create">
@@ -271,8 +277,8 @@
                                         <polyline points="14 2 14 8 20 8" />
                                         <path d="M9 13h6M9 17h6M9 9h1" />
                                     </svg></div>
-                                <h4>Word to PDF</h4>
-                                <p>Convert Word documents to PDF</p>
+                                <h4 data-i18n="tool_word_to_pdf">Word to PDF</h4>
+                                <p data-i18n="tool_word_to_pdf_desc">Convert Word documents to PDF</p>
                             </div>
 
                             <div class="tool-card" data-tool="html-to-pdf" data-category="create">
@@ -281,8 +287,8 @@
                                         <polyline points="8 6 2 12 8 18" />
                                         <line x1="12" y1="2" x2="12" y2="22" />
                                     </svg></div>
-                                <h4>HTML to PDF</h4>
-                                <p>Convert web pages to PDF</p>
+                                <h4 data-i18n="tool_html_to_pdf">HTML to PDF</h4>
+                                <p data-i18n="tool_html_to_pdf_desc">Convert web pages to PDF</p>
                             </div>
 
                             <!-- Edit & Organize Tools -->
@@ -293,8 +299,8 @@
                                         <line x1="14" y1="10" x2="21" y2="3" />
                                         <line x1="3" y1="21" x2="10" y2="14" />
                                     </svg></div>
-                                <h4>Compress PDF</h4>
-                                <p>Reduce PDF file size</p>
+                                <h4 data-i18n="tool_compress">Compress PDF</h4>
+                                <p data-i18n="tool_compress_desc">Reduce PDF file size</p>
                             </div>
 
                             <div class="tool-card" data-tool="rotate" data-category="edit">
@@ -304,18 +310,18 @@
                                         <path
                                             d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
                                     </svg></div>
-                                <h4>Rotate PDF</h4>
-                                <p>Rotate PDF pages</p>
+                                <h4 data-i18n="tool_rotate">Rotate PDF</h4>
+                                <p data-i18n="tool_rotate_desc">Rotate PDF pages</p>
                             </div>
 
-                            <div class="tool-card" data-tool="split" data-category="edit">
+                            <div class="tool-card" data-tool="remove-pages" data-category="edit">
                                 <div class="tool-icon red"><svg viewBox="0 0 24 24">
                                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                                         <polyline points="14 2 14 8 20 8" />
                                         <line x1="9" y1="15" x2="15" y2="15" />
                                     </svg></div>
-                                <h4>Remove Pages</h4>
-                                <p>Delete pages from PDF</p>
+                                <h4 data-i18n="tool_remove_pages">Remove Pages</h4>
+                                <p data-i18n="tool_remove_pages_desc">Delete pages from PDF</p>
                             </div>
 
                             <div class="tool-card" data-tool="extract-pages" data-category="edit">
@@ -325,8 +331,8 @@
                                         <path d="M12 18v-6" />
                                         <path d="M9 15l3-3 3 3" />
                                     </svg></div>
-                                <h4>Extract Pages</h4>
-                                <p>Extract specific pages</p>
+                                <h4 data-i18n="tool_extract_pages">Extract Pages</h4>
+                                <p data-i18n="tool_extract_pages_desc">Extract specific pages</p>
                             </div>
 
                             <div class="tool-card" data-tool="organize" data-category="edit">
@@ -336,8 +342,8 @@
                                         <line x1="21" y1="14" x2="3" y2="14" />
                                         <line x1="21" y1="18" x2="3" y2="18" />
                                     </svg></div>
-                                <h4>Organize PDF</h4>
-                                <p>Reorder PDF pages</p>
+                                <h4 data-i18n="tool_organize">Organize PDF</h4>
+                                <p data-i18n="tool_organize_desc">Reorder PDF pages</p>
                             </div>
 
                             <div class="tool-card" data-tool="crop" data-category="edit">
@@ -345,8 +351,8 @@
                                         <path d="M6.13 1L6 16a2 2 0 0 0 2 2h15" />
                                         <path d="M1 6.13L16 6a2 2 0 0 1 2 2v15" />
                                     </svg></div>
-                                <h4>Crop PDF</h4>
-                                <p>Crop PDF pages</p>
+                                <h4 data-i18n="tool_crop">Crop PDF</h4>
+                                <p data-i18n="tool_crop_desc">Crop PDF pages</p>
                             </div>
 
                             <!-- Security Tools -->
@@ -355,8 +361,8 @@
                                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                                         <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                                     </svg></div>
-                                <h4>Protect PDF</h4>
-                                <p>Password protect your PDF</p>
+                                <h4 data-i18n="tool_protect">Protect PDF</h4>
+                                <p data-i18n="tool_protect_desc">Password protect your PDF</p>
                             </div>
 
                             <div class="tool-card" data-tool="unlock" data-category="security">
@@ -364,8 +370,8 @@
                                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                                         <path d="M7 11V7a5 5 0 0 1 9.9-1" />
                                     </svg></div>
-                                <h4>Unlock PDF</h4>
-                                <p>Remove PDF password</p>
+                                <h4 data-i18n="tool_unlock">Unlock PDF</h4>
+                                <p data-i18n="tool_unlock_desc">Remove PDF password</p>
                             </div>
 
                             <div class="tool-card" data-tool="sign" data-category="security">
@@ -375,8 +381,8 @@
                                         <path d="M2 2l7.586 7.586" />
                                         <circle cx="11" cy="11" r="2" />
                                     </svg></div>
-                                <h4>Sign PDF</h4>
-                                <p>Add digital signature</p>
+                                <h4 data-i18n="tool_sign">Sign PDF</h4>
+                                <p data-i18n="tool_sign_desc">Add digital signature</p>
                             </div>
 
                             <div class="tool-card" data-tool="redact" data-category="security">
@@ -385,8 +391,8 @@
                                             d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
                                         <line x1="1" y1="1" x2="23" y2="23" />
                                     </svg></div>
-                                <h4>Redact PDF</h4>
-                                <p>Permanently hide sensitive info</p>
+                                <h4 data-i18n="tool_redact">Redact PDF</h4>
+                                <p data-i18n="tool_redact_desc">Permanently hide sensitive info</p>
                             </div>
 
                             <!-- Advanced Tools -->
@@ -396,8 +402,8 @@
                                         <line x1="9" y1="20" x2="15" y2="20" />
                                         <line x1="12" y1="4" x2="12" y2="20" />
                                     </svg></div>
-                                <h4>OCR PDF</h4>
-                                <p>Make scanned PDFs searchable</p>
+                                <h4 data-i18n="tool_ocr">OCR PDF</h4>
+                                <p data-i18n="tool_ocr_desc">Make scanned PDFs searchable</p>
                             </div>
 
                             <div class="tool-card" data-tool="page-numbers" data-category="advanced">
@@ -406,8 +412,8 @@
                                         <polyline points="14 2 14 8 20 8" />
                                         <path d="M10 12h4v6h-4z" />
                                     </svg></div>
-                                <h4>Page Numbers</h4>
-                                <p>Add page numbers to PDF</p>
+                                <h4 data-i18n="tool_page_numbers">Page Numbers</h4>
+                                <p data-i18n="tool_page_numbers_desc">Add page numbers to PDF</p>
                             </div>
 
                             <div class="tool-card" data-tool="watermark" data-category="advanced">
@@ -416,8 +422,8 @@
                                         <path d="M2 17l10 5 10-5" />
                                         <path d="M2 12l10 5 10-5" />
                                     </svg></div>
-                                <h4>Watermark</h4>
-                                <p>Add text or image watermark</p>
+                                <h4 data-i18n="tool_watermark">Watermark</h4>
+                                <p data-i18n="tool_watermark_desc">Add text or image watermark</p>
                             </div>
 
                             <div class="tool-card" data-tool="compare" data-category="advanced">
@@ -425,8 +431,8 @@
                                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
                                         <line x1="12" y1="3" x2="12" y2="21" />
                                     </svg></div>
-                                <h4>Compare PDF</h4>
-                                <p>Compare two PDF files</p>
+                                <h4 data-i18n="tool_compare">Compare PDF</h4>
+                                <p data-i18n="tool_compare_desc">Compare two PDF files</p>
                             </div>
 
                             <div class="tool-card" data-tool="repair" data-category="advanced">
@@ -434,8 +440,8 @@
                                         <path
                                             d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
                                     </svg></div>
-                                <h4>Repair PDF</h4>
-                                <p>Fix corrupted PDF files</p>
+                                <h4 data-i18n="tool_repair">Repair PDF</h4>
+                                <p data-i18n="tool_repair_desc">Fix corrupted PDF files</p>
                             </div>
                         </div>
                     </section>
@@ -443,14 +449,14 @@
                     <!-- History Section -->
                     <section class="history-section">
                         <div class="section-header">
-                            <h3>Recent Activity</h3>
+                            <h3 data-i18n="recent_activity">Recent Activity</h3>
                             <div class="history-controls">
                                 <select id="historySort" class="sort-select">
-                                    <option value="recent">Most Recent</option>
-                                    <option value="name">Name</option>
-                                    <option value="size">Size</option>
+                                    <option value="recent" data-i18n="sort_recent">Most Recent</option>
+                                    <option value="name" data-i18n="sort_name">Name</option>
+                                    <option value="size" data-i18n="sort_size">Size</option>
                                 </select>
-                                <button class="btn-text" id="clearHistory">Clear All</button>
+                                <button class="btn-text" id="clearHistory" data-i18n="clear_all">Clear All</button>
                             </div>
                         </div>
 
@@ -490,7 +496,7 @@
                 <!-- Right Sidebar -->
                 <aside class="right-sidebar" id="rightSidebar">
                     <div class="stats-card">
-                        <h4 data-i18n="statistics">Files Processed</h4>
+                        <h4 data-i18n="stats_files_processed">Files Processed</h4>
                         <div class="stats-circle">
                             <svg viewBox="0 0 36 36" class="circular-chart">
                                 <path class="circle-bg"
@@ -507,7 +513,7 @@
                     </div>
 
                     <div class="recommended-tools">
-                        <h4 data-i18n="tools_all">Recommended Tools</h4>
+                        <h4 data-i18n="recommended_tools">Recommended Tools</h4>
                         <ul class="recommended-list" id="recommendedList">
                             <li data-tool="merge"><span class="rec-icon blue">📄</span> <span
                                     data-i18n="tool_merge">Merge PDF</span></li>
@@ -516,7 +522,7 @@
                             <li data-tool="split"><span class="rec-icon purple">✂️</span> <span
                                     data-i18n="tool_split">Split PDF</span></li>
                             <li data-tool="pdf-to-jpg"><span class="rec-icon cyan">🖼️</span> <span
-                                    data-i18n="tool_convert_pdf">PDF to JPG</span></li>
+                                    data-i18n="tool_pdf_to_jpg">PDF to JPG</span></li>
                             <li data-tool="protect"><span class="rec-icon red">🔒</span> <span
                                     data-i18n="tool_protect">Protect PDF</span></li>
                         </ul>
@@ -533,7 +539,7 @@
                     </div>
 
                     <div class="quick-tips">
-                        <h4 data-i18n="quick_tip">💡 Quick Tip</h4>
+                        <h4>💡 <span data-i18n="quick_tip">Quick Tip</span></h4>
                         <p id="tipText" data-i18n="quick_tip_text">Drag and drop multiple files at once to batch process
                             them!</p>
                     </div>

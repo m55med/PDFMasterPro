@@ -1,6 +1,7 @@
 // Compress Tool Logic
 
 import { pdfProcessor } from '../../lib/pdf-processor.js';
+import { storage } from '../../utils/storage.js';
 import { notifications } from '../../utils/notifications.js';
 
 let currentFile = null;
@@ -53,6 +54,18 @@ document.getElementById('compressBtn').addEventListener('click', async () => {
         // Download
         const filename = `compressed_${currentFile.name}`;
         pdfProcessor.downloadFile(compressedBytes, filename);
+
+        // Save to storage so it shows up in "My Documents"
+        const resultId = await storage.saveFile(new File([compressedBytes], filename, { type: 'application/pdf' }));
+
+        // Add to history
+        await storage.addToHistory({
+            id: resultId,
+            fileName: filename,
+            tool: 'compress-pdf',
+            size: compressedBytes.byteLength,
+            status: 'success'
+        });
 
         notifications.success(`Compressed successfully! Saved ${ratio}%`);
 

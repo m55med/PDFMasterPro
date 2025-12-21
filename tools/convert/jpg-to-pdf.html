@@ -76,16 +76,16 @@
 
 <body>
     <header class="tool-header">
-        <a href="../../../dashboard/index.html" class="back-btn">
+        <a href="../../dashboard/index.html" class="back-btn" data-i18n="back_dashboard">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
-            Back
+            Back to Dashboard
         </a>
-        <div class="tool-title">JPG to PDF</div>
+        <div class="tool-title" data-i18n="tool_jpg_to_pdf">JPG to PDF</div>
         <div class="tool-actions">
-            <button class="btn btn-secondary" id="addMoreBtn" disabled>Add Images</button>
-            <button class="btn btn-primary" id="convertBtn" disabled>Convert to PDF</button>
+            <button class="btn btn-secondary" id="addMoreBtn" data-i18n="add_more_files" disabled>Add Images</button>
+            <button class="btn btn-primary" id="convertBtn" data-i18n="tool_jpg_to_pdf" disabled>Convert to PDF</button>
         </div>
     </header>
 
@@ -98,8 +98,8 @@
                     <polyline points="21 15 16 10 5 21" />
                 </svg>
             </div>
-            <h3>Select Images</h3>
-            <p>Supports JPG, PNG</p>
+            <h3 data-i18n="drag_drop">Select Images</h3>
+            <p data-i18n="upload_hint">Supports JPG, PNG</p>
         </div>
 
         <div class="image-grid hidden" id="imageGrid"></div>

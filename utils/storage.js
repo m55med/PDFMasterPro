@@ -134,6 +134,30 @@ class PDFStorage {
         });
     }
 
+    // Get all files from storage
+    async getAllFiles() {
+        await this.ensureDB();
+
+        return new Promise((resolve, reject) => {
+            const transaction = this.db.transaction([STORES.FILES], 'readonly');
+            const store = transaction.objectStore(STORES.FILES);
+            const request = store.getAll();
+
+            request.onsuccess = () => {
+                const results = request.result || [];
+                resolve(results.map(data => ({
+                    id: data.id,
+                    name: data.name,
+                    size: data.size,
+                    type: data.type,
+                    date: data.timestamp || data.date,
+                    expiresAt: data.expiresAt
+                })));
+            };
+            request.onerror = () => reject(request.error);
+        });
+    }
+
     // Clean expired files
     async cleanExpiredFiles() {
         await this.ensureDB();
@@ -156,6 +180,32 @@ class PDFStorage {
                     cursor.continue();
                 } else {
                     resolve(deletedCount);
+                }
+            };
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    // Get result file/blob for a history item
+    async getResult(id) {
+        await this.ensureDB();
+
+        return new Promise((resolve, reject) => {
+            const transaction = this.db.transaction([STORES.FILES], 'readonly');
+            const store = transaction.objectStore(STORES.FILES);
+            const request = store.get(id);
+
+            request.onsuccess = () => {
+                const data = request.result;
+                if (data) {
+                    const blob = new Blob([data.data], { type: data.type || 'application/pdf' });
+                    resolve({
+                        blob,
+                        fileName: data.name,
+                        type: data.type
+                    });
+                } else {
+                    resolve(null);
                 }
             };
             request.onerror = () => reject(request.error);
@@ -382,7 +432,19 @@ class PDFStorage {
 
             request.onsuccess = () => {
                 const files = request.result || [];
-                const totalSize = files.reduce((sum, file) => sum + (file.size || 0), 0);
+                // Handle cases where file.size might be missing or stored as string
+                const totalSize = files.reduce((sum, file) => {
+                    let size = file.size;
+                    if (typeof size === 'string') {
+                        // Parse "X.Y MB" style strings if they exist
+                        const num = parseFloat(size);
+                        if (size.includes('GB')) size = num * 1024 * 1024 * 1024;
+                        else if (size.includes('MB')) size = num * 1024 * 1024;
+                        else if (size.includes('KB')) size = num * 1024;
+                        else size = num;
+                    }
+                    return sum + (size || 0);
+                }, 0);
                 resolve(totalSize);
             };
             request.onerror = () => reject(request.error);
