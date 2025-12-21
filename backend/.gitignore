@@ -1,0 +1,23 @@
+# Backend
+node_modules/
+.firebase/
+lib/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+.runtimeconfig.json
+
+# Environment
+.env
+.env.local
+
+# Editor
+.vscode/
+.idea/
+
+# System
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*

@@ -1,0 +1,127 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ============================================
+    // Helper Functions
+    // ============================================
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    function isPro() {
+      let user = get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+      return user.subscription.status == 'active' && user.subscription.plan != 'free';
+    }
+    
+    function isValidUser() {
+      return request.resource.data.keys().hasAll(['id', 'email', 'subscription', 'usage', 'preferences']);
+    }
+    
+    // ============================================
+    // Users Collection
+    // ============================================
+    
+    match /users/{userId} {
+      // Users can read their own data
+      allow read: if isAuthenticated() && isOwner(userId);
+      
+      // Users can create their own document
+      allow create: if isAuthenticated() && isOwner(userId) && isValidUser();
+      
+      // Users can update their own data (except subscription)
+      allow update: if isAuthenticated() && isOwner(userId) &&
+        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['subscription']);
+      
+      // Never allow delete (handled by server)
+      allow delete: if false;
+    }
+    
+    // ============================================
+    // Files Collection
+    // ============================================
+    
+    match /files/{fileId} {
+      // Users can read their own files
+      allow read: if isAuthenticated() && 
+        resource.data.userId == request.auth.uid;
+      
+      // Users can create files
+      allow create: if isAuthenticated() && 
+        request.resource.data.userId == request.auth.uid &&
+        request.resource.data.keys().hasAll(['userId', 'name', 'path', 'size', 'type', 'createdAt']);
+      
+      // Users can update their own files
+      allow update: if isAuthenticated() && 
+        resource.data.userId == request.auth.uid;
+      
+      // Users can delete their own files
+      allow delete: if isAuthenticated() && 
+        resource.data.userId == request.auth.uid;
+    }
+    
+    // ============================================
+    // Processing Jobs Collection
+    // ============================================
+    
+    match /processing/{jobId} {
+      // Users can read their own jobs
+      allow read: if isAuthenticated() && 
+        resource.data.userId == request.auth.uid;
+      
+      // Users can create jobs
+      allow create: if isAuthenticated() && 
+        request.resource.data.userId == request.auth.uid;
+      
+      // Only server can update jobs
+      allow update: if false;
+      
+      // Never allow delete
+      allow delete: if false;
+    }
+    
+    // ============================================
+    // Analytics Collection
+    // ============================================
+    
+    match /analytics/{eventId} {
+      // No read access (admin only via console)
+      allow read: if false;
+      
+      // Authenticated users can log events
+      allow create: if isAuthenticated();
+      
+      // No updates or deletes
+      allow update, delete: if false;
+    }
+    
+    // ============================================
+    // Analytics Daily Aggregates (Admin only)
+    // ============================================
+    
+    match /analytics_daily/{date} {
+      allow read, write: if false; // Admin only
+    }
+    
+    // ============================================
+    // Feedback Collection
+    // ============================================
+    
+    match /feedback/{feedbackId} {
+      // No read access (admin only)
+      allow read: if false;
+      
+      // Authenticated users can submit feedback
+      allow create: if isAuthenticated() &&
+        request.resource.data.userId == request.auth.uid;
+      
+      // No updates or deletes
+      allow update, delete: if false;
+    }
+  }
+}
