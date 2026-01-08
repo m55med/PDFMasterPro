@@ -85,15 +85,15 @@
 
 <body>
     <header class="tool-header">
-        <a href="../../dashboard/index.html" class="back-btn">
+        <a href="../../dashboard/index.html" class="back-btn" data-i18n="btn_back">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
             Back
         </a>
-        <div class="tool-title">Compress PDF</div>
+        <div class="tool-title" data-i18n="tool_compress">Compress PDF</div>
         <div class="tool-actions">
-            <button class="btn btn-primary" id="compressBtn" disabled>Compress PDF</button>
+            <button class="btn btn-primary" id="compressBtn" data-i18n="btn_compress" disabled>Compress PDF</button>
         </div>
     </header>
 
@@ -107,8 +107,8 @@
                     <line x1="3" y1="21" x2="10" y2="14" />
                 </svg>
             </div>
-            <h3>Select PDF to compress</h3>
-            <p>Reduce file size while maintaining quality</p>
+            <h3 data-i18n="select_pdf_compress">Select PDF to compress</h3>
+            <p data-i18n="desc_compress">Reduce file size while maintaining quality</p>
         </div>
 
         <div class="file-list hidden" id="fileInfo"></div>
@@ -116,36 +116,36 @@
         <div class="compression-levels hidden" id="levelSelector">
             <div class="level-card" data-level="low">
                 <div class="level-icon">⚡</div>
-                <h4>Low Compression</h4>
+                <h4 data-i18n="compress_low">Low Compression</h4>
                 <div class="quality-bar">
                     <div class="quality-fill"></div>
                 </div>
-                <p style="font-size: 12px; color: #64748B">High quality, less compression</p>
+                <p style="font-size: 12px; color: #64748B" data-i18n="compress_low_desc">High quality, less compression</p>
             </div>
 
             <div class="level-card active" data-level="medium">
                 <div class="level-icon">🚀</div>
-                <h4>Medium Compression</h4>
+                <h4 data-i18n="compress_medium">Medium Compression</h4>
                 <div class="quality-bar">
                     <div class="quality-fill"></div>
                 </div>
-                <p style="font-size: 12px; color: #64748B">Good quality, good compression</p>
+                <p style="font-size: 12px; color: #64748B" data-i18n="compress_medium_desc">Good quality, good compression</p>
             </div>
 
             <div class="level-card" data-level="high">
                 <div class="level-icon">📦</div>
-                <h4>High Compression</h4>
+                <h4 data-i18n="compress_high">High Compression</h4>
                 <div class="quality-bar">
                     <div class="quality-fill"></div>
                 </div>
-                <p style="font-size: 12px; color: #64748B">Low quality, max compression</p>
+                <p style="font-size: 12px; color: #64748B" data-i18n="compress_high_desc">Low quality, max compression</p>
             </div>
         </div>
 
         <div class="result-box" id="resultBox">
-            <h4>Compression Complete!</h4>
-            <p>Original: <strong id="origSize"></strong> → Compressed: <strong id="newSize"></strong></p>
-            <p style="color: #166534; margin-top: 4px;">Saved <span id="savedPercent"></span>%</p>
+            <h4 data-i18n="compress_complete">Compression Complete!</h4>
+            <p><span data-i18n="compress_original">Original</span>: <strong id="origSize"></strong> → <span data-i18n="compress_compressed">Compressed</span>: <strong id="newSize"></strong></p>
+            <p style="color: #166534; margin-top: 4px;"><span data-i18n="compress_saved">Saved</span> <span id="savedPercent"></span>%</p>
         </div>
 
         <input type="file" id="fileInput" accept=".pdf" hidden>

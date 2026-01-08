@@ -44,9 +44,7 @@ splitBtn.addEventListener('click', async () => {
 
         // Create new PDF with remaining pages
         const bytes = await pdfProcessor.extractPages(currentFile, pagesToKeep);
-        const fileName = excludedPages.size > 0
-            ? `split_${currentFile.name}`
-            : `copy_${currentFile.name}`;
+        const fileName = excludedPages.size > 0 ? `split_${currentFile.name}` : `copy_${currentFile.name}`;
 
         // Save to storage so it shows up in "My Documents"
         const resultId = await storage.saveFile(new File([bytes], fileName, { type: 'application/pdf' }));
@@ -103,6 +101,19 @@ async function renderPreview(file) {
     const container = document.getElementById('previewContainer');
     container.classList.remove('hidden');
     container.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color:#64748B">Loading preview...</p>';
+
+    // Event delegation for delete buttons
+    container.addEventListener('click', (e) => {
+        const deleteBtn = e.target.closest('.delete-page-btn');
+        if (!deleteBtn) return;
+
+        e.stopPropagation();
+        const pageItem = deleteBtn.closest('.page-item');
+        if (!pageItem) return;
+
+        const pageNum = parseInt(pageItem.dataset.page);
+        togglePageDeletion(pageNum, pageItem);
+    });
 
     try {
         const arrayBuffer = await file.arrayBuffer();
@@ -171,13 +182,6 @@ async function renderPreview(file) {
             div.appendChild(canvasWrapper);
             div.appendChild(infoDiv);
             div.appendChild(deleteBtn);
-
-            // Delete Event
-            deleteBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                togglePageDeletion(i, div);
-            });
-
             container.appendChild(div);
         }
 

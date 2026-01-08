@@ -1,8 +1,14 @@
-import { PDFDocument } from '../../lib/pdf-lib.min.js';
+// Organize PDF Tool
+const { PDFDocument } = PDFLib;
+
+// PDF.js worker
+pdfjsLib.GlobalWorkerOptions.workerSrc = '../../lib/pdf.worker.min.js';
 
 class OrganizePDF {
     constructor() {
-        this.pdfDoc = null;
+        this.pdfLibDoc = null;
+        this.pdfJsDoc = null;
+        this.pdfBytes = null;
         this.pages = [];
         this.selectedPages = new Set();
         this.init();
@@ -57,15 +63,15 @@ class OrganizePDF {
         try {
             this.showSection('processingSection');
 
-            const arrayBuffer = await file.arrayBuffer();
-            this.pdfDoc = await PDFDocument.load(arrayBuffer);
+            this.pdfBytes = await file.arrayBuffer();
+            this.pdfLibDoc = await PDFDocument.load(this.pdfBytes);
+            this.pdfJsDoc = await pdfjsLib.getDocument({ data: this.pdfBytes.slice(0) }).promise;
             this.fileName = file.name;
 
-            // Get all pages
-            const pageCount = this.pdfDoc.getPageCount();
+            const pageCount = this.pdfLibDoc.getPageCount();
             this.pages = Array.from({ length: pageCount }, (_, i) => i);
 
-            this.renderPages();
+            await this.renderPages();
             this.showSection('editorSection');
 
         } catch (error) {
@@ -88,16 +94,16 @@ class OrganizePDF {
         grid.innerHTML = '';
         this.selectedPages.clear();
 
-        this.pages.forEach((pageIndex, displayIndex) => {
-            const pageItem = this.createPageItem(pageIndex, displayIndex);
+        for (let displayIndex = 0; displayIndex < this.pages.length; displayIndex++) {
+            const pageIndex = this.pages[displayIndex];
+            const pageItem = await this.createPageItem(pageIndex, displayIndex);
             grid.appendChild(pageItem);
-        });
+        }
 
-        // Enable drag and drop
         this.enableDragAndDrop();
     }
 
-    createPageItem(pageIndex, displayIndex) {
+    async createPageItem(pageIndex, displayIndex) {
         const div = document.createElement('div');
         div.className = 'page-item';
         div.draggable = true;
@@ -107,7 +113,7 @@ class OrganizePDF {
         div.innerHTML = `
             <input type="checkbox" class="page-checkbox" data-index="${displayIndex}">
             <div class="page-preview" id="preview-${displayIndex}">
-                <canvas class="page-canvas" data-page="${pageIndex}"></canvas>
+                <canvas class="page-canvas"></canvas>
             </div>
             <div class="page-details">
                 <div class="page-title">Page ${displayIndex + 1}</div>
@@ -124,17 +130,18 @@ class OrganizePDF {
             </div>
         `;
 
-        // Render actual PDF page preview
-        this.renderPagePreview(pageIndex, displayIndex);
+        // Render preview using PDF.js
+        await this.renderPagePreview(pageIndex, div.querySelector('.page-canvas'));
 
         // Checkbox event
         const checkbox = div.querySelector('.page-checkbox');
         checkbox.addEventListener('change', (e) => {
+            const idx = parseInt(div.dataset.displayIndex);
             if (e.target.checked) {
-                this.selectedPages.add(displayIndex);
+                this.selectedPages.add(idx);
                 div.classList.add('selected');
             } else {
-                this.selectedPages.delete(displayIndex);
+                this.selectedPages.delete(idx);
                 div.classList.remove('selected');
             }
             this.updateDeleteButton();
@@ -144,25 +151,21 @@ class OrganizePDF {
         const duplicateBtn = div.querySelector('[data-action="duplicate"]');
         duplicateBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            this.duplicatePage(displayIndex);
+            this.duplicatePage(parseInt(div.dataset.displayIndex));
         });
 
         return div;
     }
 
-    async renderPagePreview(pageIndex, displayIndex) {
-        if (!this.pdfDoc) return;
+    async renderPagePreview(pageIndex, canvas) {
+        if (!this.pdfJsDoc || !canvas) return;
 
         try {
-            const page = await this.pdfDoc.getPage(pageIndex + 1);
-            const canvas = document.querySelector(`#preview-${displayIndex} .page-canvas`);
-            if (!canvas) return;
+            const page = await this.pdfJsDoc.getPage(pageIndex + 1);
 
-            // A4 ratio calculation
-            const targetWidth = 140; // pixels for preview
-            const targetHeight = targetWidth * 1.414; // A4 ratio (210/297)
+            const targetWidth = 140;
+            const targetHeight = targetWidth * 1.414;
 
-            // Calculate scale to fit target width
             const viewport = page.getViewport({ scale: 1.0 });
             const scale = targetWidth / viewport.width;
             const scaledViewport = page.getViewport({ scale });
@@ -171,7 +174,6 @@ class OrganizePDF {
             canvas.height = targetHeight;
 
             const context = canvas.getContext('2d');
-            // Fill white background
             context.fillStyle = 'white';
             context.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -186,33 +188,38 @@ class OrganizePDF {
     }
 
     enableDragAndDrop() {
-        const pageItems = document.querySelectorAll('.page-item');
+        const grid = document.getElementById('pagesGrid');
         let draggedItem = null;
 
-        pageItems.forEach(item => {
-            item.addEventListener('dragstart', (e) => {
-                draggedItem = item;
-                item.classList.add('dragging');
-            });
+        grid.addEventListener('dragstart', (e) => {
+            if (e.target.classList.contains('page-item')) {
+                draggedItem = e.target;
+                e.target.classList.add('dragging');
+            }
+        });
 
-            item.addEventListener('dragend', () => {
-                item.classList.remove('dragging');
-            });
+        grid.addEventListener('dragend', (e) => {
+            if (e.target.classList.contains('page-item')) {
+                e.target.classList.remove('dragging');
+                draggedItem = null;
+            }
+        });
 
-            item.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                const afterElement = this.getDragAfterElement(e.clientY);
-                if (afterElement == null) {
-                    item.parentElement.appendChild(draggedItem);
-                } else {
-                    item.parentElement.insertBefore(draggedItem, afterElement);
-                }
-            });
+        grid.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            if (!draggedItem) return;
+
+            const afterElement = this.getDragAfterElement(grid, e.clientY);
+            if (afterElement == null) {
+                grid.appendChild(draggedItem);
+            } else {
+                grid.insertBefore(draggedItem, afterElement);
+            }
         });
     }
 
-    getDragAfterElement(y) {
-        const draggableElements = [...document.querySelectorAll('.page-item:not(.dragging)')];
+    getDragAfterElement(container, y) {
+        const draggableElements = [...container.querySelectorAll('.page-item:not(.dragging)')];
         return draggableElements.reduce((closest, child) => {
             const box = child.getBoundingClientRect();
             const offset = y - box.top - box.height / 2;
@@ -225,20 +232,22 @@ class OrganizePDF {
     }
 
     selectAll() {
-        const checkboxes = document.querySelectorAll('.page-checkbox');
-        checkboxes.forEach((cb, index) => {
+        const items = document.querySelectorAll('.page-item');
+        items.forEach((item, index) => {
+            const cb = item.querySelector('.page-checkbox');
             cb.checked = true;
             this.selectedPages.add(index);
-            cb.closest('.page-item').classList.add('selected');
+            item.classList.add('selected');
         });
         this.updateDeleteButton();
     }
 
     deselectAll() {
-        const checkboxes = document.querySelectorAll('.page-checkbox');
-        checkboxes.forEach(cb => {
+        const items = document.querySelectorAll('.page-item');
+        items.forEach(item => {
+            const cb = item.querySelector('.page-checkbox');
             cb.checked = false;
-            cb.closest('.page-item').classList.remove('selected');
+            item.classList.remove('selected');
         });
         this.selectedPages.clear();
         this.updateDeleteButton();
@@ -254,7 +263,6 @@ class OrganizePDF {
         const confirmed = confirm(`Delete ${this.selectedPages.size} selected page(s)?`);
         if (!confirmed) return;
 
-        // Remove selected pages
         this.pages = this.pages.filter((_, index) => !this.selectedPages.has(index));
         this.renderPages();
     }
@@ -276,25 +284,30 @@ class OrganizePDF {
         try {
             this.showSection('processingSection');
 
-            // Get current page order from DOM
             const pageItems = document.querySelectorAll('.page-item');
             const newOrder = Array.from(pageItems).map(item =>
                 parseInt(item.dataset.pageIndex)
             );
 
-            // Create new PDF with reordered pages
             const newPdf = await PDFDocument.create();
 
             for (const pageIndex of newOrder) {
-                const [copiedPage] = await newPdf.copyPages(this.pdfDoc, [pageIndex]);
+                const [copiedPage] = await newPdf.copyPages(this.pdfLibDoc, [pageIndex]);
                 newPdf.addPage(copiedPage);
             }
 
             this.resultPdfBytes = await newPdf.save();
             this.resultFileName = this.fileName.replace('.pdf', '_organized.pdf');
 
-            document.getElementById('resultMessage').textContent =
-                `Your PDF has been reorganized from ${this.pdfDoc.getPageCount()} to ${newOrder.length} pages`;
+            const originalCount = this.pdfLibDoc.getPageCount();
+            const newCount = newOrder.length;
+
+            // Update stats
+            document.getElementById('originalPages').textContent = `${originalCount} pages`;
+            document.getElementById('newPages').textContent = `${newCount} pages`;
+            document.getElementById('resultMessage').textContent = originalCount === newCount
+                ? 'Pages have been reordered successfully'
+                : `${originalCount - newCount} page(s) removed`;
 
             this.showSection('resultSection');
 
@@ -318,7 +331,9 @@ class OrganizePDF {
     }
 
     reset() {
-        this.pdfDoc = null;
+        this.pdfLibDoc = null;
+        this.pdfJsDoc = null;
+        this.pdfBytes = null;
         this.pages = [];
         this.selectedPages.clear();
         this.resultPdfBytes = null;
@@ -338,4 +353,3 @@ class OrganizePDF {
 }
 
 new OrganizePDF();
-

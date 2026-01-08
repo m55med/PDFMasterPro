@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extract Pages - PDF Master Pro</title>
+    <link rel="stylesheet" href="../shared.css">
+    <style>
+        .pages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 16px;
+            width: 100%;
+            max-width: 900px;
+            margin-top: 24px;
+        }
+
+        .page-card {
+            background: white;
+            border: 2px solid #E2E8F0;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .page-card:hover {
+            border-color: #94A3B8;
+        }
+
+        .page-card.selected {
+            border-color: #2563EB;
+            background: #EFF6FF;
+        }
+
+        .page-card.selected::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 20px;
+            height: 20px;
+            background: #2563EB;
+            border-radius: 50%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+            background-size: 12px;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .page-thumb {
+            width: 100%;
+            aspect-ratio: 3/4;
+            background: #F8FAFC;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page-thumb canvas {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .page-number {
+            padding: 8px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748B;
+            border-top: 1px solid #E2E8F0;
+        }
+
+        .selection-info {
+            width: 100%;
+            max-width: 900px;
+            background: #EFF6FF;
+            border: 1px solid #BFDBFE;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 16px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .selection-info.active {
+            display: flex;
+        }
+
+        .selection-info span {
+            color: #1D4ED8;
+            font-weight: 500;
+        }
+
+        .extract-options {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .option-btn {
+            padding: 8px 16px;
+            border: 1px solid #E2E8F0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .option-btn:hover {
+            border-color: #2563EB;
+        }
+
+        .option-btn.active {
+            background: #2563EB;
+            color: white;
+            border-color: #2563EB;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="tool-header">
+        <a href="../../dashboard/index.html" class="back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            Back to Dashboard
+        </a>
+        <div class="tool-title">Extract Pages</div>
+        <div class="tool-actions">
+            <button class="btn btn-primary" id="extractBtn" disabled>Extract Selected</button>
+        </div>
+    </header>
+
+    <main class="tool-container">
+        <div class="upload-box" id="uploadArea">
+            <div class="icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <path d="M12 18v-6" />
+                    <path d="M9 15l3 3 3-3" />
+                </svg>
+            </div>
+            <h3>Select PDF</h3>
+            <p>Choose pages to extract into a new PDF</p>
+        </div>
+
+        <div class="selection-info" id="selectionInfo">
+            <span><span id="selectedCount">0</span> page(s) selected</span>
+            <div>
+                <button class="btn btn-secondary" id="selectAll" style="padding:6px 12px; font-size:13px; margin-right:8px;">Select All</button>
+                <button class="btn btn-secondary" id="clearSelection" style="padding:6px 12px; font-size:13px;">Clear</button>
+            </div>
+        </div>
+
+        <div class="pages-grid hidden" id="pagesGrid"></div>
+
+        <input type="file" id="fileInput" accept=".pdf" hidden>
+    </main>
+
+    <script src="../../lib/pdf-lib.min.js"></script>
+    <script src="../../lib/pdf.min.js"></script>
+    <script src="extract.js" type="module"></script>
+</body>
+
+</html>

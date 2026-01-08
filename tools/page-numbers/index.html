@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page Numbers - PDF Master Pro</title>
-    <link rel="stylesheet" href="../../shared.css">
+    <link rel="stylesheet" href="../shared.css">
     <style>
         .position-grid {
             display: grid;
@@ -100,15 +100,15 @@
 
 <body>
     <header class="tool-header">
-        <a href="../../dashboard/index.html" class="back-btn">
+        <a href="../../dashboard/index.html" class="back-btn" data-i18n="btn_back">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
             Back
         </a>
-        <div class="tool-title">Add Page Numbers</div>
+        <div class="tool-title" data-i18n="tool_page_numbers">Add Page Numbers</div>
         <div class="tool-actions">
-            <button class="btn btn-primary" id="applyBtn" disabled>Add Numbers</button>
+            <button class="btn btn-primary" id="applyBtn" data-i18n="btn_add_numbers" disabled>Add Numbers</button>
         </div>
     </header>
 
@@ -121,15 +121,15 @@
                     <path d="M10 12h4v6h-4z" />
                 </svg>
             </div>
-            <h3>Select PDF</h3>
-            <p>Insert page numbers</p>
+            <h3 data-i18n="select_pdf_page_numbers">Select PDF</h3>
+            <p data-i18n="desc_page_numbers">Insert page numbers</p>
         </div>
 
         <div class="file-list hidden" id="fileInfo"></div>
 
         <div class="settings-panel hidden" id="settingsPanel">
             <div class="col" style="text-align: center;">
-                <label style="margin-bottom: 12px; display: block;">Position</label>
+                <label style="margin-bottom: 12px; display: block;" data-i18n="label_position">Position</label>
                 <div class="position-grid">
                     <div class="pos-btn" data-pos="top-left"></div>
                     <div class="pos-btn" data-pos="top-center"></div>
@@ -142,7 +142,7 @@
 
             <div class="col">
                 <div style="margin-bottom: 20px;">
-                    <label style="display:block; margin-bottom:8px;">Format</label>
+                    <label style="display:block; margin-bottom:8px;" data-i18n="label_format">Format</label>
                     <select id="format">
                         <option value="numeric">1, 2, 3...</option>
                         <option value="roman">i, ii, iii...</option>
@@ -150,7 +150,7 @@
                     </select>
                 </div>
                 <div>
-                    <label style="display:block; margin-bottom:8px;">Start from</label>
+                    <label style="display:block; margin-bottom:8px;" data-i18n="label_start_from">Start from</label>
                     <input type="number" id="startFrom" value="1" min="1"
                         style="width:100%; padding:8px; border:1px solid #E2E8F0; border-radius:6px;">
                 </div>

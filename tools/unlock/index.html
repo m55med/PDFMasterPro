@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unlock PDF - PDF Master Pro</title>
-    <link rel="stylesheet" href="../../shared.css">
+    <link rel="stylesheet" href="../shared.css">
     <style>
         .password-form {
             width: 100%;
@@ -50,15 +50,15 @@
 
 <body>
     <header class="tool-header">
-        <a href="../../dashboard/index.html" class="back-btn">
+        <a href="../../dashboard/index.html" class="back-btn" data-i18n="btn_back">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
             Back
         </a>
-        <div class="tool-title">Unlock PDF</div>
+        <div class="tool-title" data-i18n="tool_unlock">Unlock PDF</div>
         <div class="tool-actions">
-            <button class="btn btn-primary" id="unlockBtn" disabled>Unlock PDF</button>
+            <button class="btn btn-primary" id="unlockBtn" data-i18n="btn_unlock" disabled>Unlock PDF</button>
         </div>
     </header>
 
@@ -70,8 +70,8 @@
                     <path d="M7 11V7a5 5 0 0 1 9.9-1" />
                 </svg>
             </div>
-            <h3>Select Protected PDF</h3>
-            <p>Remove security settings</p>
+            <h3 data-i18n="select_pdf_unlock">Select Protected PDF</h3>
+            <p data-i18n="desc_unlock_pdf">Remove security settings</p>
         </div>
 
         <div class="file-list hidden" id="fileInfo"></div>
@@ -83,10 +83,10 @@
                     <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                 </svg>
             </div>
-            <h3>This file is protected</h3>
-            <p style="color:#64748B; font-size:14px;">Enter the password to unlock it permanently</p>
+            <h3 data-i18n="protected_file">This file is protected</h3>
+            <p style="color:#64748B; font-size:14px;" data-i18n="protected_enter_password">Enter the password to unlock it permanently</p>
 
-            <input type="password" id="password" placeholder="Enter Password">
+            <input type="password" id="password" placeholder="Enter Password" data-i18n="label_enter_password">
         </div>
 
         <input type="file" id="fileInput" accept=".pdf" hidden>

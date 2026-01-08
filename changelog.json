@@ -1,0 +1,35 @@
+{
+  "name": "PDF Master Pro",
+  "description": "Complete PDF toolkit - Merge, Split, Compress, Convert & more",
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-01-08",
+      "type": "release",
+      "title": "Initial Release",
+      "changes": [
+        { "category": "feature", "description": "Merge multiple PDF files into one" },
+        { "category": "feature", "description": "Split PDF files by page ranges" },
+        { "category": "feature", "description": "Compress PDF files to reduce size" },
+        { "category": "feature", "description": "Rotate PDF pages" },
+        { "category": "feature", "description": "Organize and reorder PDF pages" },
+        { "category": "feature", "description": "Convert JPG/PDF/Word/HTML formats" },
+        { "category": "feature", "description": "OCR - Extract text from scanned PDFs" },
+        { "category": "feature", "description": "Add watermarks and page numbers" },
+        { "category": "feature", "description": "Protect and unlock PDF files" },
+        { "category": "feature", "description": "Sign, compare, crop, extract, remove pages" },
+        { "category": "feature", "description": "Redact sensitive information" },
+        { "category": "feature", "description": "Dark mode support" },
+        { "category": "feature", "description": "Multi-language support" },
+        { "category": "security", "description": "100% offline processing" }
+      ]
+    }
+  ],
+  "categories": {
+    "feature": { "label": "New Feature", "labelAr": "ميزة جديدة", "color": "#10B981" },
+    "improvement": { "label": "Improvement", "labelAr": "تحسين", "color": "#3B82F6" },
+    "fix": { "label": "Bug Fix", "labelAr": "إصلاح خطأ", "color": "#EF4444" },
+    "security": { "label": "Security", "labelAr": "أمان", "color": "#F59E0B" },
+    "performance": { "label": "Performance", "labelAr": "أداء", "color": "#8B5CF6" }
+  }
+}

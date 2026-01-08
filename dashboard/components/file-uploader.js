@@ -61,20 +61,18 @@ export class FileUploader {
     async handleFiles(fileList) {
         const files = Array.from(fileList);
 
-        // Filter supported files
+        // Supported file types
         const supportedTypes = [
             'application/pdf',
             'image/jpeg',
             'image/png',
-            // Allow Office files but they might fail processing if libs aren't ready
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             'application/msword'
         ];
 
-        // Filter logic
+        // Filter only supported file types
         const validFiles = files.filter(file => {
-            // Basic check, can be expanded
-            return true;
+            return supportedTypes.includes(file.type) || file.name.endsWith('.pdf');
         });
 
         if (validFiles.length === 0) return;

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redact PDF - PDF Master Pro</title>
+    <link rel="stylesheet" href="../shared.css">
+    <style>
+        .redact-container {
+            display: flex;
+            gap: 24px;
+            width: 100%;
+            max-width: 1100px;
+            margin-top: 24px;
+        }
+
+        .preview-area {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 600px;
+            position: relative;
+            overflow: auto;
+        }
+
+        .canvas-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .canvas-wrapper canvas {
+            display: block;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .redact-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            cursor: crosshair;
+        }
+
+        .redact-box {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #000;
+            cursor: move;
+        }
+
+        .redact-box .delete-btn {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 20px;
+            height: 20px;
+            background: #EF4444;
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .redact-box:hover .delete-btn {
+            display: block;
+        }
+
+        .tools-panel {
+            width: 260px;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .tool-option {
+            margin-bottom: 20px;
+        }
+
+        .tool-option label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748B;
+            margin-bottom: 8px;
+        }
+
+        .color-options {
+            display: flex;
+            gap: 8px;
+        }
+
+        .color-opt {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .color-opt.active {
+            border-color: #2563EB;
+        }
+
+        .page-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding-top: 16px;
+            border-top: 1px solid #E2E8F0;
+        }
+
+        .page-nav button {
+            padding: 8px 12px;
+            border: 1px solid #E2E8F0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .instructions {
+            font-size: 12px;
+            color: #64748B;
+            line-height: 1.5;
+            padding: 12px;
+            background: #F8FAFC;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="tool-header">
+        <a href="../../dashboard/index.html" class="back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            Back to Dashboard
+        </a>
+        <div class="tool-title">Redact PDF</div>
+        <div class="tool-actions">
+            <button class="btn btn-primary" id="applyBtn" disabled>Apply Redactions</button>
+        </div>
+    </header>
+
+    <main class="tool-container">
+        <div class="upload-box" id="uploadArea">
+            <div class="icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <line x1="9" y1="9" x2="15" y2="9" />
+                    <line x1="9" y1="13" x2="15" y2="13" />
+                    <line x1="9" y1="17" x2="12" y2="17" />
+                </svg>
+            </div>
+            <h3>Select PDF to Redact</h3>
+            <p>Draw boxes to hide sensitive information</p>
+        </div>
+
+        <div class="redact-container hidden" id="redactContainer">
+            <div class="preview-area">
+                <div class="canvas-wrapper" id="canvasWrapper">
+                    <canvas id="previewCanvas"></canvas>
+                    <div class="redact-overlay" id="redactOverlay"></div>
+                </div>
+            </div>
+
+            <div class="tools-panel">
+                <div class="instructions">
+                    Click and drag on the PDF to draw redaction boxes. Redacted areas will be permanently blacked out.
+                </div>
+
+                <div class="tool-option">
+                    <label>Redaction Color</label>
+                    <div class="color-options" id="colorOptions">
+                        <div class="color-opt active" style="background:#000000" data-color="0,0,0"></div>
+                        <div class="color-opt" style="background:#FFFFFF; border:1px solid #E2E8F0" data-color="255,255,255"></div>
+                        <div class="color-opt" style="background:#64748B" data-color="100,116,139"></div>
+                    </div>
+                </div>
+
+                <div class="tool-option">
+                    <label>Redactions on this page: <span id="boxCount">0</span></label>
+                    <button class="btn btn-secondary" id="clearBoxes" style="width:100%; margin-top:8px;">Clear All</button>
+                </div>
+
+                <div class="page-nav">
+                    <button id="prevPage">&lt;</button>
+                    <span id="pageInfo">1 / 1</span>
+                    <button id="nextPage">&gt;</button>
+                </div>
+            </div>
+        </div>
+
+        <input type="file" id="fileInput" accept=".pdf" hidden>
+    </main>
+
+    <script src="../../lib/pdf-lib.min.js"></script>
+    <script src="../../lib/pdf.min.js"></script>
+    <script src="redact.js" type="module"></script>
+</body>
+
+</html>

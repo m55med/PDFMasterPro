@@ -1,9 +1,9 @@
 // PDF to JPG Logic
 
-import { notifications } from '../../../utils/notifications.js';
-import { pdfProcessor } from '../../../lib/pdf-processor.js';
-import { storage } from '../../../utils/storage.js';
-import { i18n } from '../../../utils/i18n.js';
+import { notifications } from '../../utils/notifications.js';
+import { pdfProcessor } from '../../lib/pdf-processor.js';
+import { storage } from '../../utils/storage.js';
+import { i18n } from '../../utils/i18n.js';
 
 // Set worker src
 pdfjsLib.GlobalWorkerOptions.workerSrc = '../../lib/pdf.worker.min.js';
@@ -90,9 +90,8 @@ async function convert() {
     // Let's just download the first one automatically and say "Only first page downloaded for demo"
     // OR: Just display them to user.
 
-    displayResults(results);
-    document.getElementById('statusText').textContent = i18n.t('success');
     notifications.success(i18n.t('success'));
+    displayResults(results);
 
     // Save one combined summary or just track that tool was used
     await storage.addToHistory({

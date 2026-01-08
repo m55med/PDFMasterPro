@@ -2,8 +2,16 @@
 
 :root {
     --primary: #2563EB;
+    --primary-dark: #1D4ED8;
+    --primary-light: #EFF6FF;
     --bg-body: #F3F4F6;
+    --bg-card: white;
     --text-main: #0F172A;
+    --text-muted: #64748B;
+    --border: #E2E8F0;
+    --radius: 8px;
+    --danger: #EF4444;
+    --success: #10B981;
 }
 
 body {
@@ -66,6 +74,17 @@ body {
 .btn-primary:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--text-main);
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+    background: var(--bg-body);
+    border-color: var(--primary);
 }
 
 .tool-container {

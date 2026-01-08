@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - PDF Master Pro</title>
+    <link rel="stylesheet" href="../../dashboard/styles.css">
+    <style>
+        .docs-container {
+            padding: 32px;
+            max-width: 900px;
+            margin: 0 auto;
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        .docs-header {
+            margin-bottom: 40px;
+        }
+
+        .docs-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .docs-header p {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 12px;
+        }
+
+        .docs-section {
+            margin-bottom: 40px;
+        }
+
+        .docs-section h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .docs-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 16px 0 8px;
+            color: var(--text-main);
+        }
+
+        .docs-section p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .docs-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .docs-section li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .docs-section li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 14px;
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        /* Changelog Section */
+        .changelog-container {
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .changelog-item {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .changelog-item:last-child {
+            border-bottom: none;
+        }
+
+        .changelog-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .changelog-version {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .changelog-date {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .changelog-type {
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .type-release {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .type-beta {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .type-hotfix {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        [data-theme="dark"] .type-release {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34D399;
+        }
+
+        [data-theme="dark"] .type-beta {
+            background: rgba(245, 158, 11, 0.2);
+            color: #FBBF24;
+        }
+
+        [data-theme="dark"] .type-hotfix {
+            background: rgba(239, 68, 68, 0.2);
+            color: #F87171;
+        }
+
+        .changelog-changes {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .change-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 12px;
+            background: var(--bg-body);
+            border-radius: var(--radius);
+        }
+
+        .change-category {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .category-feature {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .category-fix {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .category-improvement {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .category-security {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .category-performance {
+            background: #EDE9FE;
+            color: #5B21B6;
+        }
+
+        [data-theme="dark"] .category-feature {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34D399;
+        }
+
+        [data-theme="dark"] .category-fix {
+            background: rgba(239, 68, 68, 0.2);
+            color: #F87171;
+        }
+
+        [data-theme="dark"] .category-improvement {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60A5FA;
+        }
+
+        [data-theme="dark"] .category-security {
+            background: rgba(245, 158, 11, 0.2);
+            color: #FBBF24;
+        }
+
+        [data-theme="dark"] .category-performance {
+            background: rgba(139, 92, 246, 0.2);
+            color: #A78BFA;
+        }
+
+        .change-text {
+            font-size: 14px;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        /* Info Cards */
+        .info-card {
+            background: var(--primary-light);
+            border: 1px solid var(--border-focus);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin: 16px 0;
+        }
+
+        [data-theme="dark"] .info-card {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .info-card h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .info-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Tabs */
+        .docs-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+
+        .docs-tab {
+            padding: 8px 16px;
+            border: none;
+            background: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: var(--radius);
+            transition: all 0.2s;
+        }
+
+        .docs-tab:hover {
+            background: var(--bg-hover);
+            color: var(--text-main);
+        }
+
+        .docs-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="docs-container">
+            <a href="../../dashboard/index.html" class="back-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                Back to Dashboard
+            </a>
+
+            <div class="docs-header">
+                <h1>Documentation <span class="version-badge" id="currentVersion">v1.0.0</span></h1>
+                <p>Complete guide and changelog for PDF Master Pro</p>
+            </div>
+
+            <div class="docs-tabs">
+                <button class="docs-tab active" data-tab="overview">Overview</button>
+                <button class="docs-tab" data-tab="features">Features</button>
+                <button class="docs-tab" data-tab="changelog">Changelog</button>
+            </div>
+
+            <!-- Overview Tab -->
+            <div class="tab-content active" id="overview">
+                <div class="docs-section">
+                    <h2>About PDF Master Pro</h2>
+                    <p>PDF Master Pro is a complete PDF toolkit that runs entirely in your browser. All processing is done locally on your device, ensuring maximum privacy and security for your documents.</p>
+
+                    <div class="info-card">
+                        <h4>Privacy First</h4>
+                        <p>Your files never leave your device. All PDF operations are processed locally using WebAssembly technology, ensuring complete privacy and offline functionality.</p>
+                    </div>
+                </div>
+
+                <div class="docs-section">
+                    <h2>Getting Started</h2>
+                    <p>PDF Master Pro is easy to use. Simply select the tool you need from the dashboard and follow the on-screen instructions.</p>
+                    <ul>
+                        <li>Click on the extension icon to open the popup menu</li>
+                        <li>Select a tool from the dashboard or quick tools</li>
+                        <li>Drag and drop your files or click to browse</li>
+                        <li>Configure options and process your files</li>
+                        <li>Download the result</li>
+                    </ul>
+                </div>
+
+                <div class="docs-section">
+                    <h2>System Requirements</h2>
+                    <ul>
+                        <li>Modern web browser (Chrome, Firefox, Edge, Safari)</li>
+                        <li>JavaScript enabled</li>
+                        <li>Minimum 4GB RAM recommended for large files</li>
+                        <li>No internet connection required (except for OCR language packs)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Features Tab -->
+            <div class="tab-content" id="features">
+                <div class="docs-section">
+                    <h2>Available Tools</h2>
+
+                    <h3>Organize</h3>
+                    <ul>
+                        <li><strong>Merge PDF</strong> - Combine multiple PDF files into one</li>
+                        <li><strong>Split PDF</strong> - Split PDF into multiple files</li>
+                        <li><strong>Rotate</strong> - Rotate PDF pages</li>
+                        <li><strong>Organize</strong> - Reorder and organize pages</li>
+                        <li><strong>Remove Pages</strong> - Delete specific pages</li>
+                        <li><strong>Extract Pages</strong> - Extract specific pages</li>
+                    </ul>
+
+                    <h3>Convert</h3>
+                    <ul>
+                        <li><strong>JPG to PDF</strong> - Convert images to PDF</li>
+                        <li><strong>PDF to JPG</strong> - Convert PDF pages to images</li>
+                        <li><strong>Word to PDF</strong> - Convert Word documents</li>
+                        <li><strong>HTML to PDF</strong> - Convert web pages to PDF</li>
+                    </ul>
+
+                    <h3>Edit</h3>
+                    <ul>
+                        <li><strong>Compress</strong> - Reduce PDF file size</li>
+                        <li><strong>Crop</strong> - Crop PDF pages</li>
+                        <li><strong>Watermark</strong> - Add watermarks</li>
+                        <li><strong>Page Numbers</strong> - Add page numbers</li>
+                        <li><strong>Redact</strong> - Redact sensitive information</li>
+                    </ul>
+
+                    <h3>Security</h3>
+                    <ul>
+                        <li><strong>Protect</strong> - Password protect PDFs</li>
+                        <li><strong>Unlock</strong> - Remove password protection</li>
+                        <li><strong>Sign</strong> - Add digital signatures</li>
+                    </ul>
+
+                    <h3>Advanced</h3>
+                    <ul>
+                        <li><strong>OCR</strong> - Extract text from scanned documents</li>
+                        <li><strong>Compare</strong> - Compare two PDF files</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Changelog Tab -->
+            <div class="tab-content" id="changelog">
+                <div class="docs-section">
+                    <h2>Version History</h2>
+                    <div class="changelog-container" id="changelogContainer">
+                        <div class="loading">
+                            <div class="loading-spinner"></div>
+                            <p>Loading changelog...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        document.querySelectorAll('.docs-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.docs-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Load changelog from JSON
+        async function loadChangelog() {
+            try {
+                const response = await fetch('../../changelog.json');
+                const data = await response.json();
+
+                // Update version badge
+                if (data.changelog && data.changelog.length > 0) {
+                    document.getElementById('currentVersion').textContent = 'v' + data.changelog[0].version;
+                }
+
+                renderChangelog(data);
+            } catch (error) {
+                console.error('Error loading changelog:', error);
+                document.getElementById('changelogContainer').innerHTML = `
+                    <div class="loading">
+                        <p>Unable to load changelog</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderChangelog(data) {
+            const container = document.getElementById('changelogContainer');
+            let html = '';
+
+            data.changelog.forEach(release => {
+                html += `
+                    <div class="changelog-item">
+                        <div class="changelog-header">
+                            <span class="changelog-version">v${release.version}</span>
+                            <span class="changelog-type type-${release.type}">${release.type}</span>
+                            <span class="changelog-date">${formatDate(release.date)}</span>
+                        </div>
+                        <div class="changelog-changes">
+                            ${release.changes.map(change => `
+                                <div class="change-item">
+                                    <span class="change-category category-${change.category}">${change.category}</span>
+                                    <span class="change-text">${change.description}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // Load theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+
+        // Initialize
+        loadChangelog();
+    </script>
+</body>
+
+</html>
