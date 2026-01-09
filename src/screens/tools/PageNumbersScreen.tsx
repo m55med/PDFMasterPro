@@ -10,15 +10,18 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme, useLanguage } from '../../context';
+import { useTheme, useLanguage, useFavorites } from '../../context';
 import { Header, Button, Card } from '../../components/common';
 import { Typography, Spacing, BorderRadius } from '../../constants/theme';
 import { PDFFile } from '../../types/pdf';
+
+const TOOL_ID = 'page-numbers';
 
 const PageNumbersScreen: React.FC = () => {
   const navigation = useNavigation();
   const { colors } = useTheme();
   const { t } = useLanguage();
+  const { isFavorite, toggleFavorite } = useFavorites();
   const insets = useSafeAreaInsets();
 
   const [file, setFile] = useState<PDFFile | null>(null);
@@ -64,7 +67,20 @@ const PageNumbersScreen: React.FC = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.bgGray }]}>
-      <Header showBack title={t.tools.pageNumbers.title} />
+      <Header
+        showBack
+        title={t.tools.pageNumbers.title}
+        rightAction={
+          <TouchableOpacity
+            onPress={() => toggleFavorite(TOOL_ID)}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Text style={styles.favoriteIcon}>
+              {isFavorite(TOOL_ID) ? '⭐' : '☆'}
+            </Text>
+          </TouchableOpacity>
+        }
+      />
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {!file ? (
@@ -169,6 +185,7 @@ const PageNumbersScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   scrollContent: { padding: Spacing.md },
+  favoriteIcon: { fontSize: 22 },
   uploadArea: {
     alignItems: 'center',
     padding: Spacing.xl,

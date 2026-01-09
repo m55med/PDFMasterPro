@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "347162556268",
+    "project_id": "master-pdf",
+    "storage_bucket": "master-pdf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:347162556268:android:9b69a88e3ed0029aa0a549",
+        "android_client_info": {
+          "package_name": "com.masterpdf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "347162556268-0s59fr7u0802n58d0o4rk059fnigqt2k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAo33HUe_ZYA7f44Y7SHelT5lCP36HaDK0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "347162556268-0s59fr7u0802n58d0o4rk059fnigqt2k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:347162556268:android:1e3e51bf348ef33ea0a549",
+        "android_client_info": {
+          "package_name": "com.pdfmasterpro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "347162556268-0s59fr7u0802n58d0o4rk059fnigqt2k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAo33HUe_ZYA7f44Y7SHelT5lCP36HaDK0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "347162556268-0s59fr7u0802n58d0o4rk059fnigqt2k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -10,15 +10,18 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme, useLanguage } from '../../context';
+import { useTheme, useLanguage, useFavorites } from '../../context';
 import { Header, Button, Card } from '../../components/common';
 import { Typography, Spacing, BorderRadius, Shadow } from '../../constants/theme';
 import { PDFFile } from '../../types/pdf';
+
+const TOOL_ID = 'merge';
 
 const MergeScreen: React.FC = () => {
   const navigation = useNavigation();
   const { colors } = useTheme();
   const { t } = useLanguage();
+  const { isFavorite, toggleFavorite } = useFavorites();
   const insets = useSafeAreaInsets();
 
   const [files, setFiles] = useState<PDFFile[]>([]);
@@ -75,13 +78,24 @@ const MergeScreen: React.FC = () => {
         showBack
         title={t.tools.merge.title}
         rightAction={
-          files.length >= 2 ? (
-            <TouchableOpacity onPress={handleMerge}>
-              <Text style={[styles.mergeButton, { color: colors.primary }]}>
-                Merge
+          <View style={styles.headerActions}>
+            <TouchableOpacity
+              onPress={() => toggleFavorite(TOOL_ID)}
+              style={styles.favoriteButton}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <Text style={styles.favoriteIcon}>
+                {isFavorite(TOOL_ID) ? '⭐' : '☆'}
               </Text>
             </TouchableOpacity>
-          ) : null
+            {files.length >= 2 && (
+              <TouchableOpacity onPress={handleMerge}>
+                <Text style={[styles.mergeButton, { color: colors.primary }]}>
+                  Merge
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
         }
       />
 
@@ -187,6 +201,17 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: Spacing.md,
+  },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.md,
+  },
+  favoriteButton: {
+    padding: Spacing.xs,
+  },
+  favoriteIcon: {
+    fontSize: 22,
   },
   mergeButton: {
     fontSize: Typography.fontSize.base,

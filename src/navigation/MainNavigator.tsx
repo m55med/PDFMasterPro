@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { MainTabParamList, ToolStackParamList } from '../types/navigation';
+import { MainTabParamList, ToolStackParamList, RootStackParamList } from '../types/navigation';
 import { useTheme, useLanguage } from '../context';
 import { Layout, Typography } from '../constants/theme';
 
@@ -11,6 +11,8 @@ import { Layout, Typography } from '../constants/theme';
 import HomeScreen from '../screens/main/HomeScreen';
 import ToolsScreen from '../screens/main/ToolsScreen';
 import SettingsScreen from '../screens/main/SettingsScreen';
+import ProfileScreen from '../screens/main/ProfileScreen';
+import SubscriptionScreen from '../screens/main/SubscriptionScreen';
 import DocumentsScreen from '../screens/pages/DocumentsScreen';
 import FavoritesScreen from '../screens/pages/FavoritesScreen';
 
@@ -28,6 +30,7 @@ import OrganizeScreen from '../screens/tools/OrganizeScreen';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 const ToolStack = createNativeStackNavigator<ToolStackParamList>();
+const MainStack = createNativeStackNavigator();
 
 // Tool Stack Navigator
 const ToolsStackNavigator: React.FC = () => {
@@ -74,7 +77,8 @@ const TabIcon: React.FC<{ name: string; focused: boolean; color: string }> = ({
   );
 };
 
-export const MainNavigator: React.FC = () => {
+// Tab Navigator Component
+const TabNavigator: React.FC = () => {
   const { colors } = useTheme();
   const { t } = useLanguage();
 
@@ -126,6 +130,34 @@ export const MainNavigator: React.FC = () => {
         options={{ tabBarLabel: t.settings.title }}
       />
     </Tab.Navigator>
+  );
+};
+
+// Main Navigator with Profile Screen
+export const MainNavigator: React.FC = () => {
+  return (
+    <MainStack.Navigator
+      screenOptions={{
+        headerShown: false,
+        animation: 'slide_from_right',
+      }}
+    >
+      <MainStack.Screen name="MainTabs" component={TabNavigator} />
+      <MainStack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          animation: 'slide_from_bottom',
+        }}
+      />
+      <MainStack.Screen
+        name="Subscription"
+        component={SubscriptionScreen}
+        options={{
+          animation: 'slide_from_bottom',
+        }}
+      />
+    </MainStack.Navigator>
   );
 };
 

@@ -56,6 +56,7 @@ const HomeScreen: React.FC = () => {
           </View>
           <TouchableOpacity
             style={[styles.avatar, { backgroundColor: colors.primary }]}
+            onPress={() => navigation.navigate('Profile')}
           >
             <Text style={styles.avatarText}>
               {user?.displayName?.charAt(0) || user?.email?.charAt(0) || '👤'}

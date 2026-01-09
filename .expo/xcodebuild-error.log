@@ -1,7 +1,0 @@
-** BUILD FAILED **
-
-
-The following build commands failed:
-	ScanDependencies /Users/mohamed/Library/Developer/Xcode/DerivedData/PDFMasterPro-dailwhrejnkrplhdyievuvtkacze/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/RNFBAuth.build/Objects-normal/arm64/RNFBAuthModule.o /Users/mohamed/Desktop/projects/neojeen/pdf/app/node_modules/@react-native-firebase/auth/ios/RNFBAuth/RNFBAuthModule.m normal arm64 objective-c com.apple.compilers.llvm.clang.1_0.compiler (in target 'RNFBAuth' from project 'Pods')
-	Building workspace PDFMasterPro with scheme PDFMasterPro and configuration Debug
-(2 failures)

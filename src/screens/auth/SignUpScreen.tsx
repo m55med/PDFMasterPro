@@ -27,10 +27,12 @@ const SignUpScreen: React.FC = () => {
   const { signUp, googleSignIn, appleSignIn, isLoading } = useAuth();
   const insets = useSafeAreaInsets();
 
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState<{
+    fullName?: string;
     email?: string;
     password?: string;
     confirmPassword?: string;
@@ -38,6 +40,10 @@ const SignUpScreen: React.FC = () => {
 
   const validate = (): boolean => {
     const newErrors: typeof errors = {};
+
+    if (!fullName.trim()) {
+      newErrors.fullName = t.auth.nameRequired || 'Name is required';
+    }
 
     if (!email.trim()) {
       newErrors.email = t.auth.emailRequired;
@@ -63,7 +69,7 @@ const SignUpScreen: React.FC = () => {
     if (!validate()) return;
 
     try {
-      await signUp({ email, password });
+      await signUp({ email, password, displayName: fullName.trim() });
       Alert.alert(
         t.common.success,
         t.auth.checkEmail,
@@ -129,6 +135,16 @@ const SignUpScreen: React.FC = () => {
 
           {/* Form */}
           <View style={styles.form}>
+            <Input
+              label={t.auth.fullName || 'Full Name'}
+              placeholder={t.auth.enterFullName || 'Enter your full name'}
+              value={fullName}
+              onChangeText={setFullName}
+              autoCapitalize="words"
+              autoCorrect={false}
+              error={errors.fullName}
+            />
+
             <Input
               label={t.auth.email}
               placeholder="email@example.com"
@@ -219,12 +235,24 @@ const SignUpScreen: React.FC = () => {
           </View>
 
           {/* Terms */}
-          <Text style={[styles.terms, { color: colors.textSecondary }]}>
-            {t.auth.agreeToTerms}{' '}
-            <Text style={{ color: colors.primary }}>{t.auth.termsOfService}</Text>
-            {' '}{t.auth.and}{' '}
-            <Text style={{ color: colors.primary }}>{t.auth.privacyPolicy}</Text>
-          </Text>
+          <View style={styles.termsContainer}>
+            <Text style={[styles.terms, { color: colors.textSecondary }]}>
+              {t.auth.agreeToTerms}{' '}
+            </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('TermsOfService' as any)}>
+              <Text style={[styles.termsLink, { color: colors.primary }]}>
+                {t.auth.termsOfService}
+              </Text>
+            </TouchableOpacity>
+            <Text style={[styles.terms, { color: colors.textSecondary }]}>
+              {' '}{t.auth.and}{' '}
+            </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('PrivacyPolicy' as any)}>
+              <Text style={[styles.termsLink, { color: colors.primary }]}>
+                {t.auth.privacyPolicy}
+              </Text>
+            </TouchableOpacity>
+          </View>
 
           {/* Login Link */}
           <View style={styles.footer}>
@@ -324,10 +352,19 @@ const styles = StyleSheet.create({
     fontSize: Typography.fontSize.base,
     fontWeight: Typography.fontWeight.medium,
   },
+  termsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginBottom: Spacing.lg,
+  },
   terms: {
     fontSize: Typography.fontSize.sm,
-    textAlign: 'center',
-    marginBottom: Spacing.lg,
+    lineHeight: 20,
+  },
+  termsLink: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.medium,
     lineHeight: 20,
   },
   footer: {

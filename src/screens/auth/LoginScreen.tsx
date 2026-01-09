@@ -125,7 +125,7 @@ const LoginScreen: React.FC = () => {
 
             <TouchableOpacity
               style={styles.forgotPassword}
-              onPress={() => Alert.alert('Reset Password', 'Feature coming soon!')}
+              onPress={() => navigation.navigate('ForgotPassword')}
             >
               <Text style={[styles.forgotPasswordText, { color: colors.primary }]}>
                 {t.auth.forgotPassword}

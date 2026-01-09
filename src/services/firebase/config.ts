@@ -1,40 +1,26 @@
 // PDF Master Pro - Firebase Configuration
-// NOTE: This file contains placeholder configuration.
-// You need to replace these values with your actual Firebase project credentials.
+// Configuration is loaded from google-services.json (Android) and GoogleService-Info.plist (iOS)
 
 /**
- * Firebase Setup Instructions:
+ * Firebase Project: master-pdf
+ * Project ID: master-pdf
  *
- * 1. Go to https://console.firebase.google.com/
- * 2. Create a new project or select existing one
- * 3. Add iOS and Android apps to your project
- * 4. Download configuration files:
- *    - iOS: GoogleService-Info.plist → place in ios/PDFMasterPro/
- *    - Android: google-services.json → place in android/app/
- * 5. Enable Authentication methods:
- *    - Email/Password
- *    - Google Sign-In (optional)
- *    - Apple Sign-In (optional, iOS only)
+ * Enabled Services:
+ * ✅ Authentication (Email/Password, Google Sign-In)
  *
- * IMPORTANT: Do NOT enable services you don't need:
+ * Not Used:
  * ❌ Firestore
  * ❌ Realtime Database
  * ❌ Cloud Functions
  * ❌ Anonymous Auth
- *
- * Firebase Auth is used ONLY for user identity.
- * All PDF processing happens locally on device.
  */
 
 export const FIREBASE_CONFIG = {
-  // These values are placeholders
-  // Real values come from google-services.json and GoogleService-Info.plist
-  apiKey: 'YOUR_API_KEY',
-  authDomain: 'YOUR_PROJECT.firebaseapp.com',
-  projectId: 'YOUR_PROJECT_ID',
-  storageBucket: 'YOUR_PROJECT.appspot.com',
-  messagingSenderId: 'YOUR_SENDER_ID',
-  appId: 'YOUR_APP_ID',
+  // These values are for reference only
+  // React Native Firebase loads from native config files
+  projectId: 'master-pdf',
+  storageBucket: 'master-pdf.firebasestorage.app',
+  messagingSenderId: '347162556268',
 };
 
 // Auth configuration

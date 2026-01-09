@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme, useLanguage } from '../../context';
+import { useTheme, useLanguage, useFavorites } from '../../context';
 import { Card } from '../../components/common';
 import { Typography, Spacing, BorderRadius, Shadow } from '../../constants/theme';
 import { TOOLS, TOOL_CATEGORIES, Tool, ToolCategory } from '../../constants/tools';
@@ -22,6 +22,7 @@ const ToolsScreen: React.FC = () => {
   const navigation = useNavigation<any>();
   const { colors } = useTheme();
   const { t, isRTL } = useLanguage();
+  const { isFavorite, toggleFavorite } = useFavorites();
   const insets = useSafeAreaInsets();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -165,6 +166,15 @@ const ToolsScreen: React.FC = () => {
                   {isRTL ? tool.descriptionAr : tool.description}
                 </Text>
               </View>
+              <TouchableOpacity
+                style={styles.favoriteButton}
+                onPress={() => toggleFavorite(tool.id)}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              >
+                <Text style={styles.favoriteIcon}>
+                  {isFavorite(tool.id) ? '⭐' : '☆'}
+                </Text>
+              </TouchableOpacity>
               <Text style={[styles.arrow, { color: colors.textLight }]}>→</Text>
             </TouchableOpacity>
           ))}
@@ -278,9 +288,16 @@ const styles = StyleSheet.create({
     fontSize: Typography.fontSize.sm,
     lineHeight: 18,
   },
+  favoriteButton: {
+    padding: Spacing.xs,
+    marginRight: Spacing.xs,
+  },
+  favoriteIcon: {
+    fontSize: 20,
+  },
   arrow: {
     fontSize: 20,
-    marginLeft: Spacing.sm,
+    marginLeft: Spacing.xs,
   },
   emptyState: {
     alignItems: 'center',

@@ -11,6 +11,8 @@ export type RootStackParamList = {
   // Main Stack
   Main: undefined;
   MainTabs: undefined;
+  Profile: undefined;
+  Subscription: undefined;
 
   // Tool Screens
   Merge: undefined;
@@ -32,6 +34,10 @@ export type AuthStackParamList = {
   Login: undefined;
   SignUp: undefined;
   ForgotPassword: undefined;
+  OTPVerification: { email: string };
+  ResetPassword: { email: string; otp: string };
+  TermsOfService: undefined;
+  PrivacyPolicy: undefined;
 };
 
 export type MainTabParamList = {

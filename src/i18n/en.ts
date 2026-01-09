@@ -32,10 +32,14 @@ export const en = {
     login: 'Login',
     signUp: 'Sign Up',
     logout: 'Logout',
+    fullName: 'Full Name',
+    enterFullName: 'Enter your full name',
+    nameRequired: 'Name is required',
     email: 'Email',
     password: 'Password',
     confirmPassword: 'Confirm Password',
     forgotPassword: 'Forgot Password?',
+    forgotPasswordSubtitle: 'Enter your email address and we will send you a link to reset your password.',
     resetPassword: 'Reset Password',
     orContinueWith: 'Or continue with',
     google: 'Continue with Google',
@@ -54,8 +58,44 @@ export const en = {
     signUpSuccess: 'Account created successfully!',
     logoutSuccess: 'Logged out successfully',
     resetEmailSent: 'Password reset email sent',
-    verifyEmail: 'Please verify your email',
+    verifyEmail: 'Verify Your Email',
     checkEmail: 'Check your email for verification link',
+    // OTP
+    sendOTP: 'Send Verification Code',
+    otpInfo: 'We will send a 6-digit verification code to your email address. The code will expire in 10 minutes.',
+    otpSentTo: 'We sent a verification code to',
+    enterCompleteOTP: 'Please enter the complete verification code',
+    invalidOTP: 'Invalid verification code. Please try again.',
+    resendIn: 'Resend code in',
+    resendOTP: 'Resend Code',
+    otpResent: 'Verification code sent successfully!',
+    verifyOTP: 'Verify Code',
+    didntReceiveOTP: 'Didn\'t receive the code? Check your spam folder.',
+    // Reset Password
+    createNewPassword: 'Create New Password',
+    createNewPasswordSubtitle: 'Your new password must be different from previously used passwords.',
+    newPassword: 'New Password',
+    confirmNewPassword: 'Confirm New Password',
+    enterNewPassword: 'Enter your new password',
+    reenterPassword: 'Re-enter your new password',
+    passwordResetSuccess: 'Your password has been reset successfully. Please login with your new password.',
+    passwordRequirements: 'Password Requirements',
+    minCharacters: 'At least 8 characters',
+    upperCase: 'At least one uppercase letter',
+    number: 'At least one number',
+    weak: 'Weak',
+    fair: 'Fair',
+    good: 'Good',
+    strong: 'Strong',
+    // Email Link Reset
+    sendResetLink: 'Send Reset Link',
+    resetLinkInfo: 'We will send you an email with a link to reset your password. The link will expire in 1 hour.',
+    checkYourEmail: 'Check Your Email',
+    resetLinkSent: 'We sent a password reset link to',
+    checkSpam: 'If you don\'t see the email, check your spam folder.',
+    backToLogin: 'Back to Login',
+    didntReceiveEmail: 'Didn\'t receive the email?',
+    resendEmail: 'Resend',
   },
 
   // Home
@@ -188,6 +228,69 @@ export const en = {
     },
   },
 
+  // Profile
+  profile: {
+    edit: 'Edit',
+    updateSuccess: 'Profile updated successfully',
+    updateFailed: 'Failed to update profile',
+    logoutConfirm: 'Are you sure you want to logout?',
+    noName: 'No name set',
+    enterName: 'Enter your name',
+    accountInfo: 'Account Information',
+    verified: 'Verified',
+    memberSince: 'Member Since',
+    accountType: 'Account Type',
+    freeAccount: 'Free Account',
+    proAccount: 'Pro Account',
+    upgrade: 'Upgrade',
+    statistics: 'Statistics',
+    filesProcessed: 'Files Processed',
+    favorites: 'Favorites',
+    storageUsed: 'Storage Used',
+    storage: 'Storage',
+    localStorage: 'Local Storage',
+    storageFull: 'Storage full. Delete files or upgrade to Pro.',
+    unlimitedStorage: 'Unlimited storage with Pro',
+  },
+
+  // Subscription
+  subscription: {
+    title: 'Subscription',
+    unlockAll: 'Unlock all features',
+    activeSubscription: 'Active Subscription',
+    expiresOn: 'Expires on',
+    proFeatures: 'Pro Features',
+    noAds: 'No Advertisements',
+    noAdsDesc: 'Enjoy an ad-free experience',
+    unlimitedStorage: 'Unlimited Local Storage',
+    unlimitedStorageDesc: 'Free: 20 MB | Pro: Unlimited',
+    privacy: '100% Private',
+    privacyDesc: 'No cloud storage, no data sharing',
+    allTools: 'All PDF Tools',
+    allToolsDesc: 'Access all current and future tools',
+    choosePlan: 'Choose Your Plan',
+    yearly: 'Yearly',
+    monthly: 'Monthly',
+    year: 'year',
+    month: 'month',
+    bestValue: 'Best Value - Save 37%',
+    flexible: 'Flexible billing',
+    save: 'SAVE',
+    subscribe: 'Subscribe Now',
+    restore: 'Restore Purchases',
+    freePlan: 'Free Plan',
+    freeStorage: '20 MB local storage',
+    freeAds: 'Contains advertisements',
+    freeTools: 'Access to all PDF tools',
+    privacyNotice: 'Your files are processed locally on your device. We never upload, store, or share your documents.',
+    comingSoon: 'Coming Soon',
+    iapComingSoon: 'In-app purchases will be available soon. Stay tuned!',
+    purchaseFailed: 'Purchase failed',
+    restoreSuccess: 'Purchases restored successfully',
+    restoreFailed: 'Failed to restore purchases',
+    unlimited: 'Unlimited',
+  },
+
   // Settings
   settings: {
     title: 'Settings',
@@ -234,6 +337,95 @@ export const en = {
     processingFailed: 'Processing failed. Please try again.',
     loginFailed: 'Login failed. Please check your credentials.',
     signUpFailed: 'Sign up failed. Please try again.',
+  },
+
+  // Legal
+  legal: {
+    termsOfService: 'Terms of Service',
+    privacyPolicy: 'Privacy Policy',
+    lastUpdated: 'Last Updated',
+    allRightsReserved: '2025 All Rights Reserved',
+
+    // Terms of Service
+    termsIntro: 'Welcome to PDF Master Pro. By using our application, you agree to these Terms of Service. Please read them carefully before using our services.',
+
+    acceptanceTitle: '1. Acceptance of Terms',
+    acceptanceContent: 'By accessing or using PDF Master Pro, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using this application.',
+
+    useOfServiceTitle: '2. Use of Service',
+    useOfServiceContent: 'PDF Master Pro provides PDF editing, conversion, and management tools. You agree to use these services only for lawful purposes and in accordance with these Terms. You are responsible for all activities that occur under your account.',
+
+    userAccountsTitle: '3. User Accounts',
+    userAccountsContent: 'To access certain features, you may need to create an account. You are responsible for maintaining the confidentiality of your account credentials and for all activities under your account. You must notify us immediately of any unauthorized use.',
+
+    intellectualPropertyTitle: '4. Intellectual Property',
+    intellectualPropertyContent: 'The application, including its original content, features, and functionality, is owned by PDF Master Pro and is protected by international copyright, trademark, and other intellectual property laws.',
+
+    userContentTitle: '5. User Content',
+    userContentContent: 'You retain ownership of any documents you upload or create using our service. However, by using our service, you grant us a limited license to process your content solely for the purpose of providing the requested services. We do not store your files permanently.',
+
+    prohibitedUsesTitle: '6. Prohibited Uses',
+    prohibitedUsesContent: 'You may not use the application: (a) for any unlawful purpose; (b) to upload malicious content; (c) to infringe on intellectual property rights; (d) to attempt to gain unauthorized access to our systems; (e) to transmit viruses or harmful code.',
+
+    disclaimerTitle: '7. Disclaimer',
+    disclaimerContent: 'The application is provided "as is" without warranties of any kind. We do not guarantee that the service will be uninterrupted, secure, or error-free. Your use of the service is at your sole risk.',
+
+    limitationTitle: '8. Limitation of Liability',
+    limitationContent: 'In no event shall PDF Master Pro be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the application or any content processed through it.',
+
+    terminationTitle: '9. Termination',
+    terminationContent: 'We may terminate or suspend your account and access to the service immediately, without prior notice or liability, for any reason, including if you breach these Terms of Service.',
+
+    changesTitle: '10. Changes to Terms',
+    changesContent: 'We reserve the right to modify these terms at any time. We will notify users of any material changes by updating the "Last Updated" date. Continued use of the service after changes constitutes acceptance of the new terms.',
+
+    contactTitle: '11. Contact Us',
+    contactContent: 'If you have any questions about these Terms of Service, please contact us at support@pdfmasterpro.com',
+
+    // Privacy Policy
+    privacyIntro: 'Your privacy is important to us. This Privacy Policy explains how PDF Master Pro collects, uses, and protects your personal information when you use our application.',
+
+    infoCollectTitle: '1. Information We Collect',
+    infoCollectContent: 'We collect information that you provide directly and information collected automatically:',
+    infoCollect1: 'Account information (email, name) when you register',
+    infoCollect2: 'Device information (device type, OS version)',
+    infoCollect3: 'Usage data (features used, crash reports)',
+    infoCollect4: 'Files you process (temporarily, for service delivery only)',
+
+    howWeUseTitle: '2. How We Use Your Information',
+    howWeUseContent: 'We use the collected information for:',
+    howWeUse1: 'Providing and improving our PDF services',
+    howWeUse2: 'Account management and authentication',
+    howWeUse3: 'Customer support and communication',
+    howWeUse4: 'Analytics to improve user experience',
+
+    dataSharingTitle: '3. Data Sharing',
+    dataSharingContent: 'We do not sell your personal information. We may share data with: (a) service providers who assist in operating our app; (b) law enforcement when required by law; (c) in connection with a business transfer or acquisition.',
+
+    dataSecurityTitle: '4. Data Security',
+    dataSecurityContent: 'We implement industry-standard security measures to protect your data, including encryption in transit and at rest. However, no method of transmission over the internet is 100% secure.',
+
+    dataRetentionTitle: '5. Data Retention',
+    dataRetentionContent: 'We retain account information for as long as your account is active. Files you process are automatically deleted after processing is complete. You can request deletion of your account and data at any time.',
+
+    yourRightsTitle: '6. Your Rights',
+    yourRightsContent: 'You have the right to:',
+    yourRights1: 'Access and receive a copy of your personal data',
+    yourRights2: 'Correct any inaccurate personal data',
+    yourRights3: 'Request deletion of your personal data',
+    yourRights4: 'Opt-out of marketing communications',
+
+    cookiesTitle: '7. Cookies and Tracking',
+    cookiesContent: 'Our mobile app may use local storage and analytics tools to improve functionality. We use Firebase Analytics to understand app usage patterns. You can disable analytics in app settings.',
+
+    childrenTitle: '8. Children\'s Privacy',
+    childrenContent: 'Our service is not intended for children under 13. We do not knowingly collect personal information from children. If we discover such data has been collected, we will delete it promptly.',
+
+    changesPrivacyTitle: '9. Changes to This Policy',
+    changesPrivacyContent: 'We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy and updating the "Last Updated" date.',
+
+    contactPrivacyTitle: '10. Contact Us',
+    contactPrivacyContent: 'If you have questions about this Privacy Policy or wish to exercise your rights, please contact us at privacy@pdfmasterpro.com',
   },
 };
 

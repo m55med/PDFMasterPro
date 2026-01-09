@@ -18,6 +18,8 @@ pod 'FirebaseCoreExtension', :modular_headers => true
 pod 'FirebaseCoreInternal', :modular_headers => true
 pod 'RecaptchaInterop', :modular_headers => true
 pod 'GTMSessionFetcher', :modular_headers => true
+pod 'FirebaseFirestore', :modular_headers => true
+pod 'FirebaseFirestoreInternal', :modular_headers => true
 
 # Use static frameworks for all pods
 use_frameworks! :linkage => :static

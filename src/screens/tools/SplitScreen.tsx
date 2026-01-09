@@ -10,15 +10,18 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme, useLanguage } from '../../context';
+import { useTheme, useLanguage, useFavorites } from '../../context';
 import { Header, Button, Card, Input } from '../../components/common';
 import { Typography, Spacing, BorderRadius } from '../../constants/theme';
 import { PDFFile } from '../../types/pdf';
+
+const TOOL_ID = 'split';
 
 const SplitScreen: React.FC = () => {
   const navigation = useNavigation();
   const { colors } = useTheme();
   const { t } = useLanguage();
+  const { isFavorite, toggleFavorite } = useFavorites();
   const insets = useSafeAreaInsets();
 
   const [file, setFile] = useState<PDFFile | null>(null);
@@ -60,7 +63,20 @@ const SplitScreen: React.FC = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.bgGray }]}>
-      <Header showBack title={t.tools.split.title} />
+      <Header
+        showBack
+        title={t.tools.split.title}
+        rightAction={
+          <TouchableOpacity
+            onPress={() => toggleFavorite(TOOL_ID)}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Text style={styles.favoriteIcon}>
+              {isFavorite(TOOL_ID) ? '⭐' : '☆'}
+            </Text>
+          </TouchableOpacity>
+        }
+      />
 
       <ScrollView
         contentContainerStyle={styles.scrollContent}
@@ -182,6 +198,9 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: Spacing.md,
+  },
+  favoriteIcon: {
+    fontSize: 22,
   },
   uploadArea: {
     alignItems: 'center',

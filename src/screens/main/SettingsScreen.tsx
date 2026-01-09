@@ -9,20 +9,29 @@ import {
   Switch,
   Alert,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme, useLanguage, useAuth } from '../../context';
+import { useTheme, useLanguage, useAuth, useSubscription, useStorage } from '../../context';
 import { Card } from '../../components/common';
 import { Typography, Spacing, BorderRadius } from '../../constants/theme';
 import { LANGUAGES } from '../../constants/config';
 import { LanguageCode } from '../../i18n';
 
 const SettingsScreen: React.FC = () => {
+  const navigation = useNavigation<any>();
   const { colors, isDark, toggleTheme } = useTheme();
   const { t, language, setLanguage, isRTL } = useLanguage();
   const { user, logout } = useAuth();
+  const { storageLimit, isPro } = useSubscription();
+  const { storageInfo } = useStorage();
   const insets = useSafeAreaInsets();
 
   const [notifications, setNotifications] = useState(true);
+
+  // Calculate storage display values
+  const usedMB = (storageInfo.usedBytes / (1024 * 1024)).toFixed(1);
+  const limitMB = storageLimit === -1 ? '∞' : (storageLimit / (1024 * 1024)).toFixed(0);
+  const usagePercent = storageLimit === -1 ? 0 : Math.min((storageInfo.usedBytes / storageLimit) * 100, 100);
 
   const handleLogout = () => {
     Alert.alert(
@@ -132,7 +141,7 @@ const SettingsScreen: React.FC = () => {
             icon="👤"
             title={t.settings.profile}
             value={user?.email || 'Not signed in'}
-            onPress={() => {}}
+            onPress={() => navigation.navigate('Profile')}
           />
           <View style={[styles.divider, { backgroundColor: colors.border }]} />
           <SettingsItem
@@ -226,16 +235,21 @@ const SettingsScreen: React.FC = () => {
         <Card style={styles.section}>
           <View style={styles.storageInfo}>
             <Text style={[styles.storageText, { color: colors.textPrimary }]}>
-              Used: 0 MB / 100 MB
+              {t.settings.used || 'Used'}: {usedMB} MB / {limitMB} MB
             </Text>
             <View style={[styles.storageBar, { backgroundColor: colors.border }]}>
               <View
                 style={[
                   styles.storageProgress,
-                  { backgroundColor: colors.primary, width: '0%' },
+                  { backgroundColor: colors.primary, width: `${usagePercent}%` },
                 ]}
               />
             </View>
+            {!isPro && (
+              <Text style={[styles.upgradeHint, { color: colors.textSecondary }]}>
+                {t.subscription?.upgradeForMore || 'Upgrade to Pro for unlimited storage'}
+              </Text>
+            )}
           </View>
           <TouchableOpacity
             style={[styles.clearButton, { borderColor: colors.error }]}
@@ -331,6 +345,11 @@ const styles = StyleSheet.create({
   storageProgress: {
     height: '100%',
     borderRadius: 4,
+  },
+  upgradeHint: {
+    fontSize: Typography.fontSize.xs,
+    marginTop: Spacing.sm,
+    fontStyle: 'italic',
   },
   clearButton: {
     margin: Spacing.md,

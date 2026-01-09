@@ -10,15 +10,18 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme, useLanguage } from '../../context';
+import { useTheme, useLanguage, useFavorites } from '../../context';
 import { Header, Button, Card } from '../../components/common';
 import { Typography, Spacing, BorderRadius } from '../../constants/theme';
 import { PDFFile } from '../../types/pdf';
+
+const TOOL_ID = 'organize';
 
 const OrganizeScreen: React.FC = () => {
   const navigation = useNavigation();
   const { colors } = useTheme();
   const { t } = useLanguage();
+  const { isFavorite, toggleFavorite } = useFavorites();
   const insets = useSafeAreaInsets();
 
   const [file, setFile] = useState<PDFFile | null>(null);
@@ -72,11 +75,21 @@ const OrganizeScreen: React.FC = () => {
         showBack
         title={t.tools.organize.title}
         rightAction={
-          selectedPages.length > 0 ? (
-            <TouchableOpacity onPress={handleDeleteSelected}>
-              <Text style={{ color: colors.error }}>Delete ({selectedPages.length})</Text>
+          <View style={styles.headerActions}>
+            <TouchableOpacity
+              onPress={() => toggleFavorite(TOOL_ID)}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <Text style={styles.favoriteIcon}>
+                {isFavorite(TOOL_ID) ? '⭐' : '☆'}
+              </Text>
             </TouchableOpacity>
-          ) : null
+            {selectedPages.length > 0 && (
+              <TouchableOpacity onPress={handleDeleteSelected}>
+                <Text style={{ color: colors.error }}>Delete ({selectedPages.length})</Text>
+              </TouchableOpacity>
+            )}
+          </View>
         }
       />
 
@@ -165,6 +178,8 @@ const OrganizeScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   scrollContent: { padding: Spacing.md },
+  headerActions: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
+  favoriteIcon: { fontSize: 22 },
   uploadArea: {
     alignItems: 'center',
     padding: Spacing.xl,
