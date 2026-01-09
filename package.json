@@ -1,6 +1,7 @@
 {
   "name": "PDFMasterPro",
   "version": "0.0.1",
+  "main": "index.js",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -17,6 +18,7 @@
     "@react-navigation/bottom-tabs": "^7.9.0",
     "@react-navigation/native": "^7.1.26",
     "@react-navigation/native-stack": "^7.9.0",
+    "expo": "^54.0.31",
     "react": "19.2.0",
     "react-native": "0.83.1",
     "react-native-gesture-handler": "^2.30.0",

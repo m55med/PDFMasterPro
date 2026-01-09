@@ -1,4 +1,30 @@
 {
   "name": "PDFMasterPro",
-  "displayName": "PDFMasterPro"
+  "displayName": "PDF Master Pro",
+  "expo": {
+    "name": "PDF Master Pro",
+    "slug": "pdf-master-pro",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "entryPoint": "./index.js",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#6366F1"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.pdfmasterpro.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#6366F1"
+      },
+      "package": "com.pdfmasterpro.app"
+    }
+  }
 }
