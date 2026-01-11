@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare PDFs - PDF Master Pro</title>
+    <link rel="stylesheet" href="../shared.css">
+    <style>
+        .compare-upload {
+            display: flex;
+            gap: 24px;
+            width: 100%;
+            max-width: 900px;
+            margin-top: 24px;
+        }
+
+        .upload-card {
+            flex: 1;
+            background: white;
+            border: 2px dashed #E2E8F0;
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upload-card:hover {
+            border-color: #2563EB;
+            background: #EFF6FF;
+        }
+
+        .upload-card.has-file {
+            border-style: solid;
+            border-color: #10B981;
+            background: #ECFDF5;
+        }
+
+        .upload-card h3 {
+            margin: 12px 0 4px;
+            font-size: 16px;
+        }
+
+        .upload-card p {
+            font-size: 13px;
+            color: #64748B;
+        }
+
+        .upload-card .file-name {
+            margin-top: 8px;
+            font-weight: 500;
+            color: #10B981;
+        }
+
+        .compare-view {
+            display: none;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 24px;
+        }
+
+        .compare-view.active {
+            display: block;
+        }
+
+        .view-controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .view-btn {
+            padding: 10px 20px;
+            border: 1px solid #E2E8F0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .view-btn.active {
+            background: #2563EB;
+            color: white;
+            border-color: #2563EB;
+        }
+
+        .side-by-side {
+            display: flex;
+            gap: 20px;
+        }
+
+        .pdf-panel {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .pdf-panel h4 {
+            font-size: 14px;
+            color: #64748B;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .pdf-panel canvas {
+            width: 100%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .overlay-view {
+            display: none;
+            position: relative;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .overlay-view.active {
+            display: block;
+        }
+
+        .overlay-view canvas {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .page-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .page-nav button {
+            padding: 10px 16px;
+            border: 1px solid #E2E8F0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .page-nav button:disabled {
+            opacity: 0.5;
+        }
+
+        .diff-indicator {
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .diff-indicator.same {
+            background: #ECFDF5;
+            color: #059669;
+        }
+
+        .diff-indicator.different {
+            background: #FEF2F2;
+            color: #DC2626;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="tool-header">
+        <a href="../../dashboard/index.html" class="back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            Back to Dashboard
+        </a>
+        <div class="tool-title">Compare PDFs</div>
+        <div class="tool-actions">
+            <button class="btn btn-primary" id="compareBtn" disabled>Compare</button>
+        </div>
+    </header>
+
+    <main class="tool-container">
+        <div class="compare-upload" id="uploadSection">
+            <div class="upload-card" id="uploadCard1">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                </svg>
+                <h3>First PDF</h3>
+                <p>Click to select</p>
+                <div class="file-name" id="fileName1"></div>
+                <input type="file" id="fileInput1" accept=".pdf" hidden>
+            </div>
+
+            <div class="upload-card" id="uploadCard2">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                </svg>
+                <h3>Second PDF</h3>
+                <p>Click to select</p>
+                <div class="file-name" id="fileName2"></div>
+                <input type="file" id="fileInput2" accept=".pdf" hidden>
+            </div>
+        </div>
+
+        <div class="compare-view" id="compareView">
+            <div class="diff-indicator" id="diffIndicator"></div>
+
+            <div class="view-controls">
+                <button class="view-btn active" data-view="side">Side by Side</button>
+                <button class="view-btn" data-view="overlay">Overlay</button>
+            </div>
+
+            <div class="side-by-side" id="sideBySide">
+                <div class="pdf-panel">
+                    <h4 id="title1">Document 1</h4>
+                    <canvas id="canvas1"></canvas>
+                </div>
+                <div class="pdf-panel">
+                    <h4 id="title2">Document 2</h4>
+                    <canvas id="canvas2"></canvas>
+                </div>
+            </div>
+
+            <div class="overlay-view" id="overlayView">
+                <canvas id="overlayCanvas"></canvas>
+            </div>
+
+            <div class="page-nav">
+                <button id="prevPage">&lt; Previous</button>
+                <span id="pageInfo">Page 1 of 1</span>
+                <button id="nextPage">Next &gt;</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="../../lib/pdf.min.js"></script>
+    <script src="compare.js" type="module"></script>
+</body>
+
+</html>

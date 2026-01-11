@@ -64,7 +64,7 @@ class ImageToPDF {
 
             // Attach remove handlers
             grid.querySelectorAll('.remove-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
+                btn.addEventListener('click', () => {
                     this.remove(btn.dataset.index);
                 });
             });

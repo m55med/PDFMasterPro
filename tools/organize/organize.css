@@ -1,13 +1,109 @@
+/* Organize Page Specific Styles */
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-body, #F3F4F6);
+}
+
+.header {
+    height: 64px;
+    background: white;
+    border-bottom: 1px solid var(--border, #E2E8F0);
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    gap: 24px;
+}
+
+.header .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted, #64748B);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.header .back-btn:hover {
+    color: var(--primary, #2563EB);
+}
+
+.tool-info h1 {
+    font-size: 18px;
+    margin: 0;
+    color: var(--text-main, #0F172A);
+}
+
+.tool-info p {
+    font-size: 13px;
+    margin: 0;
+    color: var(--text-muted, #64748B);
+}
+
+.upload-section,
+.editor-section,
+.processing-section,
+.result-section {
+    flex: 1;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.upload-area {
+    width: 100%;
+    max-width: 600px;
+    border: 2px dashed var(--border, #E2E8F0);
+    border-radius: 16px;
+    padding: 60px 40px;
+    text-align: center;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-area:hover,
+.upload-area.drag-over {
+    border-color: var(--primary, #2563EB);
+    background: var(--primary-light, #EFF6FF);
+}
+
+.upload-area svg {
+    color: var(--text-muted, #64748B);
+    margin-bottom: 16px;
+}
+
+.upload-area h3 {
+    margin: 0 0 8px;
+    color: var(--text-main, #0F172A);
+}
+
+.upload-area p {
+    margin: 0;
+    color: var(--text-muted, #64748B);
+}
+
+.editor-section {
+    align-items: stretch;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
 .editor-toolbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 16px;
-    background: var(--bg-card);
-    border-radius: var(--radius);
+    background: var(--bg-card, white);
+    border-radius: var(--radius, 8px);
     margin-bottom: 24px;
     flex-wrap: wrap;
     gap: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .toolbar-left {
@@ -216,6 +312,201 @@
 .page-item.drag-over {
     border-color: var(--primary);
     border-style: dashed;
+}
+
+/* Processing Section */
+.processing-section {
+    justify-content: center;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--border, #E2E8F0);
+    border-top-color: var(--primary, #2563EB);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 24px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.processing-section h3 {
+    margin: 0 0 8px;
+    color: var(--text-main, #0F172A);
+}
+
+.processing-section p {
+    margin: 0;
+    color: var(--text-muted, #64748B);
+}
+
+/* Result Section */
+.result-section {
+    justify-content: center;
+}
+
+.success-card {
+    background: white;
+    border-radius: 20px;
+    padding: 48px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+    animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.success-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+    animation: bounceIn 0.5s ease 0.2s both;
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.success-card h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #0F172A;
+}
+
+.result-message {
+    margin: 0 0 24px;
+    color: #64748B;
+    font-size: 15px;
+}
+
+.result-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 20px;
+    background: #F8FAFC;
+    border-radius: 12px;
+    margin-bottom: 32px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.stat-icon {
+    font-size: 24px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #64748B;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0F172A;
+}
+
+.stat-arrow {
+    font-size: 24px;
+    color: #CBD5E1;
+}
+
+.result-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.result-actions .btn-primary,
+.result-actions .btn-secondary {
+    width: 100%;
+    justify-content: center;
+}
+
+.download-btn {
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+    padding: 14px 24px;
+    font-size: 16px;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+}
+
+.btn-primary {
+    padding: 12px 24px;
+    background: var(--primary, #2563EB);
+    color: white;
+    border: none;
+    border-radius: var(--radius, 8px);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark, #1D4ED8);
+}
+
+.btn-secondary {
+    padding: 12px 24px;
+    background: white;
+    color: var(--text-main, #0F172A);
+    border: 1px solid var(--border, #E2E8F0);
+    border-radius: var(--radius, 8px);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+    border-color: var(--primary, #2563EB);
+    color: var(--primary, #2563EB);
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 24px;
 }
 
 @media (max-width: 768px) {

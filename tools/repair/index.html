@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repair PDF - PDF Master Pro</title>
+    <link rel="stylesheet" href="../shared.css">
+    <style>
+        .repair-container {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 24px;
+        }
+
+        .file-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .file-icon {
+            width: 48px;
+            height: 48px;
+            background: #FEF2F2;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .file-icon svg {
+            color: #EF4444;
+        }
+
+        .file-details {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .file-size {
+            font-size: 13px;
+            color: #64748B;
+        }
+
+        .status-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .status-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+
+        .status-icon.loading {
+            background: #EFF6FF;
+        }
+
+        .status-icon.success {
+            background: #ECFDF5;
+        }
+
+        .status-icon.error {
+            background: #FEF2F2;
+        }
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid #E2E8F0;
+            border-top-color: #2563EB;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .status-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .status-message {
+            color: #64748B;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .repair-options {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #F1F5F9;
+        }
+
+        .option-item:last-child {
+            border-bottom: none;
+        }
+
+        .option-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        .option-label {
+            flex: 1;
+        }
+
+        .option-label span {
+            display: block;
+            font-weight: 500;
+        }
+
+        .option-label small {
+            color: #64748B;
+            font-size: 12px;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="tool-header">
+        <a href="../../dashboard/index.html" class="back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            Back to Dashboard
+        </a>
+        <div class="tool-title">Repair PDF</div>
+        <div class="tool-actions">
+            <button class="btn btn-primary" id="repairBtn" disabled>Repair PDF</button>
+        </div>
+    </header>
+
+    <main class="tool-container">
+        <div class="upload-box" id="uploadArea">
+            <div class="icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                </svg>
+            </div>
+            <h3>Select Corrupted PDF</h3>
+            <p>We'll try to fix and recover your file</p>
+        </div>
+
+        <div class="repair-container hidden" id="repairContainer">
+            <div class="file-card" id="fileCard">
+                <div class="file-info">
+                    <div class="file-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                        </svg>
+                    </div>
+                    <div class="file-details">
+                        <div class="file-name" id="fileName">document.pdf</div>
+                        <div class="file-size" id="fileSize">0 KB</div>
+                    </div>
+                    <button class="remove-btn" id="removeBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="repair-options" id="repairOptions">
+                <div class="option-item">
+                    <input type="checkbox" id="optRestructure" checked>
+                    <div class="option-label">
+                        <span>Restructure Document</span>
+                        <small>Rebuild PDF structure and object references</small>
+                    </div>
+                </div>
+                <div class="option-item">
+                    <input type="checkbox" id="optRecoverPages" checked>
+                    <div class="option-label">
+                        <span>Recover Pages</span>
+                        <small>Attempt to recover all readable pages</small>
+                    </div>
+                </div>
+                <div class="option-item">
+                    <input type="checkbox" id="optRemoveCorrupted" checked>
+                    <div class="option-label">
+                        <span>Remove Corrupted Elements</span>
+                        <small>Skip unreadable content to save the rest</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-card hidden" id="statusCard">
+                <div class="status-icon loading" id="statusIcon">
+                    <div class="spinner"></div>
+                </div>
+                <div class="status-title" id="statusTitle">Repairing...</div>
+                <div class="status-message" id="statusMessage">Analyzing PDF structure</div>
+                <div class="result-actions hidden" id="resultActions">
+                    <button class="btn btn-secondary" id="tryAgainBtn">Try Again</button>
+                    <button class="btn btn-primary" id="downloadBtn">Download</button>
+                </div>
+            </div>
+        </div>
+
+        <input type="file" id="fileInput" accept=".pdf" hidden>
+    </main>
+
+    <script src="../../lib/pdf-lib.min.js"></script>
+    <script src="repair.js" type="module"></script>
+</body>
+
+</html>

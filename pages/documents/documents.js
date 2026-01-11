@@ -248,7 +248,9 @@ class DocumentsPage {
         }
 
         try {
-            await storage.deleteHistoryItem(docId);
+            // Delete from both files and history
+            await storage.deleteFile(docId);
+            await storage.deleteHistoryEntry(docId);
             await this.loadDocuments();
             this.renderDocuments();
         } catch (error) {

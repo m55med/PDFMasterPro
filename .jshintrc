@@ -1,0 +1,19 @@
+{
+    "esversion": 11,
+    "browser": true,
+    "devel": true,
+    "module": true,
+    "strict": false,
+    "undef": true,
+    "unused": true,
+    "globals": {
+        "PDFLib": true,
+        "pdfjsLib": true,
+        "mammoth": true,
+        "Tesseract": true,
+        "chrome": true,
+        "Sortable": true,
+        "indexedDB": true,
+        "IDBKeyRange": true
+    }
+}
