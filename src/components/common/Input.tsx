@@ -36,7 +36,7 @@ export const Input: React.FC<InputProps> = ({
   secureTextEntry,
   ...props
 }) => {
-  const { colors, isDark } = useTheme();
+  const { colors } = useTheme();
   const [isFocused, setIsFocused] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 

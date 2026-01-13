@@ -11,30 +11,41 @@ import { useTheme, useLanguage } from '../../context';
 import { Header } from '../../components/common';
 import { Typography, Spacing } from '../../constants/theme';
 
+interface SectionProps {
+  title: string;
+  content: string;
+  colors: { textPrimary: string; textSecondary: string };
+}
+
+const Section: React.FC<SectionProps> = ({ title, content, colors }) => (
+  <View style={styles.section}>
+    <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>
+      {title}
+    </Text>
+    <Text style={[styles.sectionContent, { color: colors.textSecondary }]}>
+      {content}
+    </Text>
+  </View>
+);
+
+interface BulletPointProps {
+  text: string;
+  colors: { primary: string; textSecondary: string };
+}
+
+const BulletPoint: React.FC<BulletPointProps> = ({ text, colors }) => (
+  <View style={styles.bulletPoint}>
+    <Text style={[styles.bullet, { color: colors.primary }]}>•</Text>
+    <Text style={[styles.bulletText, { color: colors.textSecondary }]}>
+      {text}
+    </Text>
+  </View>
+);
+
 const PrivacyPolicyScreen: React.FC = () => {
   const { colors } = useTheme();
-  const { t, isRTL } = useLanguage();
+  const { t } = useLanguage();
   const insets = useSafeAreaInsets();
-
-  const Section: React.FC<{ title: string; content: string }> = ({ title, content }) => (
-    <View style={styles.section}>
-      <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>
-        {title}
-      </Text>
-      <Text style={[styles.sectionContent, { color: colors.textSecondary }]}>
-        {content}
-      </Text>
-    </View>
-  );
-
-  const BulletPoint: React.FC<{ text: string }> = ({ text }) => (
-    <View style={styles.bulletPoint}>
-      <Text style={[styles.bullet, { color: colors.primary }]}>•</Text>
-      <Text style={[styles.bulletText, { color: colors.textSecondary }]}>
-        {text}
-      </Text>
-    </View>
-  );
 
   return (
     <View style={[styles.container, { backgroundColor: colors.bgWhite }]}>
@@ -61,72 +72,82 @@ const PrivacyPolicyScreen: React.FC = () => {
         <Section
           title={t.legal.infoCollectTitle}
           content={t.legal.infoCollectContent}
+          colors={colors}
         />
 
         <View style={styles.bulletList}>
-          <BulletPoint text={t.legal.infoCollect1} />
-          <BulletPoint text={t.legal.infoCollect2} />
-          <BulletPoint text={t.legal.infoCollect3} />
-          <BulletPoint text={t.legal.infoCollect4} />
+          <BulletPoint text={t.legal.infoCollect1} colors={colors} />
+          <BulletPoint text={t.legal.infoCollect2} colors={colors} />
+          <BulletPoint text={t.legal.infoCollect3} colors={colors} />
+          <BulletPoint text={t.legal.infoCollect4} colors={colors} />
         </View>
 
         <Section
           title={t.legal.howWeUseTitle}
           content={t.legal.howWeUseContent}
+          colors={colors}
         />
 
         <View style={styles.bulletList}>
-          <BulletPoint text={t.legal.howWeUse1} />
-          <BulletPoint text={t.legal.howWeUse2} />
-          <BulletPoint text={t.legal.howWeUse3} />
-          <BulletPoint text={t.legal.howWeUse4} />
+          <BulletPoint text={t.legal.howWeUse1} colors={colors} />
+          <BulletPoint text={t.legal.howWeUse2} colors={colors} />
+          <BulletPoint text={t.legal.howWeUse3} colors={colors} />
+          <BulletPoint text={t.legal.howWeUse4} colors={colors} />
         </View>
 
         <Section
           title={t.legal.dataSharingTitle}
           content={t.legal.dataSharingContent}
+          colors={colors}
         />
 
         <Section
           title={t.legal.dataSecurityTitle}
           content={t.legal.dataSecurityContent}
+          colors={colors}
         />
 
         <Section
           title={t.legal.dataRetentionTitle}
           content={t.legal.dataRetentionContent}
+          colors={colors}
         />
 
         <Section
           title={t.legal.yourRightsTitle}
           content={t.legal.yourRightsContent}
+          colors={colors}
         />
 
         <View style={styles.bulletList}>
-          <BulletPoint text={t.legal.yourRights1} />
-          <BulletPoint text={t.legal.yourRights2} />
-          <BulletPoint text={t.legal.yourRights3} />
-          <BulletPoint text={t.legal.yourRights4} />
+          <BulletPoint text={t.legal.yourRights1} colors={colors} />
+          <BulletPoint text={t.legal.yourRights2} colors={colors} />
+          <BulletPoint text={t.legal.yourRights3} colors={colors} />
+          <BulletPoint text={t.legal.yourRights4} colors={colors} />
         </View>
 
         <Section
           title={t.legal.cookiesTitle}
           content={t.legal.cookiesContent}
+          colors={colors}
         />
 
         <Section
           title={t.legal.childrenTitle}
           content={t.legal.childrenContent}
+          colors={colors}
         />
 
         <Section
           title={t.legal.changesPrivacyTitle}
           content={t.legal.changesPrivacyContent}
+          colors={colors}
         />
 
         <Section
           title={t.legal.contactPrivacyTitle}
           content={t.legal.contactPrivacyContent}
+          colors={colors}
         />
 
         {/* Footer */}

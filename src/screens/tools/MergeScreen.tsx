@@ -1,5 +1,5 @@
 // PDF Master Pro - Merge PDF Screen
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -7,13 +7,19 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  Platform,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Pdf from 'react-native-pdf';
+import Share from 'react-native-share';
 import { useTheme, useLanguage, useFavorites } from '../../context';
-import { Header, Button, Card } from '../../components/common';
-import { Typography, Spacing, BorderRadius, Shadow } from '../../constants/theme';
+import { Header, Button, Card, FilePickerModal } from '../../components/common';
+import { Typography, Spacing, BorderRadius } from '../../constants/theme';
 import { PDFFile } from '../../types/pdf';
+import { formatFileSize } from '../../services/pdfFileService';
+import { mergePDFs, getPDFPageCount } from '../../services/pdfManipulationService';
+import { useInterstitialAd } from '../../hooks';
 
 const TOOL_ID = 'merge';
 
@@ -23,53 +29,110 @@ const MergeScreen: React.FC = () => {
   const { t } = useLanguage();
   const { isFavorite, toggleFavorite } = useFavorites();
   const insets = useSafeAreaInsets();
+  const { showAdAfterOperation } = useInterstitialAd();
 
   const [files, setFiles] = useState<PDFFile[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showFilePicker, setShowFilePicker] = useState(false);
+  const [previewFileIndex, setPreviewFileIndex] = useState<number | null>(null);
 
   const handleSelectFiles = () => {
-    // TODO: Implement file picker
-    // For demo, add dummy files
-    const dummyFile: PDFFile = {
-      id: Date.now().toString(),
-      name: `Document_${files.length + 1}.pdf`,
-      uri: '',
-      size: Math.floor(Math.random() * 5000000),
-      type: 'application/pdf',
-      pageCount: Math.floor(Math.random() * 20) + 1,
-      createdAt: Date.now(),
-      modifiedAt: Date.now(),
-    };
-    setFiles([...files, dummyFile]);
+    setShowFilePicker(true);
   };
+
+  const handleFilesSelected = useCallback(async (selectedFiles: PDFFile[]) => {
+    // Add new files, avoiding duplicates by URI
+    const existingUris = new Set(files.map(f => f.uri));
+    const newFiles = selectedFiles.filter(f => !existingUris.has(f.uri));
+
+    // Get page count for each new file
+    const filesWithPageCount = await Promise.all(
+      newFiles.map(async (file) => {
+        const pageCount = await getPDFPageCount(file.uri);
+        return { ...file, pageCount };
+      })
+    );
+
+    setFiles([...files, ...filesWithPageCount]);
+  }, [files]);
 
   const handleRemoveFile = (id: string) => {
     setFiles(files.filter(f => f.id !== id));
+    if (previewFileIndex !== null) {
+      const removedIndex = files.findIndex(f => f.id === id);
+      if (removedIndex === previewFileIndex) {
+        setPreviewFileIndex(null);
+      } else if (removedIndex < previewFileIndex) {
+        setPreviewFileIndex(previewFileIndex - 1);
+      }
+    }
   };
 
   const handleMerge = async () => {
     if (files.length < 2) {
-      Alert.alert('Error', 'Please add at least 2 PDF files to merge');
+      Alert.alert('خطأ', 'يرجى إضافة ملفين PDF على الأقل للدمج');
       return;
     }
 
     setIsProcessing(true);
 
-    // Simulate processing
-    setTimeout(() => {
+    try {
+      const sourceUris = files.map(f => f.uri);
+      const outputFileName = 'merged.pdf';
+
+      const result = await mergePDFs(sourceUris, outputFileName);
+
+      if (result) {
+        // Show file browser for saving
+        const shareOptions = {
+          title: 'حفظ الملف المدمج',
+          url: Platform.OS === 'ios' ? result.uri : `file://${result.uri}`,
+          type: 'application/pdf',
+          filename: result.name,
+          saveToFiles: true,
+        };
+
+        try {
+          await Share.open(shareOptions);
+          // Show interstitial ad after successful operation
+          await showAdAfterOperation();
+          Alert.alert(
+            t.common.success,
+            `تم دمج ${files.length} ملفات بنجاح!\nإجمالي الصفحات: ${result.pageCount}`,
+            [{ text: 'حسناً', onPress: () => navigation.goBack() }]
+          );
+        } catch (shareError: any) {
+          if (shareError.message !== 'User did not share') {
+            console.log('Share cancelled:', shareError);
+          }
+          // Show interstitial ad after successful operation
+          await showAdAfterOperation();
+          Alert.alert(
+            t.common.success,
+            'تم دمج الملفات بنجاح!\nيمكنك العثور على الملف في ملفات التطبيق.',
+            [{ text: 'حسناً', onPress: () => navigation.goBack() }]
+          );
+        }
+      } else {
+        Alert.alert('خطأ', 'فشل في دمج الملفات');
+      }
+    } catch (error) {
+      console.error('Error merging PDFs:', error);
+      Alert.alert('خطأ', 'حدث خطأ أثناء دمج الملفات');
+    } finally {
       setIsProcessing(false);
-      Alert.alert(
-        t.common.success,
-        t.tools.merge.mergeSuccess,
-        [{ text: 'OK', onPress: () => navigation.goBack() }]
-      );
-    }, 2000);
+    }
   };
 
-  const formatSize = (bytes: number): string => {
-    if (bytes < 1024) return `${bytes} B`;
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  const moveFile = (fromIndex: number, toIndex: number) => {
+    const newFiles = [...files];
+    const [movedFile] = newFiles.splice(fromIndex, 1);
+    newFiles.splice(toIndex, 0, movedFile);
+    setFiles(newFiles);
+  };
+
+  const getTotalPages = () => {
+    return files.reduce((sum, file) => sum + (file.pageCount || 0), 0);
   };
 
   return (
@@ -88,13 +151,6 @@ const MergeScreen: React.FC = () => {
                 {isFavorite(TOOL_ID) ? '⭐' : '☆'}
               </Text>
             </TouchableOpacity>
-            {files.length >= 2 && (
-              <TouchableOpacity onPress={handleMerge}>
-                <Text style={[styles.mergeButton, { color: colors.primary }]}>
-                  Merge
-                </Text>
-              </TouchableOpacity>
-            )}
           </View>
         }
       />
@@ -121,35 +177,97 @@ const MergeScreen: React.FC = () => {
             {t.tools.merge.addFiles}
           </Text>
           <Text style={[styles.uploadSubtitle, { color: colors.textSecondary }]}>
-            Tap to select PDF files
+            اضغط لاختيار ملفات PDF
           </Text>
         </TouchableOpacity>
+
+        {/* Files Summary */}
+        {files.length > 0 && (
+          <View style={[styles.summaryCard, { backgroundColor: colors.bgWhite }]}>
+            <View style={styles.summaryRow}>
+              <View style={[styles.summaryChip, { backgroundColor: colors.primaryLight }]}>
+                <Text style={[styles.summaryChipText, { color: colors.primary }]}>
+                  📄 {files.length} ملفات
+                </Text>
+              </View>
+              <View style={[styles.summaryChip, { backgroundColor: colors.success + '20' }]}>
+                <Text style={[styles.summaryChipText, { color: colors.success }]}>
+                  📑 {getTotalPages()} صفحة
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => setFiles([])}
+                style={[styles.clearButton, { backgroundColor: colors.error + '20' }]}
+              >
+                <Text style={[styles.clearButtonText, { color: colors.error }]}>
+                  مسح الكل
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+
+        {/* PDF Preview */}
+        {previewFileIndex !== null && files[previewFileIndex] && (
+          <View style={[styles.previewSection, { backgroundColor: colors.bgWhite }]}>
+            <View style={styles.previewHeader}>
+              <Text style={[styles.previewTitle, { color: colors.textPrimary }]}>
+                معاينة: {files[previewFileIndex].name}
+              </Text>
+              <TouchableOpacity onPress={() => setPreviewFileIndex(null)}>
+                <Text style={{ color: colors.error, fontSize: 18 }}>✕</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.pdfPreviewContainer}>
+              <Pdf
+                source={{ uri: files[previewFileIndex].uri }}
+                style={styles.pdfPreview}
+                onError={(error) => console.log('PDF Error:', error)}
+              />
+            </View>
+          </View>
+        )}
 
         {/* Files List */}
         {files.length > 0 && (
           <View style={styles.filesSection}>
-            <View style={styles.filesHeader}>
-              <Text style={[styles.filesTitle, { color: colors.textPrimary }]}>
-                Selected Files ({files.length})
-              </Text>
-              {files.length > 0 && (
-                <TouchableOpacity onPress={() => setFiles([])}>
-                  <Text style={[styles.clearAll, { color: colors.error }]}>
-                    {t.common.clearAll}
-                  </Text>
-                </TouchableOpacity>
-              )}
-            </View>
+            <Text style={[styles.filesTitle, { color: colors.textPrimary }]}>
+              ترتيب الدمج (اسحب لتغيير الترتيب)
+            </Text>
 
             {files.map((file, index) => (
               <Card key={file.id} style={styles.fileCard}>
                 <View style={styles.fileInfo}>
-                  <View style={styles.dragHandle}>
-                    <Text style={{ color: colors.textLight }}>≡</Text>
+                  <View style={styles.orderControls}>
+                    <TouchableOpacity
+                      onPress={() => index > 0 && moveFile(index, index - 1)}
+                      disabled={index === 0}
+                      style={[styles.orderButton, { opacity: index === 0 ? 0.3 : 1 }]}
+                    >
+                      <Text style={{ color: colors.textSecondary }}>▲</Text>
+                    </TouchableOpacity>
+                    <View style={[styles.orderBadge, { backgroundColor: colors.primary }]}>
+                      <Text style={styles.orderNumber}>{index + 1}</Text>
+                    </View>
+                    <TouchableOpacity
+                      onPress={() => index < files.length - 1 && moveFile(index, index + 1)}
+                      disabled={index === files.length - 1}
+                      style={[styles.orderButton, { opacity: index === files.length - 1 ? 0.3 : 1 }]}
+                    >
+                      <Text style={{ color: colors.textSecondary }}>▼</Text>
+                    </TouchableOpacity>
                   </View>
-                  <View style={[styles.fileIcon, { backgroundColor: colors.primaryLight }]}>
+
+                  <TouchableOpacity
+                    style={[styles.fileIcon, { backgroundColor: colors.primaryLight }]}
+                    onPress={() => setPreviewFileIndex(index)}
+                  >
                     <Text>📄</Text>
-                  </View>
+                    <View style={[styles.previewBadge, { backgroundColor: colors.primary }]}>
+                      <Text style={styles.previewBadgeText}>👁</Text>
+                    </View>
+                  </TouchableOpacity>
+
                   <View style={styles.fileDetails}>
                     <Text
                       style={[styles.fileName, { color: colors.textPrimary }]}
@@ -158,21 +276,22 @@ const MergeScreen: React.FC = () => {
                       {file.name}
                     </Text>
                     <Text style={[styles.fileSize, { color: colors.textSecondary }]}>
-                      {formatSize(file.size)} • {file.pageCount} pages
+                      {formatFileSize(file.size)} • {file.pageCount || '?'} صفحات
                     </Text>
                   </View>
+
                   <TouchableOpacity
                     onPress={() => handleRemoveFile(file.id)}
                     style={styles.removeButton}
                   >
-                    <Text style={{ color: colors.error, fontSize: 18 }}>✕</Text>
+                    <Text style={[styles.removeIcon, { color: colors.error }]}>✕</Text>
                   </TouchableOpacity>
                 </View>
               </Card>
             ))}
 
             <Text style={[styles.hint, { color: colors.textSecondary }]}>
-              💡 {t.tools.merge.dragToReorder}
+              💡 اضغط على أيقونة الملف لمعاينته
             </Text>
           </View>
         )}
@@ -180,17 +299,35 @@ const MergeScreen: React.FC = () => {
         {/* Merge Button */}
         {files.length >= 2 && (
           <Button
-            title={t.tools.merge.mergeButton}
+            title={`🔗 دمج ${files.length} ملفات (${getTotalPages()} صفحة)`}
             onPress={handleMerge}
             loading={isProcessing}
             fullWidth
             size="lg"
-            icon={<Text>🔗</Text>}
           />
+        )}
+
+        {/* Info Card */}
+        {files.length < 2 && (
+          <Card style={styles.infoCard}>
+            <Text style={styles.infoIcon}>ℹ️</Text>
+            <Text style={[styles.infoText, { color: colors.textSecondary }]}>
+              اختر ملفين PDF على الأقل لدمجهما في ملف واحد
+            </Text>
+          </Card>
         )}
 
         <View style={{ height: insets.bottom + 100 }} />
       </ScrollView>
+
+      {/* File Picker Modal */}
+      <FilePickerModal
+        visible={showFilePicker}
+        onClose={() => setShowFilePicker(false)}
+        onFilesSelected={handleFilesSelected}
+        allowMultiple={true}
+        selectedFiles={files}
+      />
     </View>
   );
 };
@@ -213,10 +350,6 @@ const styles = StyleSheet.create({
   favoriteIcon: {
     fontSize: 22,
   },
-  mergeButton: {
-    fontSize: Typography.fontSize.base,
-    fontWeight: Typography.fontWeight.semiBold,
-  },
   uploadArea: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -224,7 +357,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderStyle: 'dashed',
     borderRadius: BorderRadius.lg,
-    marginBottom: Spacing.lg,
+    marginBottom: Spacing.md,
   },
   uploadIconContainer: {
     width: 64,
@@ -245,22 +378,66 @@ const styles = StyleSheet.create({
   uploadSubtitle: {
     fontSize: Typography.fontSize.sm,
   },
-  filesSection: {
-    marginBottom: Spacing.lg,
+  summaryCard: {
+    padding: Spacing.md,
+    borderRadius: BorderRadius.lg,
+    marginBottom: Spacing.md,
   },
-  filesHeader: {
+  summaryRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+  },
+  summaryChip: {
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: Spacing.xs,
+    borderRadius: BorderRadius.full,
+  },
+  summaryChipText: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.semiBold,
+  },
+  clearButton: {
+    marginLeft: 'auto',
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: Spacing.xs,
+    borderRadius: BorderRadius.full,
+  },
+  clearButtonText: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.medium,
+  },
+  previewSection: {
+    borderRadius: BorderRadius.lg,
+    marginBottom: Spacing.md,
+    overflow: 'hidden',
+  },
+  previewHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: Spacing.md,
+    padding: Spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E5E5',
+  },
+  previewTitle: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.medium,
+  },
+  pdfPreviewContainer: {
+    height: 250,
+  },
+  pdfPreview: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  filesSection: {
+    marginBottom: Spacing.lg,
   },
   filesTitle: {
     fontSize: Typography.fontSize.base,
     fontWeight: Typography.fontWeight.semiBold,
-  },
-  clearAll: {
-    fontSize: Typography.fontSize.sm,
-    fontWeight: Typography.fontWeight.medium,
+    marginBottom: Spacing.md,
   },
   fileCard: {
     marginBottom: Spacing.sm,
@@ -269,16 +446,47 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  dragHandle: {
-    paddingHorizontal: Spacing.sm,
+  orderControls: {
+    alignItems: 'center',
+    paddingRight: Spacing.sm,
+  },
+  orderButton: {
+    padding: 4,
+  },
+  orderBadge: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 2,
+  },
+  orderNumber: {
+    color: '#FFFFFF',
+    fontSize: Typography.fontSize.xs,
+    fontWeight: Typography.fontWeight.bold,
   },
   fileIcon: {
-    width: 40,
-    height: 40,
+    width: 48,
+    height: 48,
     borderRadius: BorderRadius.md,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: Spacing.md,
+    position: 'relative',
+  },
+  previewBadge: {
+    position: 'absolute',
+    bottom: -4,
+    right: -4,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  previewBadgeText: {
+    fontSize: 10,
   },
   fileDetails: {
     flex: 1,
@@ -294,10 +502,27 @@ const styles = StyleSheet.create({
   removeButton: {
     padding: Spacing.sm,
   },
+  removeIcon: {
+    fontSize: 18,
+  },
   hint: {
     fontSize: Typography.fontSize.sm,
     textAlign: 'center',
     marginTop: Spacing.sm,
+  },
+  infoCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: Spacing.md,
+  },
+  infoIcon: {
+    fontSize: 24,
+    marginRight: Spacing.md,
+  },
+  infoText: {
+    flex: 1,
+    fontSize: Typography.fontSize.sm,
+    lineHeight: 20,
   },
 });
 

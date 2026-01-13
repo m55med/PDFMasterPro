@@ -8,6 +8,9 @@ import {
   TouchableOpacity,
   Switch,
   Alert,
+  Linking,
+  Share,
+  Platform,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -17,10 +20,72 @@ import { Typography, Spacing, BorderRadius } from '../../constants/theme';
 import { LANGUAGES } from '../../constants/config';
 import { LanguageCode } from '../../i18n';
 
+// App Store URLs (replace with real URLs when published)
+const APP_STORE_URL = 'https://apps.apple.com/app/pdf-master-pro/id123456789';
+const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.pdfmasterpro';
+
+interface SettingsItemProps {
+  icon: string;
+  title: string;
+  value?: string;
+  onPress?: () => void;
+  rightComponent?: React.ReactNode;
+  showArrow?: boolean;
+  colors: {
+    textPrimary: string;
+    textSecondary: string;
+    textLight: string;
+  };
+}
+
+const SettingsItem: React.FC<SettingsItemProps> = ({
+  icon,
+  title,
+  value,
+  onPress,
+  rightComponent,
+  showArrow = true,
+  colors,
+}) => (
+  <TouchableOpacity
+    style={styles.settingsItem}
+    onPress={onPress}
+    disabled={!onPress}
+    activeOpacity={onPress ? 0.7 : 1}
+  >
+    <Text style={styles.settingsIcon}>{icon}</Text>
+    <View style={styles.settingsInfo}>
+      <Text style={[styles.settingsTitle, { color: colors.textPrimary }]}>
+        {title}
+      </Text>
+      {value && (
+        <Text style={[styles.settingsValue, { color: colors.textSecondary }]}>
+          {value}
+        </Text>
+      )}
+    </View>
+    {rightComponent}
+    {!rightComponent && onPress && showArrow && (
+      <Text style={[styles.arrow, { color: colors.textLight }]}>→</Text>
+    )}
+  </TouchableOpacity>
+);
+
+interface SectionTitleProps {
+  title: string;
+  colors: { textSecondary: string };
+}
+
+const SectionTitle: React.FC<SectionTitleProps> = ({ title, colors }) => (
+  <Text style={[styles.sectionTitle, { color: colors.textSecondary }]}>
+    {title}
+  </Text>
+);
+
 const SettingsScreen: React.FC = () => {
   const navigation = useNavigation<any>();
   const { colors, isDark, toggleTheme } = useTheme();
-  const { t, language, setLanguage, isRTL } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
   const { user, logout } = useAuth();
   const { storageLimit, isPro } = useSubscription();
   const { storageInfo } = useStorage();
@@ -82,43 +147,43 @@ const SettingsScreen: React.FC = () => {
     );
   };
 
-  const SettingsItem: React.FC<{
-    icon: string;
-    title: string;
-    value?: string;
-    onPress?: () => void;
-    rightComponent?: React.ReactNode;
-    showArrow?: boolean;
-  }> = ({ icon, title, value, onPress, rightComponent, showArrow = true }) => (
-    <TouchableOpacity
-      style={styles.settingsItem}
-      onPress={onPress}
-      disabled={!onPress}
-      activeOpacity={onPress ? 0.7 : 1}
-    >
-      <Text style={styles.settingsIcon}>{icon}</Text>
-      <View style={styles.settingsInfo}>
-        <Text style={[styles.settingsTitle, { color: colors.textPrimary }]}>
-          {title}
-        </Text>
-        {value && (
-          <Text style={[styles.settingsValue, { color: colors.textSecondary }]}>
-            {value}
-          </Text>
-        )}
-      </View>
-      {rightComponent}
-      {!rightComponent && onPress && showArrow && (
-        <Text style={[styles.arrow, { color: colors.textLight }]}>→</Text>
-      )}
-    </TouchableOpacity>
-  );
+  const handleRateApp = () => {
+    const storeUrl = Platform.OS === 'ios' ? APP_STORE_URL : PLAY_STORE_URL;
+    Linking.openURL(storeUrl).catch(() => {
+      Alert.alert(
+        language === 'ar' ? 'خطأ' : 'Error',
+        language === 'ar' ? 'لا يمكن فتح المتجر' : 'Cannot open store'
+      );
+    });
+  };
 
-  const SectionTitle: React.FC<{ title: string }> = ({ title }) => (
-    <Text style={[styles.sectionTitle, { color: colors.textSecondary }]}>
-      {title}
-    </Text>
-  );
+  const handleShareApp = async () => {
+    try {
+      const storeUrl = Platform.OS === 'ios' ? APP_STORE_URL : PLAY_STORE_URL;
+      const message = language === 'ar'
+        ? `جرب تطبيق PDF Master Pro - أفضل تطبيق لإدارة ملفات PDF! ${storeUrl}`
+        : `Check out PDF Master Pro - The best PDF management app! ${storeUrl}`;
+
+      await Share.share({
+        message,
+        url: storeUrl,
+      });
+    } catch (error) {
+      console.error('Share error:', error);
+    }
+  };
+
+  const handleFeedback = () => {
+    navigation.navigate('Feedback');
+  };
+
+  const handlePrivacyPolicy = () => {
+    navigation.navigate('PrivacyPolicy');
+  };
+
+  const handleTermsOfService = () => {
+    navigation.navigate('TermsOfService');
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: colors.bgGray }]}>
@@ -135,19 +200,21 @@ const SettingsScreen: React.FC = () => {
         </Text>
 
         {/* Account Section */}
-        <SectionTitle title={t.settings.account} />
+        <SectionTitle title={t.settings.account} colors={colors} />
         <Card style={styles.section}>
           <SettingsItem
             icon="👤"
             title={t.settings.profile}
             value={user?.email || 'Not signed in'}
             onPress={() => navigation.navigate('Profile')}
+            colors={colors}
           />
           <View style={[styles.divider, { backgroundColor: colors.border }]} />
           <SettingsItem
             icon="🔒"
             title={t.settings.changePassword}
             onPress={() => {}}
+            colors={colors}
           />
           <View style={[styles.divider, { backgroundColor: colors.border }]} />
           <SettingsItem
@@ -155,11 +222,12 @@ const SettingsScreen: React.FC = () => {
             title={t.auth.logout}
             onPress={handleLogout}
             showArrow={false}
+            colors={colors}
           />
         </Card>
 
         {/* Preferences Section */}
-        <SectionTitle title={t.settings.preferences} />
+        <SectionTitle title={t.settings.preferences} colors={colors} />
         <Card style={styles.section}>
           <SettingsItem
             icon="🌙"
@@ -172,6 +240,7 @@ const SettingsScreen: React.FC = () => {
                 thumbColor="#FFFFFF"
               />
             }
+            colors={colors}
           />
           <View style={[styles.divider, { backgroundColor: colors.border }]} />
           <SettingsItem
@@ -179,6 +248,7 @@ const SettingsScreen: React.FC = () => {
             title={t.settings.language}
             value={LANGUAGES.find(l => l.code === language)?.nativeName || 'English'}
             onPress={handleLanguageChange}
+            colors={colors}
           />
           <View style={[styles.divider, { backgroundColor: colors.border }]} />
           <SettingsItem
@@ -192,50 +262,67 @@ const SettingsScreen: React.FC = () => {
                 thumbColor="#FFFFFF"
               />
             }
+            colors={colors}
           />
         </Card>
 
         {/* About Section */}
-        <SectionTitle title={t.settings.about} />
+        <SectionTitle title={t.settings.about} colors={colors} />
         <Card style={styles.section}>
           <SettingsItem
             icon="ℹ️"
             title={t.settings.version}
             value="1.0.0"
             showArrow={false}
+            colors={colors}
           />
           <View style={[styles.divider, { backgroundColor: colors.border }]} />
           <SettingsItem
             icon="⭐"
             title={t.settings.rateApp}
-            onPress={() => {}}
+            onPress={handleRateApp}
+            colors={colors}
           />
           <View style={[styles.divider, { backgroundColor: colors.border }]} />
           <SettingsItem
-            icon="📧"
-            title={t.settings.contactSupport}
-            onPress={() => {}}
+            icon="📤"
+            title={language === 'ar' ? 'مشاركة التطبيق' : 'Share App'}
+            onPress={handleShareApp}
+            colors={colors}
           />
           <View style={[styles.divider, { backgroundColor: colors.border }]} />
           <SettingsItem
-            icon="📋"
+            icon="💬"
+            title={language === 'ar' ? 'الملاحظات والدعم' : 'Feedback & Support'}
+            onPress={handleFeedback}
+            colors={colors}
+          />
+        </Card>
+
+        {/* Legal Section */}
+        <SectionTitle title={language === 'ar' ? 'قانوني' : 'Legal'} colors={colors} />
+        <Card style={styles.section}>
+          <SettingsItem
+            icon="🔒"
             title={t.settings.privacyPolicy}
-            onPress={() => {}}
+            onPress={handlePrivacyPolicy}
+            colors={colors}
           />
           <View style={[styles.divider, { backgroundColor: colors.border }]} />
           <SettingsItem
             icon="📋"
             title={t.settings.termsOfService}
-            onPress={() => {}}
+            onPress={handleTermsOfService}
+            colors={colors}
           />
         </Card>
 
         {/* Storage Section */}
-        <SectionTitle title={t.settings.storage} />
+        <SectionTitle title={t.settings.storage} colors={colors} />
         <Card style={styles.section}>
           <View style={styles.storageInfo}>
             <Text style={[styles.storageText, { color: colors.textPrimary }]}>
-              {t.settings.used || 'Used'}: {usedMB} MB / {limitMB} MB
+              Used: {usedMB} MB / {limitMB} MB
             </Text>
             <View style={[styles.storageBar, { backgroundColor: colors.border }]}>
               <View
@@ -247,7 +334,7 @@ const SettingsScreen: React.FC = () => {
             </View>
             {!isPro && (
               <Text style={[styles.upgradeHint, { color: colors.textSecondary }]}>
-                {t.subscription?.upgradeForMore || 'Upgrade to Pro for unlimited storage'}
+                Upgrade to Pro for unlimited storage
               </Text>
             )}
           </View>

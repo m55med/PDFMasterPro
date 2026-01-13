@@ -1,0 +1,18 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="mainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF5252;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D50000;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="100" fill="white" />
+  <rect x="106" y="86" width="300" height="380" rx="30" fill="url(#mainGrad)" filter="url(#shadow)" />
+  <path d="M356 86 L356 186 L406 186 Z" fill="#B71C1C" opacity="0.3" />
+  <path d="M356 186 L406 186 L406 436 C406 452.5 392.5 466 376 466 L136 466 C119.5 466 106 452.5 106 436 L106 116 C106 99.5 119.5 86 136 86 L356 86 Z" fill="transparent" />
+  
+  <!-- PDF Text or Symbol -->
+  <text x="256" y="320" font-family="Arial, sans-serif" font-weight="bold" font-size="120" fill="white" text-anchor="middle" letter-spacing="5">PDF</text>
+</svg>

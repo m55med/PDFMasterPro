@@ -1,0 +1,15 @@
+<svg width="1080" height="1920" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+  <!-- Camera View Background -->
+  <rect width="1080" height="1920" fill="#333" />
+  
+  <!-- Viewfinder -->
+  <rect x="100" y="300" width="880" height="1200" fill="none" stroke="#2196F3" stroke-width="10" stroke-dasharray="100 50" />
+  
+  <!-- Document Representation -->
+  <rect x="140" y="340" width="800" height="1120" fill="white" opacity="0.9" />
+  <text x="540" y="900" font-family="Arial" font-size="60" fill="#333" text-anchor="middle" opacity="0.5">Scanning Document...</text>
+  
+  <!-- Controls -->
+  <rect x="0" y="1600" width="1080" height="320" fill="black" opacity="0.8" />
+  <circle cx="540" cy="1760" r="80" fill="white" stroke="#ccc" stroke-width="10" />
+</svg>

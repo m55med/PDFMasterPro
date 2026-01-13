@@ -24,7 +24,7 @@ const LoginScreen: React.FC = () => {
   const navigation = useNavigation<LoginNavigationProp>();
   const { colors } = useTheme();
   const { t } = useLanguage();
-  const { login, googleSignIn, appleSignIn, isLoading, error } = useAuth();
+  const { login, googleSignIn, appleSignIn, isLoading } = useAuth();
   const insets = useSafeAreaInsets();
 
   const [email, setEmail] = useState('');

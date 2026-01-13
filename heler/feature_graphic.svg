@@ -1,0 +1,36 @@
+<svg width="1024" height="500" viewBox="0 0 1024 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF5252;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF1744;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="500" fill="url(#bg)" />
+  
+  <!-- Content -->
+  <text x="50" y="150" font-family="Arial, sans-serif" font-weight="bold" font-size="60" fill="white">PDFMasterPro</text>
+  <text x="50" y="220" font-family="Arial, sans-serif" font-size="30" fill="white" opacity="0.9">The Ultimate PDF Toolkit</text>
+  
+  <!-- Features List -->
+  <g transform="translate(50, 280)">
+    <circle cx="15" cy="15" r="8" fill="white"/>
+    <text x="40" y="25" font-family="Arial, sans-serif" font-size="24" fill="white">Merge &amp; Split</text>
+    
+    <circle cx="15" cy="65" r="8" fill="white"/>
+    <text x="40" y="75" font-family="Arial, sans-serif" font-size="24" fill="white">Scan &amp; OCR</text>
+    
+    <circle cx="15" cy="115" r="8" fill="white"/>
+    <text x="40" y="125" font-family="Arial, sans-serif" font-size="24" fill="white">Sign &amp; Protect</text>
+  </g>
+  
+  <!-- Mockup Graphic (Abstract Phone) -->
+  <rect x="650" y="50" width="220" height="400" rx="20" fill="white" opacity="0.2" transform="rotate(-10 760 250)" />
+  <rect x="700" y="80" width="220" height="400" rx="20" fill="white" transform="rotate(-10 810 280)">
+     <animate attributeName="y" values="80;70;80" dur="4s" repeatCount="indefinite" />
+  </rect>
+  
+  <!-- Inside Phone Screen -->
+  <g transform="translate(620, -70) rotate(-10 810 280)">
+      <text x="730" y="250" font-family="Arial" font-size="80" fill="#D50000" font-weight="bold">PDF</text>
+  </g>
+</svg>

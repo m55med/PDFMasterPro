@@ -22,7 +22,9 @@ export interface Subscription {
 
 export interface StorageInfo {
   usedBytes: number;
-  limitBytes: number;
+  totalBytes: number;
+  limitBytes?: number; // Deprecated, use totalBytes
+  usagePercentage: number;
   isLimitReached: boolean;
 }
 

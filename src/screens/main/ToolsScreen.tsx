@@ -7,16 +7,12 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  Dimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme, useLanguage, useFavorites } from '../../context';
-import { Card } from '../../components/common';
 import { Typography, Spacing, BorderRadius, Shadow } from '../../constants/theme';
 import { TOOLS, TOOL_CATEGORIES, Tool, ToolCategory } from '../../constants/tools';
-
-const { width } = Dimensions.get('window');
 
 const ToolsScreen: React.FC = () => {
   const navigation = useNavigation<any>();

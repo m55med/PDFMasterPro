@@ -1,4 +1,7 @@
 {
   "name": "PDFMasterPro",
-  "displayName": "PDF Master Pro"
+  "displayName": "PDF Master Pro",
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-2784626367965493~7954494055"
+  }
 }

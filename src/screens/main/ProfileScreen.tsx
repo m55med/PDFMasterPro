@@ -16,13 +16,14 @@ import auth from '@react-native-firebase/auth';
 import { useTheme, useLanguage, useAuth, useSubscription, useStorage } from '../../context';
 import { Card } from '../../components/common';
 import { Typography, Spacing, BorderRadius, Shadow } from '../../constants/theme';
+import { updateUserProfile } from '../../services/firebase/firestore';
 
 const ProfileScreen: React.FC = () => {
   const navigation = useNavigation<any>();
   const { colors } = useTheme();
   const { t, isRTL } = useLanguage();
   const { user, logout, refreshUser } = useAuth();
-  const { isPro, subscription, userProfile } = useSubscription();
+  const { isPro } = useSubscription();
   const { storageInfo, formatBytes } = useStorage();
   const insets = useSafeAreaInsets();
 
@@ -40,9 +41,12 @@ const ProfileScreen: React.FC = () => {
     try {
       const currentUser = auth().currentUser;
       if (currentUser) {
+        // Update Firebase Auth displayName
         await currentUser.updateProfile({
           displayName: displayName.trim(),
         });
+        // Update Firestore user profile
+        await updateUserProfile(currentUser.uid, { name: displayName.trim() });
         // Refresh user in context to update UI everywhere
         await refreshUser();
       }
@@ -145,7 +149,7 @@ const ProfileScreen: React.FC = () => {
         {/* Name */}
         {isEditing ? (
           <TextInput
-            style={[styles.nameInput, { borderColor: 'rgba(255,255,255,0.5)' }]}
+            style={[styles.nameInput, styles.nameInputBorder]}
             value={displayName}
             onChangeText={setDisplayName}
             placeholder={t.profile?.enterName || 'Enter your name'}
@@ -444,6 +448,9 @@ const styles = StyleSheet.create({
     paddingBottom: Spacing.xs,
     marginHorizontal: Spacing.xl,
     marginBottom: Spacing.xs,
+  },
+  nameInputBorder: {
+    borderColor: 'rgba(255,255,255,0.5)',
   },
   name: {
     color: '#FFFFFF',

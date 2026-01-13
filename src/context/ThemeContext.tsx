@@ -20,9 +20,13 @@ interface ThemeColors {
   bgGray: string;
   bgLight: string;
   success: string;
+  successLight: string;
   warning: string;
+  warningLight: string;
   error: string;
+  errorLight: string;
   info: string;
+  infoLight: string;
   border: string;
   borderLight: string;
 }
@@ -61,9 +65,13 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     bgGray: isDark ? DarkColors.bgGray : Colors.bgGray,
     bgLight: isDark ? DarkColors.bgLight : Colors.bgLight,
     success: Colors.success,
+    successLight: Colors.successLight,
     warning: Colors.warning,
+    warningLight: Colors.warningLight,
     error: Colors.error,
+    errorLight: Colors.errorLight,
     info: Colors.info,
+    infoLight: Colors.infoLight,
     border: isDark ? DarkColors.border : Colors.border,
     borderLight: isDark ? DarkColors.borderLight : Colors.borderLight,
   };

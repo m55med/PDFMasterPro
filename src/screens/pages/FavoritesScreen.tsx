@@ -25,7 +25,9 @@ const FavoritesScreen: React.FC = () => {
   const favoriteTools = TOOLS.filter((tool) => favorites.includes(tool.id));
 
   const handleToolPress = (tool: Tool) => {
-    navigation.navigate(tool.screen.replace('Screen', ''));
+    // Navigate to Tools tab with the specific screen
+    const screenName = tool.screen.replace('Screen', '');
+    navigation.navigate('Tools', { screen: screenName });
   };
 
   const getToolEmoji = (toolId: string): string => {

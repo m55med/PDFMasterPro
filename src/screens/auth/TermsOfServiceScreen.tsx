@@ -11,21 +11,27 @@ import { useTheme, useLanguage } from '../../context';
 import { Header } from '../../components/common';
 import { Typography, Spacing } from '../../constants/theme';
 
+interface SectionProps {
+  title: string;
+  content: string;
+  colors: { textPrimary: string; textSecondary: string };
+}
+
+const Section: React.FC<SectionProps> = ({ title, content, colors }) => (
+  <View style={styles.section}>
+    <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>
+      {title}
+    </Text>
+    <Text style={[styles.sectionContent, { color: colors.textSecondary }]}>
+      {content}
+    </Text>
+  </View>
+);
+
 const TermsOfServiceScreen: React.FC = () => {
   const { colors } = useTheme();
-  const { t, isRTL } = useLanguage();
+  const { t } = useLanguage();
   const insets = useSafeAreaInsets();
-
-  const Section: React.FC<{ title: string; content: string }> = ({ title, content }) => (
-    <View style={styles.section}>
-      <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>
-        {title}
-      </Text>
-      <Text style={[styles.sectionContent, { color: colors.textSecondary }]}>
-        {content}
-      </Text>
-    </View>
-  );
 
   return (
     <View style={[styles.container, { backgroundColor: colors.bgWhite }]}>
@@ -52,56 +58,67 @@ const TermsOfServiceScreen: React.FC = () => {
         <Section
           title={t.legal.acceptanceTitle}
           content={t.legal.acceptanceContent}
+          colors={colors}
         />
 
         <Section
           title={t.legal.useOfServiceTitle}
           content={t.legal.useOfServiceContent}
+          colors={colors}
         />
 
         <Section
           title={t.legal.userAccountsTitle}
           content={t.legal.userAccountsContent}
+          colors={colors}
         />
 
         <Section
           title={t.legal.intellectualPropertyTitle}
           content={t.legal.intellectualPropertyContent}
+          colors={colors}
         />
 
         <Section
           title={t.legal.userContentTitle}
           content={t.legal.userContentContent}
+          colors={colors}
         />
 
         <Section
           title={t.legal.prohibitedUsesTitle}
           content={t.legal.prohibitedUsesContent}
+          colors={colors}
         />
 
         <Section
           title={t.legal.disclaimerTitle}
           content={t.legal.disclaimerContent}
+          colors={colors}
         />
 
         <Section
           title={t.legal.limitationTitle}
           content={t.legal.limitationContent}
+          colors={colors}
         />
 
         <Section
           title={t.legal.terminationTitle}
           content={t.legal.terminationContent}
+          colors={colors}
         />
 
         <Section
           title={t.legal.changesTitle}
           content={t.legal.changesContent}
+          colors={colors}
         />
 
         <Section
           title={t.legal.contactTitle}
           content={t.legal.contactContent}
+          colors={colors}
         />
 
         {/* Footer */}

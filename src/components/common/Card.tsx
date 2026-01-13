@@ -1,6 +1,6 @@
 // PDF Master Pro - Card Component
 import React from 'react';
-import { View, StyleSheet, ViewStyle, TouchableOpacity } from 'react-native';
+import { View, ViewStyle, TouchableOpacity } from 'react-native';
 import { useTheme } from '../../context';
 import { BorderRadius, Spacing, Shadow } from '../../constants/theme';
 
@@ -65,7 +65,5 @@ export const Card: React.FC<CardProps> = ({
 
   return <View style={[getCardStyle(), style]}>{children}</View>;
 };
-
-const styles = StyleSheet.create({});
 
 export default Card;

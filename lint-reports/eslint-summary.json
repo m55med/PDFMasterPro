@@ -1,0 +1,711 @@
+{
+  "metadata": {
+    "generatedAt": "2026-01-10",
+    "project": "PDFMasterPro",
+    "tool": "ESLint"
+  },
+  "summary": {
+    "en": {
+      "totalFilesScanned": 72,
+      "filesWithErrors": 15,
+      "filesWithWarnings": 18,
+      "totalErrors": 25,
+      "totalWarnings": 24,
+      "status": "Issues Found"
+    },
+    "ar": {
+      "totalFilesScanned": 72,
+      "filesWithErrors": 15,
+      "filesWithWarnings": 18,
+      "totalErrors": 25,
+      "totalWarnings": 24,
+      "status": "تم العثور على مشاكل"
+    }
+  },
+  "issuesByCategory": {
+    "unused-variables": {
+      "count": 19,
+      "severity": "error",
+      "en": "Unused Variables",
+      "ar": "متغيرات غير مستخدمة"
+    },
+    "inline-styles": {
+      "count": 18,
+      "severity": "warning",
+      "en": "Inline Styles",
+      "ar": "أنماط مضمنة"
+    },
+    "unstable-nested-components": {
+      "count": 5,
+      "severity": "warning",
+      "en": "Unstable Nested Components",
+      "ar": "مكونات متداخلة غير مستقرة"
+    },
+    "react-hooks-deps": {
+      "count": 1,
+      "severity": "error",
+      "en": "React Hooks Dependencies",
+      "ar": "اعتماديات React Hooks"
+    }
+  },
+  "fileDetails": [
+    {
+      "file": "App.tsx",
+      "errors": 0,
+      "warnings": 1,
+      "issues": [
+        {
+          "line": 20,
+          "column": 36,
+          "severity": "warning",
+          "ruleId": "react-native/no-inline-styles",
+          "message": {
+            "en": "Inline style: { flex: 1 }",
+            "ar": "نمط مضمن: { flex: 1 }"
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/components/common/Card.tsx",
+      "errors": 1,
+      "warnings": 0,
+      "issues": [
+        {
+          "line": 69,
+          "column": 7,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'styles' is assigned a value but never used.",
+            "ar": "تم تعيين قيمة لـ 'styles' ولكن لم يتم استخدامها."
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/components/common/Header.tsx",
+      "errors": 0,
+      "warnings": 1,
+      "issues": [
+        {
+          "line": 47,
+          "column": 11,
+          "severity": "warning",
+          "ruleId": "react-native/no-inline-styles",
+          "message": {
+            "en": "Inline style detected",
+            "ar": "تم اكتشاف نمط مضمن"
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/components/common/Input.tsx",
+      "errors": 1,
+      "warnings": 1,
+      "issues": [
+        {
+          "line": 39,
+          "column": 19,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'isDark' is assigned a value but never used.",
+            "ar": "تم تعيين قيمة لـ 'isDark' ولكن لم يتم استخدامها."
+          }
+        },
+        {
+          "line": 73,
+          "column": 13,
+          "severity": "warning",
+          "ruleId": "react-native/no-inline-styles",
+          "message": {
+            "en": "Inline style detected",
+            "ar": "تم اكتشاف نمط مضمن"
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/components/common/Loading.tsx",
+      "errors": 0,
+      "warnings": 1,
+      "issues": [
+        {
+          "line": 27,
+          "column": 9,
+          "severity": "warning",
+          "ruleId": "react-native/no-inline-styles",
+          "message": {
+            "en": "Inline style detected",
+            "ar": "تم اكتشاف نمط مضمن"
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/context/StorageContext.tsx",
+      "errors": 2,
+      "warnings": 0,
+      "issues": [
+        {
+          "line": 27,
+          "column": 18,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'storageLimit' is assigned a value but never used.",
+            "ar": "تم تعيين قيمة لـ 'storageLimit' ولكن لم يتم استخدامها."
+          }
+        },
+        {
+          "line": 63,
+          "column": 6,
+          "severity": "error",
+          "ruleId": "react-hooks/exhaustive-deps",
+          "message": {
+            "en": "React Hook useCallback has a missing dependency: 'calculateDirectorySize'.",
+            "ar": "React Hook useCallback يفتقد اعتمادية: 'calculateDirectorySize'."
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/navigation/MainNavigator.tsx",
+      "errors": 4,
+      "warnings": 2,
+      "issues": [
+        {
+          "line": 3,
+          "column": 10,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'StyleSheet' is defined but never used.",
+            "ar": "تم تعريف 'StyleSheet' ولكن لم يتم استخدامه."
+          }
+        },
+        {
+          "line": 3,
+          "column": 22,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'View' is defined but never used.",
+            "ar": "تم تعريف 'View' ولكن لم يتم استخدامه."
+          }
+        },
+        {
+          "line": 6,
+          "column": 48,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'RootStackParamList' is defined but never used.",
+            "ar": "تم تعريف 'RootStackParamList' ولكن لم يتم استخدامه."
+          }
+        },
+        {
+          "line": 63,
+          "column": 3,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'color' is defined but never used.",
+            "ar": "تم تعريف 'color' ولكن لم يتم استخدامه."
+          }
+        },
+        {
+          "line": 74,
+          "column": 18,
+          "severity": "warning",
+          "ruleId": "react-native/no-inline-styles",
+          "message": {
+            "en": "Inline style detected",
+            "ar": "تم اكتشاف نمط مضمن"
+          }
+        },
+        {
+          "line": 89,
+          "column": 21,
+          "severity": "warning",
+          "ruleId": "react/no-unstable-nested-components",
+          "message": {
+            "en": "Do not define components during render.",
+            "ar": "لا تقم بتعريف المكونات أثناء العرض."
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/screens/auth/LoginScreen.tsx",
+      "errors": 1,
+      "warnings": 0,
+      "issues": [
+        {
+          "line": 27,
+          "column": 56,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'error' is assigned a value but never used.",
+            "ar": "تم تعيين قيمة لـ 'error' ولكن لم يتم استخدامها."
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/screens/auth/PrivacyPolicyScreen.tsx",
+      "errors": 1,
+      "warnings": 2,
+      "issues": [
+        {
+          "line": 16,
+          "column": 14,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'isRTL' is assigned a value but never used.",
+            "ar": "تم تعيين قيمة لـ 'isRTL' ولكن لم يتم استخدامها."
+          }
+        },
+        {
+          "line": 19,
+          "column": 65,
+          "severity": "warning",
+          "ruleId": "react/no-unstable-nested-components",
+          "message": {
+            "en": "Do not define components during render.",
+            "ar": "لا تقم بتعريف المكونات أثناء العرض."
+          }
+        },
+        {
+          "line": 30,
+          "column": 51,
+          "severity": "warning",
+          "ruleId": "react/no-unstable-nested-components",
+          "message": {
+            "en": "Do not define components during render.",
+            "ar": "لا تقم بتعريف المكونات أثناء العرض."
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/screens/auth/TermsOfServiceScreen.tsx",
+      "errors": 1,
+      "warnings": 1,
+      "issues": [
+        {
+          "line": 16,
+          "column": 14,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'isRTL' is assigned a value but never used.",
+            "ar": "تم تعيين قيمة لـ 'isRTL' ولكن لم يتم استخدامها."
+          }
+        },
+        {
+          "line": 19,
+          "column": 65,
+          "severity": "warning",
+          "ruleId": "react/no-unstable-nested-components",
+          "message": {
+            "en": "Do not define components during render.",
+            "ar": "لا تقم بتعريف المكونات أثناء العرض."
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/screens/auth/WelcomeScreen.tsx",
+      "errors": 3,
+      "warnings": 0,
+      "issues": [
+        {
+          "line": 7,
+          "column": 3,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'Image' is defined but never used.",
+            "ar": "تم تعريف 'Image' ولكن لم يتم استخدامه."
+          }
+        },
+        {
+          "line": 18,
+          "column": 10,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'Colors' is defined but never used.",
+            "ar": "تم تعريف 'Colors' ولكن لم يتم استخدامه."
+          }
+        },
+        {
+          "line": 20,
+          "column": 16,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'height' is assigned a value but never used.",
+            "ar": "تم تعيين قيمة لـ 'height' ولكن لم يتم استخدامها."
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/screens/main/ProfileScreen.tsx",
+      "errors": 2,
+      "warnings": 1,
+      "issues": [
+        {
+          "line": 25,
+          "column": 18,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'subscription' is assigned a value but never used.",
+            "ar": "تم تعيين قيمة لـ 'subscription' ولكن لم يتم استخدامها."
+          }
+        },
+        {
+          "line": 25,
+          "column": 32,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'userProfile' is assigned a value but never used.",
+            "ar": "تم تعيين قيمة لـ 'userProfile' ولكن لم يتم استخدامها."
+          }
+        },
+        {
+          "line": 148,
+          "column": 39,
+          "severity": "warning",
+          "ruleId": "react-native/no-inline-styles",
+          "message": {
+            "en": "Inline style detected",
+            "ar": "تم اكتشاف نمط مضمن"
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/screens/main/SettingsScreen.tsx",
+      "errors": 1,
+      "warnings": 2,
+      "issues": [
+        {
+          "line": 23,
+          "column": 37,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'isRTL' is assigned a value but never used.",
+            "ar": "تم تعيين قيمة لـ 'isRTL' ولكن لم يتم استخدامها."
+          }
+        },
+        {
+          "line": 92,
+          "column": 8,
+          "severity": "warning",
+          "ruleId": "react/no-unstable-nested-components",
+          "message": {
+            "en": "Do not define components during render.",
+            "ar": "لا تقم بتعريف المكونات أثناء العرض."
+          }
+        },
+        {
+          "line": 117,
+          "column": 53,
+          "severity": "warning",
+          "ruleId": "react/no-unstable-nested-components",
+          "message": {
+            "en": "Do not define components during render.",
+            "ar": "لا تقم بتعريف المكونات أثناء العرض."
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/screens/main/SubscriptionScreen.tsx",
+      "errors": 0,
+      "warnings": 1,
+      "issues": [
+        {
+          "line": 116,
+          "column": 24,
+          "severity": "warning",
+          "ruleId": "react-native/no-inline-styles",
+          "message": {
+            "en": "Inline style detected",
+            "ar": "تم اكتشاف نمط مضمن"
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/screens/main/ToolsScreen.tsx",
+      "errors": 2,
+      "warnings": 2,
+      "issues": [
+        {
+          "line": 15,
+          "column": 10,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'Card' is defined but never used.",
+            "ar": "تم تعريف 'Card' ولكن لم يتم استخدامه."
+          }
+        },
+        {
+          "line": 19,
+          "column": 9,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'width' is assigned a value but never used.",
+            "ar": "تم تعيين قيمة لـ 'width' ولكن لم يتم استخدامها."
+          }
+        },
+        {
+          "line": 89,
+          "column": 15,
+          "severity": "warning",
+          "ruleId": "react-native/no-inline-styles",
+          "message": {
+            "en": "Inline style detected",
+            "ar": "تم اكتشاف نمط مضمن"
+          }
+        },
+        {
+          "line": 126,
+          "column": 21,
+          "severity": "warning",
+          "ruleId": "react-native/no-inline-styles",
+          "message": {
+            "en": "Inline style detected",
+            "ar": "تم اكتشاف نمط مضمن"
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/screens/tools/CompressScreen.tsx",
+      "errors": 0,
+      "warnings": 1,
+      "issues": [
+        {
+          "line": 144,
+          "column": 21,
+          "severity": "warning",
+          "ruleId": "react-native/no-inline-styles",
+          "message": {
+            "en": "Inline style detected",
+            "ar": "تم اكتشاف نمط مضمن"
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/screens/tools/MergeScreen.tsx",
+      "errors": 2,
+      "warnings": 1,
+      "issues": [
+        {
+          "line": 15,
+          "column": 45,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'Shadow' is defined but never used.",
+            "ar": "تم تعريف 'Shadow' ولكن لم يتم استخدامه."
+          }
+        },
+        {
+          "line": 144,
+          "column": 31,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'index' is defined but never used.",
+            "ar": "تم تعريف 'index' ولكن لم يتم استخدامه."
+          }
+        },
+        {
+          "line": 168,
+          "column": 34,
+          "severity": "warning",
+          "ruleId": "react-native/no-inline-styles",
+          "message": {
+            "en": "Inline style detected",
+            "ar": "تم اكتشاف نمط مضمن"
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/screens/tools/OCRScreen.tsx",
+      "errors": 1,
+      "warnings": 0,
+      "issues": [
+        {
+          "line": 22,
+          "column": 9,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'navigation' is assigned a value but never used.",
+            "ar": "تم تعيين قيمة لـ 'navigation' ولكن لم يتم استخدامها."
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/screens/tools/OrganizeScreen.tsx",
+      "errors": 1,
+      "warnings": 1,
+      "issues": [
+        {
+          "line": 133,
+          "column": 33,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'index' is defined but never used.",
+            "ar": "تم تعريف 'index' ولكن لم يتم استخدامه."
+          }
+        },
+        {
+          "line": 138,
+          "column": 21,
+          "severity": "warning",
+          "ruleId": "react-native/no-inline-styles",
+          "message": {
+            "en": "Inline style detected",
+            "ar": "تم اكتشاف نمط مضمن"
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/screens/tools/PageNumbersScreen.tsx",
+      "errors": 0,
+      "warnings": 2,
+      "issues": [
+        {
+          "line": 126,
+          "column": 21,
+          "severity": "warning",
+          "ruleId": "react-native/no-inline-styles",
+          "message": {
+            "en": "Inline style detected",
+            "ar": "تم اكتشاف نمط مضمن"
+          }
+        },
+        {
+          "line": 153,
+          "column": 21,
+          "severity": "warning",
+          "ruleId": "react-native/no-inline-styles",
+          "message": {
+            "en": "Inline style detected",
+            "ar": "تم اكتشاف نمط مضمن"
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/screens/tools/RotateScreen.tsx",
+      "errors": 0,
+      "warnings": 1,
+      "issues": [
+        {
+          "line": 120,
+          "column": 21,
+          "severity": "warning",
+          "ruleId": "react-native/no-inline-styles",
+          "message": {
+            "en": "Inline style detected",
+            "ar": "تم اكتشاف نمط مضمن"
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/screens/tools/SplitScreen.tsx",
+      "errors": 0,
+      "warnings": 2,
+      "issues": [
+        {
+          "line": 137,
+          "column": 21,
+          "severity": "warning",
+          "ruleId": "react-native/no-inline-styles",
+          "message": {
+            "en": "Inline style detected",
+            "ar": "تم اكتشاف نمط مضمن"
+          }
+        },
+        {
+          "line": 148,
+          "column": 23,
+          "severity": "warning",
+          "ruleId": "react-native/no-inline-styles",
+          "message": {
+            "en": "Inline style detected",
+            "ar": "تم اكتشاف نمط مضمن"
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/screens/tools/WatermarkScreen.tsx",
+      "errors": 0,
+      "warnings": 1,
+      "issues": [
+        {
+          "line": 143,
+          "column": 21,
+          "severity": "warning",
+          "ruleId": "react-native/no-inline-styles",
+          "message": {
+            "en": "Inline style detected",
+            "ar": "تم اكتشاف نمط مضمن"
+          }
+        }
+      ]
+    },
+    {
+      "file": "src/services/firebase/auth.ts",
+      "errors": 2,
+      "warnings": 0,
+      "issues": [
+        {
+          "line": 116,
+          "column": 3,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'password' is defined but never used.",
+            "ar": "تم تعريف 'password' ولكن لم يتم استخدامه."
+          }
+        },
+        {
+          "line": 192,
+          "column": 3,
+          "severity": "error",
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "message": {
+            "en": "'callback' is defined but never used.",
+            "ar": "تم تعريف 'callback' ولكن لم يتم استخدامه."
+          }
+        }
+      ]
+    }
+  ]
+}

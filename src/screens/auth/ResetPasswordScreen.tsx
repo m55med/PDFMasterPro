@@ -141,7 +141,7 @@ const ResetPasswordScreen: React.FC = () => {
                   <View
                     style={[
                       styles.strengthFill,
-                      { backgroundColor: strength.color, width: strength.width },
+                      { backgroundColor: strength.color, width: strength.width as `${number}%` },
                     ]}
                   />
                 </View>

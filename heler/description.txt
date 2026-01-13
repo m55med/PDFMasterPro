@@ -1,0 +1,36 @@
+App Name: PDFMasterPro
+
+Short Description:
+All-in-one PDF Tool: Editor, Converter, Scanner, OCR & More. Merge, Split & Compress.
+
+Long Description:
+Unlock the full potential of your documents with PDFMasterPro, the ultimate all-in-one PDF solution for your mobile device. Whether you need to edit, convert, organize, or secure your files, PDFMasterPro offers a professional suite of tools designed for speed and efficiency.
+
+Key Features:
+
+📄 Powerful PDF Converter
+- Image to PDF: Convert your photos, scans, and images into high-quality PDF files instantly.
+- PDF to Image: Extract pages from your PDFs and save them as high-resolution JPG images.
+
+🛠 Advanced PDF Tools
+- Merge PDF: Combine multiple PDF files into a single, organized document.
+- Split PDF: Extract specific pages or split a large document into smaller files.
+- Compress PDF: Reduce file size while maintaining quality for easy sharing.
+- Organize Pages: Reorder, delete, or rotate pages within your PDF documents.
+- Add Page Numbers: Automatically number your document pages for professional formatting.
+
+📷 Scanner & OCR
+- Smart Scanner: Use your camera to scan physical documents directly into PDF.
+- OCR (Text Recognition): Extract text from images and scanned PDFs to make them editable and searchable.
+
+🔒 Security & Privacy
+- Protect PDF: Add passwords to encrypt and secure your confidential documents.
+- Unlock PDF: Remove passwords from protected PDFs (owner password required).
+- Watermark: Add custom text or images to your pages to protect your intellectual property.
+
+Why PDFMasterPro?
+- User-Friendly Interface: Clean, intuitive design makes complex PDF tasks simple.
+- Fast & Reliable: Process files in seconds, right on your device.
+- Offline Mode: Work on your documents anytime, anywhere without an internet connection.
+
+Download PDFMasterPro today and take control of your document workflow!

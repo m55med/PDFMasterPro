@@ -1,0 +1,34 @@
+<svg width="1080" height="1920" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1080" height="1920" fill="#F5F5F5" />
+  
+  <!-- Header -->
+  <rect width="1080" height="150" fill="#D32F2F" />
+  <text x="50" y="100" font-family="Arial" font-size="60" fill="white" font-weight="bold">PDFMasterPro</text>
+  
+  <!-- Grid of Tools -->
+  <g transform="translate(50, 200)">
+    <!-- Tool 1: Merge -->
+    <rect x="0" y="0" width="460" height="300" rx="20" fill="white" stroke="#E0E0E0" stroke-width="2"/>
+    <circle cx="230" cy="120" r="50" fill="#FFEBEE" />
+    <text x="230" y="240" font-family="Arial" font-size="40" fill="#333" text-anchor="middle">Merge PDF</text>
+    
+    <!-- Tool 2: Split -->
+    <rect x="520" y="0" width="460" height="300" rx="20" fill="white" stroke="#E0E0E0" stroke-width="2"/>
+    <circle cx="750" cy="120" r="50" fill="#E3F2FD" />
+    <text x="750" y="240" font-family="Arial" font-size="40" fill="#333" text-anchor="middle">Split PDF</text>
+    
+    <!-- Tool 3: Compress -->
+    <rect x="0" y="340" width="460" height="300" rx="20" fill="white" stroke="#E0E0E0" stroke-width="2"/>
+     <circle cx="230" cy="460" r="50" fill="#E8F5E9" />
+    <text x="230" y="580" font-family="Arial" font-size="40" fill="#333" text-anchor="middle">Compress</text>
+
+    <!-- Tool 4: OCR -->
+     <rect x="520" y="340" width="460" height="300" rx="20" fill="white" stroke="#E0E0E0" stroke-width="2"/>
+     <circle cx="750" cy="460" r="50" fill="#FFF3E0" />
+    <text x="750" y="580" font-family="Arial" font-size="40" fill="#333" text-anchor="middle">OCR Scan</text>
+  </g>
+  
+  <!-- Floating Action Button -->
+  <circle cx="900" cy="1700" r="100" fill="#D32F2F" />
+  <text x="900" y="1740" font-family="Arial" font-size="120" fill="white" text-anchor="middle">+</text>
+</svg>

@@ -4,7 +4,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   StatusBar,
   Dimensions,
 } from 'react-native';
@@ -15,9 +14,8 @@ import { AuthStackParamList } from '../../types/navigation';
 import { useTheme, useLanguage } from '../../context';
 import { Button } from '../../components/common';
 import { Typography, Spacing, BorderRadius } from '../../constants/theme';
-import { Colors } from '../../constants/colors';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 type WelcomeNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Welcome'>;
 

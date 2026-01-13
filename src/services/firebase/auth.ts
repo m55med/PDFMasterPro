@@ -113,7 +113,7 @@ export const signUpWithEmail = async (
 // Sign in with email and password
 export const signInWithEmail = async (
   email: string,
-  password: string
+  _password: string
 ): Promise<AuthUser> => {
   if (!validateEmail(email)) {
     throw new Error('Invalid email address');
@@ -189,7 +189,7 @@ export const getCurrentUser = (): AuthUser | null => {
 
 // Listen to auth state changes
 export const onAuthStateChange = (
-  callback: (user: AuthUser | null) => void
+  _callback: (user: AuthUser | null) => void
 ): (() => void) => {
   // TODO: Implement with Firebase
   // return auth().onAuthStateChanged((user) => {

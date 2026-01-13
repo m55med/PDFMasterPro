@@ -1,9 +1,9 @@
 // PDF Master Pro - Main Navigator (Bottom Tabs)
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { MainTabParamList, ToolStackParamList, RootStackParamList } from '../types/navigation';
+import { MainTabParamList, ToolStackParamList } from '../types/navigation';
 import { useTheme, useLanguage } from '../context';
 import { Layout, Typography } from '../constants/theme';
 
@@ -13,8 +13,13 @@ import ToolsScreen from '../screens/main/ToolsScreen';
 import SettingsScreen from '../screens/main/SettingsScreen';
 import ProfileScreen from '../screens/main/ProfileScreen';
 import SubscriptionScreen from '../screens/main/SubscriptionScreen';
+import FeedbackScreen from '../screens/main/FeedbackScreen';
 import DocumentsScreen from '../screens/pages/DocumentsScreen';
 import FavoritesScreen from '../screens/pages/FavoritesScreen';
+
+// Legal Screens
+import PrivacyPolicyScreen from '../screens/auth/PrivacyPolicyScreen';
+import TermsOfServiceScreen from '../screens/auth/TermsOfServiceScreen';
 
 // Tool Screens
 import MergeScreen from '../screens/tools/MergeScreen';
@@ -27,6 +32,8 @@ import WatermarkScreen from '../screens/tools/WatermarkScreen';
 import PageNumbersScreen from '../screens/tools/PageNumbersScreen';
 import OCRScreen from '../screens/tools/OCRScreen';
 import OrganizeScreen from '../screens/tools/OrganizeScreen';
+import JpgToPdfScreen from '../screens/tools/JpgToPdfScreen';
+import PdfToJpgScreen from '../screens/tools/PdfToJpgScreen';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 const ToolStack = createNativeStackNavigator<ToolStackParamList>();
@@ -52,6 +59,8 @@ const ToolsStackNavigator: React.FC = () => {
       <ToolStack.Screen name="PageNumbers" component={PageNumbersScreen} />
       <ToolStack.Screen name="OCR" component={OCRScreen} />
       <ToolStack.Screen name="Organize" component={OrganizeScreen} />
+      <ToolStack.Screen name="JpgToPdf" component={JpgToPdfScreen} />
+      <ToolStack.Screen name="PdfToJpg" component={PdfToJpgScreen} />
     </ToolStack.Navigator>
   );
 };
@@ -60,7 +69,7 @@ const ToolsStackNavigator: React.FC = () => {
 const TabIcon: React.FC<{ name: string; focused: boolean; color: string }> = ({
   name,
   focused,
-  color,
+  color: _color,
 }) => {
   const iconMap: Record<string, string> = {
     Home: '🏠',
@@ -71,11 +80,20 @@ const TabIcon: React.FC<{ name: string; focused: boolean; color: string }> = ({
   };
 
   return (
-    <Text style={{ fontSize: focused ? 24 : 22 }}>
+    <Text style={focused ? styles.tabIconFocused : styles.tabIcon}>
       {iconMap[name] || '📄'}
     </Text>
   );
 };
+
+const styles = StyleSheet.create({
+  tabIcon: {
+    fontSize: 22,
+  },
+  tabIconFocused: {
+    fontSize: 24,
+  },
+});
 
 // Tab Navigator Component
 const TabNavigator: React.FC = () => {
@@ -155,6 +173,27 @@ export const MainNavigator: React.FC = () => {
         component={SubscriptionScreen}
         options={{
           animation: 'slide_from_bottom',
+        }}
+      />
+      <MainStack.Screen
+        name="Feedback"
+        component={FeedbackScreen}
+        options={{
+          animation: 'slide_from_right',
+        }}
+      />
+      <MainStack.Screen
+        name="PrivacyPolicy"
+        component={PrivacyPolicyScreen}
+        options={{
+          animation: 'slide_from_right',
+        }}
+      />
+      <MainStack.Screen
+        name="TermsOfService"
+        component={TermsOfServiceScreen}
+        options={{
+          animation: 'slide_from_right',
         }}
       />
     </MainStack.Navigator>

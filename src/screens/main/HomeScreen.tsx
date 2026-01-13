@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme, useLanguage, useAuth } from '../../context';
 import { Card } from '../../components/common';
+import { BannerAd } from '../../components/ads';
 import { Typography, Spacing, BorderRadius, Shadow } from '../../constants/theme';
 import { TOOLS } from '../../constants/tools';
 
@@ -27,7 +28,9 @@ const HomeScreen: React.FC = () => {
   const quickTools = TOOLS.slice(0, 4); // First 4 tools for quick actions
 
   const handleToolPress = (toolId: string, screen: string) => {
-    navigation.navigate('Tools', { screen });
+    // Remove 'Screen' suffix to match navigator screen names
+    const screenName = screen.replace('Screen', '');
+    navigation.navigate('Tools', { screen: screenName });
   };
 
   const handleUpload = () => {
@@ -208,9 +211,14 @@ const HomeScreen: React.FC = () => {
           </View>
         </View>
 
-        {/* Bottom Padding */}
-        <View style={{ height: insets.bottom + 80 }} />
+        {/* Bottom Padding for Banner */}
+        <View style={{ height: insets.bottom + 140 }} />
       </ScrollView>
+
+      {/* Banner Ad at Bottom */}
+      <View style={[styles.bannerContainer, { bottom: insets.bottom + 60 }]}>
+        <BannerAd />
+      </View>
     </View>
   );
 };
@@ -379,6 +387,13 @@ const styles = StyleSheet.create({
     fontSize: 10,
     textAlign: 'center',
     lineHeight: 14,
+  },
+  bannerContainer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    zIndex: 100,
   },
 });
 
